@@ -9,13 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue(value = Role.Values.DOCTOR)
 public final class Doctor extends User{
-    @Column
+    @Column(length = 50)
     private String specialty;
 }

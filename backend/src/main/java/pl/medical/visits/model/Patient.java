@@ -7,8 +7,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Entity
 @DiscriminatorValue(value = Role.Values.PATIENT)
 public final class Patient extends User{

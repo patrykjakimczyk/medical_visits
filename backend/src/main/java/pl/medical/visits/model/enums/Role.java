@@ -5,14 +5,7 @@ public enum Role {
     ADMIN(Values.DOCTOR),
     DOCTOR(Values.ADMIN);
 
-//    private Role (String val) {
-//        // force equality between name of enum instance, and value of constant
-//        if (!this.name().equals(val))
-//            throw new IllegalArgumentException("Incorrect use of ELanguage");
-//    }
-
-    Role(String patient) {
-    }
+    Role(String value) {}
 
     public static class Values {
         public static final String PATIENT = "PATIENT";

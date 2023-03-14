@@ -1,5 +1,6 @@
 package pl.medical.visits.model;
 
+import com.sun.istack.NotNull;
 import pl.medical.visits.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,46 +17,50 @@ import javax.persistence.*;
 @Table(name = "user_table")
 public abstract class User {
     @Id
+    @Column(name = "user_id", insertable = false, updatable = false, unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "role", insertable = false, updatable = false)
+    @Column(name = "role", insertable = false, updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column
+    @Column(name = "first_name", length = 20, nullable = false)
     private String firstName;
 
-    @Column
+    @Column(name = "last_name", length = 30, nullable = false)
     private String lastName;
 
-    @Column(unique = true)
+    @Column(length = 11, unique = true, nullable = false)
     private String pesel;
 
-    @Column
+    @Column(name = "birth_date", length = 10, nullable = false)
     private String birthDate;
 
-    @Column(unique = true)
+    @Column(name = "phone_nr", length = 30, unique = true, nullable = false)
     private String phoneNr;
 
-    @Column
+    @Column(length = 50, nullable = false)
     private String country;
 
-    @Column
+    @Column(length = 30, nullable = false)
     private String city;
 
-    @Column
+    @Column(length = 50, nullable = false)
     private String street;
 
-    @Column
+    @Column(name = "house_nr", length = 3, nullable = false)
+    private String houseNr;
+
+    @Column(name = "apartment_nr", length = 3, nullable = false)
     private String apartmentNr;
 
-    @Column
+    @Column(name = "postal_code", length = 6, nullable = false)
     private String postalCode;
 
-    @Column
+    @Column(length = 50, unique = true, nullable = false)
     private String email;
 
-    @Column
+    @Column(length = 50, nullable = false)
     private String password;
 }
