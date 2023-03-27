@@ -2,68 +2,158 @@
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <div>
         <label for="firstName">Imię:</label>
-        <input type="text" id="firstName" name="firstName" ngModel required>
+        <input name="firstName" id="firstName" #firstName="ngModel" ngModel required pattern="[a-zA-Z]+">
+        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
+            <div *ngIf="firstName.errors?.['required']">Imię jest wymagane</div>
+            <div *ngIf="firstName.errors?.['pattern']">Imię musi się składać z samych liter</div>
+        </div>
     </div>
 
     <div>
         <label for="lastName">Nazwisko:</label>
-        <input type="text" id="lastName" name="lastName" ngModel required>
+        <input name="lastName" id="lastName" #lastName="ngModel" ngModel required pattern="[a-zA-Z]+">
+        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
+            <div *ngIf="lastName.errors?.['required']">Nazwisko jest wymagane</div>
+            <div *ngIf="lastName.errors?.['pattern']">Nazwisko musi się składać z samych liter</div>
+        </div>
     </div>
 
     <div>
         <label for="pesel">PESEL:</label>
-        <input type="text" id="pesel" name="pesel" ngModel pattern="[0-9]{11}" required>
+        <input name="pesel" id="pesel" #pesel="ngModel" ngModel pattern="[0-9]{11}" required>
+        <div *ngIf="pesel.invalid && (pesel.dirty || pesel.touched)" class="error-message">
+            <div *ngIf="pesel.errors?.['required']">PESEL jest wymagany</div>
+            <div *ngIf="pesel.errors?.['pattern']">PESEL musi składać się z 11 cyfr</div>
+            <div *ngIf="pesel.errors?.['invalid']">Niepoprawny PESEL</div>
+        </div>
+
+        <!-- <div><button type="button" (click)="calculateBirthdate()">Oblicz datę urodzenia</button></div> -->
     </div>
 
     <div>
         <label for="dob">Data urodzenia:</label>
-        <input type="date" id="dob" name="dob" ngModel required>
+        <input type="date" name="dob" id="dob" #dob="ngModel" ngModel disabled>
     </div>
 
     <div>
         <label for="phoneNumber">Numer telefonu:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" ngModel pattern="[0-9]{9}" required>
+        <input name="phoneNumber" id="phoneNumber" #phoneNumber="ngModel" ngModel pattern="[0-9]{9}" required>
+        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="error-message">
+            <div *ngIf="phoneNumber.errors?.['required']">Numer telefonu jest wymagany</div>
+            <div *ngIf="phoneNumber.errors?.['pattern']">Numer telefonu musi składać się z 9 cyfr</div>
+            <div *ngIf="phoneNumber.errors?.['invalid']">Niepoprawny numer telefonu</div>
+        </div>
     </div>
 
     <div>
         <label for="country">Kraj:</label>
-        <input type="text" id="country" name="country" ngModel required >
+        <input name="country" id="country" #country="ngModel" ngModel required pattern="[a-zA-Z]+">
+        <div *ngIf="country.invalid && (country.dirty || country.touched)" class="error-message">
+            <div *ngIf="country.errors?.['required']">Kraj jest wymagany</div>
+            <div *ngIf="country.errors?.['pattern']">Nazwa kraju musi się składać z liter</div>
+            <div *ngIf="country.errors?.['invalid']">Niepoprawnie podana nazwa kraju</div>
+        </div>
     </div>
 
     <div>
         <label for="city">Miasto:</label>
-        <input type="text" id="city" name="city" ngModel required>
+        <input name="city" id="city" #city="ngModel" ngModel required pattern="[a-zA-Z]+">
+        <div *ngIf="city.invalid && (city.dirty || city.touched)" class="error-message">
+            <div *ngIf="city.errors?.['required']">Miasto jest wymagane</div>
+            <div *ngIf="city.errors?.['pattern']">Nazwa miasta musi składać się z liter</div>
+            <div *ngIf="city.errors?.['invalid']">Niepoprawnie podana nazwa miasta</div>
+        </div>
     </div>
 
     <div>
         <label for="street">Ulica:</label>
-        <input type="text" id="street" name="street" ngModel required>
+        <input name="street" id="street" #street="ngModel" ngModel required>
+        <div *ngIf="street.invalid && (street.dirty || street.touched)" class="error-message">
+            <div *ngIf="street.errors?.['required']">Nazwa ulicy jest wymagana</div>
+            <div *ngIf="street.errors?.['invalid']">Niepoprawnie podana ulica</div>
+        </div>
     </div>
 
     <div>
         <label for="houseNumber">Numer domu:</label>
-        <input type="text" id="houseNumber" name="houseNumber" ngModel required>
+        <input name="houseNumber" id="houseNumber" #houseNumber="ngModel" ngModel required pattern="'^[0-9]{1,}$'">
+        <div *ngIf="houseNumber.invalid && (houseNumber.dirty || houseNumber.touched)" class="error-message">
+            <div *ngIf="houseNumber.errors?.['required']">Numer domu jest wymagany</div>
+            <div *ngIf="houseNumber.errors?.['pattern']">Numer domu musi składać się z cyfr</div>
+            <div *ngIf="houseNumber.errors?.['invalid']">Niepoprawny numer domu</div>
+        </div>
+    </div>
+
+    <div>
+        <label for="aparmentNumber">Numer mieszkania:</label>
+        <input name="aparmentNumber" id="aparmentNumber" #aparmentNumber="ngModel" ngModel required pattern="'^[0-9]{1,}$'">
+        <div *ngIf="aparmentNumber.invalid && (aparmentNumber.dirty || aparmentNumber.touched)" class="error-message">
+            <div *ngIf="aparmentNumber.errors?.['required']">Numer mieszkania jest wymagany</div>
+            <div *ngIf="aparmentNumber.errors?.['pattern']">Numer mieszkania musi składać się z cyfr</div>
+            <div *ngIf="aparmentNumber.errors?.['invalid']">Niepoprawny numer mieszkania</div>
+        </div>
     </div>
 
     <div>
         <label for="zipCode">Kod pocztowy:</label>
-        <input type="text" id="zipCode" name="zipCode" ngModel pattern="[0-9]{2}-[0-9]{3}" required>
+        <input name="zipCode" id="zipCode" #zipCode="ngModel" ngModel required pattern="[0-9]{2}-[0-9]{3}">
+        <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)" class="error-message">
+            <div *ngIf="zipCode.errors?.['required']">Kod pocztowy jest wymagany</div>
+            <div *ngIf="zipCode.errors?.['pattern']">Kod pocztowy musi być zgodny ze wzorem np. 00-000</div>
+            <div *ngIf="zipCode.errors?.['invalid']">Niepoprawny kod pocztowy</div>
+        </div>
     </div>
 
     <div>
         <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" ngModel required>
+        <input type="email" name="email" id="email" #email="ngModel" ngModel required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+            <div *ngIf="email.errors?.['required']">Email jest wymagany</div>
+            <div *ngIf="email.errors?.['pattern']">Niepoprawnie podany email</div>
+            <div *ngIf="email.errors?.['invalid']">Niepoprawnie podany email</div>
+        </div>
     </div>
 
     <div>
         <label for="password">Hasło:</label>
-        <input type="password" id="password" name="password" ngModel minlength="8" required>
+        <input type="password" name="password" id="password" #password="ngModel" ngModel minlength="8" required>
+        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
+            <div *ngIf="password.errors?.['required']">Hasło jest wymagane</div>
+            <div *ngIf="password.errors?.['invalid']">Niepoprawne hasło</div>
+            <div *ngIf="password.errors?.['minlength']">Hasło musi mieć conajmniej 8 znaków</div>
+        </div>
     </div>
 
     <div>
         <label for="confirmPassword">Powtórz hasło:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" ngModel required>
+        <input type="password" name="confirmPassword" id="confirmPassword" #confirmPassword="ngModel" ngModel required>
+        <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="error-message">
+            <div *ngIf="confirmPassword.errors?.['required']">Powtórz hasło!</div>
+            <div *ngIf="confirmPassword.errors?.['invalid']">Hasła muszą się zgadzać!</div>
+        </div>
     </div>
+
+    <!-- <div ngModelGroup="passwords">
+        <div>
+            <label for="password">Hasło:</label>
+            <input type="password" name="password" id="password" #password="ngModel" [(ngModel)]="passwords.password" minlength="8" required>
+            <div *ngIf="passwords.invalid && (passwords.dirty || passwords.touched)"
+                class="error-message">
+                <div *ngIf="passwords.errors?.['required']">Hasło jest wymagane</div>
+                <div *ngIf="passwords.errors?.['minlength']">Hasło musi mieć przynajmniej 8 znaków</div>
+            </div>
+        </div>
+    
+        <div>
+            <label for="confirmPassword">Powtórz hasło:</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" #confirmPassword="ngModel" [(ngModel)]="passwords.confirmPassword" required>
+            <div *ngIf="passwords.invalid && (passwords.dirty || passwords.touched)"
+                class="error-message">
+                <div *ngIf="passwords.errors?.['required']">Powtórz hasło!</div>
+                <div *ngIf="passwords.errors?.['notMatch']">Hasła muszą się zgadzać!</div>
+            </div>
+        </div>
+    </div> -->
 
     <button type="submit" [disabled]="!form.valid">Zarejestruj się</button>
 </form>
