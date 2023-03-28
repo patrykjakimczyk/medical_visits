@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.medical.visits.model.user.Doctor;
+import pl.medical.visits.model.user.Patient;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,7 +17,13 @@ import java.sql.Timestamp;
 @Table(name = "visit")
 public class Visit {
     @Id
-    @Column(name = "visit_id", unique = true, nullable = false)
+    @SequenceGenerator(
+            name = "visit_seq",
+            sequenceName = "visit_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visit_seq")
+    @Column(name = "visit_id", insertable = false, updatable = false, unique = true, nullable = false)
     private Long id;
 
     @ManyToOne
@@ -23,7 +31,7 @@ public class Visit {
     private Office office;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", referencedColumnName= "user_id")
+    @JoinColumn(name = "patient_id", referencedColumnName= "user_id", nullable = false)
     private Patient patient;
 
     @ManyToOne

@@ -12,7 +12,7 @@ spring:
             non_contextual_creation: 'true'
     hibernate:
       # Hibernate ddl auto (create, create-drop, validate, update)
-      ddl-auto: create-drop
+      ddl-auto: update
   data:
     jdbc:
       repositories:

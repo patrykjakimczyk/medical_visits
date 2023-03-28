@@ -1,24 +1,26 @@
-package pl.medical.visits.model;
+package pl.medical.visits.model.user;
 
-import com.sun.istack.NotNull;
 import pl.medical.visits.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="role", discriminatorType = DiscriminatorType.STRING)
 @Entity
-@Table(name = "user_table")
+@Table(name = "user_t")
 public abstract class User {
     @Id
+    @SequenceGenerator(
+            name = "user_seq",
+            sequenceName = "user_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "user_id", insertable = false, updatable = false, unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "role", insertable = false, updatable = false, nullable = false)
@@ -37,30 +39,14 @@ public abstract class User {
     @Column(name = "birth_date", length = 10, nullable = false)
     private String birthDate;
 
-    @Column(name = "phone_nr", length = 30, unique = true, nullable = false)
+    @Column(name = "sex", length = 9, nullable = false)
+    private String sex;
+
+    @Column(name = "phone_nr", length = 11, unique = true, nullable = false)
     private String phoneNr;
 
-    @Column(length = 50, nullable = false)
-    private String country;
-
-    @Column(length = 30, nullable = false)
-    private String city;
-
-    @Column(length = 50, nullable = false)
-    private String street;
-
-    @Column(name = "house_nr", length = 3, nullable = false)
-    private String houseNr;
-
-    @Column(name = "apartment_nr", length = 3, nullable = false)
-    private String apartmentNr;
-
-    @Column(name = "postal_code", length = 6, nullable = false)
-    private String postalCode;
-
-    @Column(length = 50, unique = true, nullable = false)
-    private String email;
-
-    @Column(length = 50, nullable = false)
-    private String password;
+    public User() {
+        super();
+        this.setRole(Role.ADMIN);
+    }
 }
