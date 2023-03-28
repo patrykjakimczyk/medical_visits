@@ -27,13 +27,31 @@
             <div *ngIf="pesel.errors?.['invalid']">Niepoprawny PESEL</div>
         </div>
 
-        <!-- <div><button type="button" (click)="calculateBirthdate()">Oblicz datę urodzenia</button></div> -->
+        <div><button type="button" (click)="calculateBirthdate(form)">Oblicz datę urodzenia</button></div>
     </div>
 
     <div>
         <label for="dob">Data urodzenia:</label>
         <input type="date" name="dob" id="dob" #dob="ngModel" ngModel disabled>
     </div>
+
+    <div>
+        <label for="age">Wiek:</label>
+        <input name="age" id="age" #age="ngModel" ngModel disabled pattern="'^[0-9]{1,}$'">
+    </div>
+
+    <div>
+        <label for="sex">Płeć:</label>
+        <select name="sex" id="sex" #sex="ngModel" ngModel required>
+            <option value="male">Mężczyzna</option>
+            <option value="female">Kobieta</option>
+            <option value="other">Inna</option>
+        </select>
+        <div *ngIf="sex.invalid && (sex.dirty || sex.touched)" class="error-message">
+            <div *ngIf="sex.errors?.['required']">Płeć jest wymagana</div>
+        </div>
+    </div>
+
 
     <div>
         <label for="phoneNumber">Numer telefonu:</label>
@@ -116,7 +134,7 @@
 
     <div>
         <label for="password">Hasło:</label>
-        <input type="password" name="password" id="password" #password="ngModel" ngModel minlength="8" required>
+        <input type="password" name="password" id="password" #password="ngModel" ngModel required pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/">
         <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
             <div *ngIf="password.errors?.['required']">Hasło jest wymagane</div>
             <div *ngIf="password.errors?.['invalid']">Niepoprawne hasło</div>
