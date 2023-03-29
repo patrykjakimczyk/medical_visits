@@ -31,12 +31,12 @@
 
     <div>
         <!-- Data urodzenia -->
-        <input type="date" name="dob" id="dob" #dob="ngModel" ngModel disabled placeholder="Date of birth">
+        <input type="date" name="birthDate" id="birthDate" #birthDate="ngModel" ngModel placeholder="Date of birth">
     </div>
 
     <div>
         <!-- Wiek -->
-        <input name="age" id="age" #age="ngModel" ngModel disabled pattern="^[0-9]{1,}$" placeholder="Age">
+        <input name="age" id="age" #age="ngModel" ngModel pattern="^[0-9]{1,}$" placeholder="Age">
     </div>
 
     <div>
@@ -53,11 +53,11 @@
 
     <div>
         <!-- Numer telefonu -->
-        <input name="phoneNumber" id="phoneNumber" #phoneNumber="ngModel" ngModel pattern="[0-9]{9}" required placeholder="Phone number">
-        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="error-message">
-            <div *ngIf="phoneNumber.errors?.['required']">Numer telefonu jest wymagany</div>
-            <div *ngIf="phoneNumber.errors?.['pattern']">Numer telefonu musi składać się z 9 cyfr</div>
-            <div *ngIf="phoneNumber.errors?.['invalid']">Niepoprawny numer telefonu</div>
+        <input name="phoneNr" id="phoneNr" #phoneNr="ngModel" ngModel pattern="[0-9]{9}" required placeholder="Phone number">
+        <div *ngIf="phoneNr.invalid && (phoneNr.dirty || phoneNr.touched)" class="error-message">
+            <div *ngIf="phoneNr.errors?.['required']">Numer telefonu jest wymagany</div>
+            <div *ngIf="phoneNr.errors?.['pattern']">Numer telefonu musi składać się z 9 cyfr</div>
+            <div *ngIf="phoneNr.errors?.['invalid']">Niepoprawny numer telefonu</div>
         </div>
     </div>
 

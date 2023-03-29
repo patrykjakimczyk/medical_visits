@@ -54,7 +54,7 @@ export class RegistationFormComponent {
           return;
         }
 
-        patientControls.controls['dob'].setValue(birthdate.toISOString().substring(0, 10));
+        patientControls.controls['birthDate'].setValue(birthdate.toISOString().substring(0, 10));
         patientControls.controls['age'].setValue(age);
       } else {
         form.controls['pesel'].setErrors({ 'invalid': true });
