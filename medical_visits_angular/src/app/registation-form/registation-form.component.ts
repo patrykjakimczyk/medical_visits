@@ -5,7 +5,7 @@ import { ApiService } from '../service/api.service';
 @Component({
   selector: 'app-registation-form',
   templateUrl: './registation-form.component.html',
-  styleUrls: ['./registation-form.component.css']
+  styleUrls: ['./registation-form.component.css'],
 })
 export class RegistationFormComponent {
   dateOfBirth: Date;
@@ -91,34 +91,4 @@ export class RegistationFormComponent {
       console.log(form.value);
       this.apiService.registerPatient(form).subscribe(response => console.log(response));
   }
-
-  // onSubmit(form: NgForm){
-  //   const patient = {
-  //     firstName: form.value.firstName,
-  //     lastName: form.value.lastName,
-  //     pesel: form.value.pesel,
-  //     birthDate: this.dateOfBirth,
-  //     sex: this.selectedSex,
-  //     phoneNr: form.value.phoneNumber
-  //   };
-  //   const loginData = {
-  //     email: form.value.email,
-  //     password: form.value.password
-  //   };
-  //   const addressData = {
-  //     country: form.value.country,
-  //     city: form.value.city,
-  //     street: form.value.street,
-  //     houseNr: form.value.houseNumber,
-  //     apartmentNr: form.value.aparmentNumber,
-  //     postalCode: form.value.zipCode
-  //   };
-  //   const data ={
-  //     patient,
-  //     loginData,
-  //     addressData
-  //   };
-
-  //   console.log(data);
-  // }
 }
