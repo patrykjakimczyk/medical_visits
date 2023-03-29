@@ -19,8 +19,8 @@ public class ValidationUtil {
         char[] pArray = pesel.toCharArray();
 
         if (!isPeselSumValid(pArray)) return false;
-        if(pArray[10] % 2 == 0 && sex.equals("Kobieta")) return true;
-        return pArray[10] % 2 != 0 && sex.equals("Mezczyzna");
+        if(pArray[10] % 2 == 0 && sex.equals("female")) return true;
+        return pArray[10] % 2 != 0 && sex.equals("male");
     }
 
     private static boolean isPeselSumValid(char[] pArray) {
