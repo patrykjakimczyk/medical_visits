@@ -96,33 +96,33 @@
 
     <div>
         <!-- Numer domu -->
-        <input name="houseNumber" id="houseNumber" #houseNumber="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="House number">
+        <input name="houseNr" id="houseNr" #houseNr="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="House number">
 
-        <div *ngIf="houseNumber.invalid && (houseNumber.dirty || houseNumber.touched)" class="error-message">
-            <div *ngIf="houseNumber.errors?.['required']">Numer domu jest wymagany</div>
-            <div *ngIf="houseNumber.errors?.['pattern']">Numer domu musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
-            <div *ngIf="houseNumber.errors?.['invalid']">Niepoprawny numer domu</div>
+        <div *ngIf="houseNr.invalid && (houseNr.dirty || houseNr.touched)" class="error-message">
+            <div *ngIf="houseNr.errors?.['required']">Numer domu jest wymagany</div>
+            <div *ngIf="houseNr.errors?.['pattern']">Numer domu musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
+            <div *ngIf="houseNr.errors?.['invalid']">Niepoprawny numer domu</div>
         </div>
     </div>
 
     <div>
         <!-- Numer mieszkania -->
-        <input name="aparmentNumber" id="aparmentNumber" #aparmentNumber="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="Apartment number">
+        <input name="apartmentNr" id="apartmentNr" #apartmentNr="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="Apartment number">
 
-        <div *ngIf="aparmentNumber.invalid && (aparmentNumber.dirty || aparmentNumber.touched)" class="error-message">
-            <div *ngIf="aparmentNumber.errors?.['required']">Numer mieszkania jest wymagany</div>
-            <div *ngIf="aparmentNumber.errors?.['pattern']">Numer mieszkania musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
-            <div *ngIf="aparmentNumber.errors?.['invalid']">Niepoprawny numer mieszkania</div>
+        <div *ngIf="apartmentNr.invalid && (apartmentNr.dirty || apartmentNr.touched)" class="error-message">
+            <div *ngIf="apartmentNr.errors?.['required']">Numer mieszkania jest wymagany</div>
+            <div *ngIf="apartmentNr.errors?.['pattern']">Numer mieszkania musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
+            <div *ngIf="apartmentNr.errors?.['invalid']">Niepoprawny numer mieszkania</div>
         </div>
     </div>
 
     <div>
         <!-- Kod pocztowy -->
-        <input name="zipCode" id="zipCode" #zipCode="ngModel" ngModel required pattern="[0-9]{2}-[0-9]{3}" placeholder="Postal code">
-        <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)" class="error-message">
-            <div *ngIf="zipCode.errors?.['required']">Kod pocztowy jest wymagany</div>
-            <div *ngIf="zipCode.errors?.['pattern']">Kod pocztowy musi być zgodny ze wzorem np. 00-000</div>
-            <div *ngIf="zipCode.errors?.['invalid']">Niepoprawny kod pocztowy</div>
+        <input name="postalCode" id="postalCode" #postalCode="ngModel" ngModel required pattern="[0-9]{2}-[0-9]{3}" placeholder="Postal code">
+        <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="error-message">
+            <div *ngIf="postalCode.errors?.['required']">Kod pocztowy jest wymagany</div>
+            <div *ngIf="postalCode.errors?.['pattern']">Kod pocztowy musi być zgodny ze wzorem np. 00-000</div>
+            <div *ngIf="postalCode.errors?.['invalid']">Niepoprawny kod pocztowy</div>
         </div>
     </div>
 
