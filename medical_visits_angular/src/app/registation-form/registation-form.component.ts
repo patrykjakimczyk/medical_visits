@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-registation-form',
@@ -7,8 +8,17 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./registation-form.component.css']
 })
 export class RegistationFormComponent {
+  constructor(private apiService: ApiService) {}
+
+  onSubmit(form: NgForm){
+    console.log(form.value);
+    this.apiService.registerPatient(form).subscribe(response => console.log(response));
+  }
+
   calculateBirthdate(form: NgForm) {
-    const pesel = form.value.pesel;
+    const patientControls = form.form.controls['patient'] as FormGroup;
+    const pesel = patientControls.value.pesel;
+
     if (pesel && pesel.length === 11) {
       const weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
       let sum = 0;
@@ -44,8 +54,8 @@ export class RegistationFormComponent {
           return;
         }
 
-        form.controls['dob'].setValue(birthdate.toISOString().substring(0, 10));
-        form.controls['age'].setValue(age);
+        patientControls.controls['dob'].setValue(birthdate.toISOString().substring(0, 10));
+        patientControls.controls['age'].setValue(age);
       } else {
         form.controls['pesel'].setErrors({ 'invalid': true });
       }
@@ -53,16 +63,14 @@ export class RegistationFormComponent {
   }
 
   validatePasswords(form: NgForm) {
-    const password = form.controls['password'].value;
-    const confirmPassword = form.controls['confirmPassword'].value;
-    if (password !== confirmPassword) {
-      form.controls['confirmPassword'].setErrors({ notMatch: true });
-    } else {
-      form.controls['confirmPassword'].setErrors(null);
-    }
-  }
+    const patientControls = form.form.controls['loginData'] as FormGroup;
 
-  onSubmit(form: NgForm){
-    console.log(form.value);
+    const password = patientControls.controls['password'].value;
+    const confirmPassword = patientControls.controls['confirmPassword'].value;
+    if (password !== confirmPassword) {
+      patientControls.controls['confirmPassword'].setErrors({ notMatch: true });
+    } else {
+      patientControls.controls['confirmPassword'].setErrors(null);
+    }
   }
 }

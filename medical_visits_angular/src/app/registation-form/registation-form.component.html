@@ -1,5 +1,6 @@
 <h1 id="head">MedicalVisits</h1>
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div ngModelGroup="patient" #patient="ngModelGroup">
     <div>
         <!-- Imię -->
         <input name="firstName" id="firstName" #firstName="ngModel" ngModel required pattern="[a-zA-Z]+" placeholder="First Name">
@@ -50,7 +51,6 @@
         </div>
     </div>
 
-
     <div>
         <!-- Numer telefonu -->
         <input name="phoneNumber" id="phoneNumber" #phoneNumber="ngModel" ngModel pattern="[0-9]{9}" required placeholder="Phone number">
@@ -60,6 +60,10 @@
             <div *ngIf="phoneNumber.errors?.['invalid']">Niepoprawny numer telefonu</div>
         </div>
     </div>
+
+  </div>
+
+  <div ngModelGroup="addressData" #addressData="ngModelGroup">
 
     <div>
         <!-- Kraj -->
@@ -93,9 +97,10 @@
     <div>
         <!-- Numer domu -->
         <input name="houseNumber" id="houseNumber" #houseNumber="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="House number">
+
         <div *ngIf="houseNumber.invalid && (houseNumber.dirty || houseNumber.touched)" class="error-message">
             <div *ngIf="houseNumber.errors?.['required']">Numer domu jest wymagany</div>
-            <div *ngIf="houseNumber.errors?.['pattern']">Numer domu musi składać się z cyfr</div>
+            <div *ngIf="houseNumber.errors?.['pattern']">Numer domu musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
             <div *ngIf="houseNumber.errors?.['invalid']">Niepoprawny numer domu</div>
         </div>
     </div>
@@ -103,9 +108,10 @@
     <div>
         <!-- Numer mieszkania -->
         <input name="aparmentNumber" id="aparmentNumber" #aparmentNumber="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="Apartment number">
+
         <div *ngIf="aparmentNumber.invalid && (aparmentNumber.dirty || aparmentNumber.touched)" class="error-message">
             <div *ngIf="aparmentNumber.errors?.['required']">Numer mieszkania jest wymagany</div>
-            <div *ngIf="aparmentNumber.errors?.['pattern']">Numer mieszkania musi składać się z cyfr</div>
+            <div *ngIf="aparmentNumber.errors?.['pattern']">Numer mieszkania musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
             <div *ngIf="aparmentNumber.errors?.['invalid']">Niepoprawny numer mieszkania</div>
         </div>
     </div>
@@ -120,6 +126,10 @@
         </div>
     </div>
 
+  </div>
+
+
+  <div ngModelGroup="loginData" #loginData="ngModelGroup">
     <div>
         <!-- E-mail -->
         <input type="email" name="email" id="email" #email="ngModel" ngModel required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail address">
@@ -139,7 +149,7 @@
             <div *ngIf="passwordInput.errors?.['minlength']">Hasło musi mieć conajmniej 8 znaków</div>
         </div>
     </div>
-    
+
     <div>
         <!-- Powtórz hasło -->
         <input type="password" name="confirmPassword" id="confirmPassword" #confirmPasswordInput="ngModel" ngModel (ngModelChange)="validatePasswords(form)" required placeholder="Confirm password">
@@ -149,7 +159,7 @@
             <div *ngIf="confirmPasswordInput.errors?.['notMatch']">Hasła muszą się zgadzać!</div>
         </div>
     </div>
-
+  </div>
 
     <button type="submit" [disabled]="!form.valid">Zarejestruj się</button>
 </form>
