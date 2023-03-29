@@ -7,10 +7,6 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./registation-form.component.css']
 })
 export class RegistationFormComponent {
-  onSubmit(form: NgForm){
-    console.log(form.value);
-  }
-
   calculateBirthdate(form: NgForm) {
     const pesel = form.value.pesel;
     if (pesel && pesel.length === 11) {
@@ -39,7 +35,7 @@ export class RegistationFormComponent {
           month -= 80;
         }
         const fullYear = century * 100 + year;
-        const birthdate = new Date(fullYear, month - 1, day);
+        const birthdate = new Date(fullYear, month - 1, day + 1);
         const age = Math.floor((Date.now() - birthdate.getTime()) / (1000 * 60 * 60 * 24 * 365));
 
         if(age < 18){
@@ -54,5 +50,19 @@ export class RegistationFormComponent {
         form.controls['pesel'].setErrors({ 'invalid': true });
       }
     }
+  }
+
+  validatePasswords(form: NgForm) {
+    const password = form.controls['password'].value;
+    const confirmPassword = form.controls['confirmPassword'].value;
+    if (password !== confirmPassword) {
+      form.controls['confirmPassword'].setErrors({ notMatch: true });
+    } else {
+      form.controls['confirmPassword'].setErrors(null);
+    }
+  }
+
+  onSubmit(form: NgForm){
+    console.log(form.value);
   }
 }
