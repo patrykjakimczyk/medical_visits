@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ApiService } from '../service/api.service';
 
@@ -8,12 +8,18 @@ import { ApiService } from '../service/api.service';
   styleUrls: ['./registation-form.component.css']
 })
 export class RegistationFormComponent {
-  constructor(private apiService: ApiService) {}
+  dateOfBirth: Date;
+  selectedSex: string;
 
-  onSubmit(form: NgForm){
-    console.log(form.value);
-    this.apiService.registerPatient(form).subscribe(response => console.log(response));
+  constructor(private apiService: ApiService) {
+    this.dateOfBirth = new Date();
+    this.selectedSex = '';
   }
+
+  gender = [
+    {id: '1', value: 'Male'},
+    {id: '2', value: 'Female'}
+  ];
 
   calculateBirthdate(form: NgForm) {
     const patientControls = form.form.controls['patient'] as FormGroup;
@@ -45,26 +51,33 @@ export class RegistationFormComponent {
           month -= 80;
         }
         const fullYear = century * 100 + year;
-        const birthdate = new Date(fullYear, month - 1, day + 1);
-        const age = Math.floor((Date.now() - birthdate.getTime()) / (1000 * 60 * 60 * 24 * 365));
+        this.dateOfBirth = new Date(fullYear, month - 1, day + 1);
+        const age = Math.floor((Date.now() - this.dateOfBirth.getTime()) / (1000 * 60 * 60 * 24 * 365));
 
         if(age < 18){
-          alert("Nie jesteś pełnoletni nie możesz się zarejestrować w MedicalVisits")
-          form.controls['pesel'].setErrors({ 'invalid': true });
+          patientControls.controls['pesel'].setErrors({ 'underage': true });
           return;
         }
 
-        patientControls.controls['birthDate'].setValue(birthdate.toISOString().substring(0, 10));
+        patientControls.controls['birthDate'].setValue(this.dateOfBirth.toISOString().substring(0, 10));
         patientControls.controls['age'].setValue(age);
+
+        const gender = Number(pesel.charAt(9));
+        if (gender % 2 === 0) {
+          patientControls.controls['gender'].setValue('Female');
+          this.selectedSex = 'Female';
+        } else {
+          patientControls.controls['gender'].setValue('Male');
+          this.selectedSex = 'Male';
+        }
       } else {
-        form.controls['pesel'].setErrors({ 'invalid': true });
+        patientControls.controls['pesel'].setErrors({ 'invalid': true });
       }
     }
   }
 
   validatePasswords(form: NgForm) {
     const patientControls = form.form.controls['loginData'] as FormGroup;
-
     const password = patientControls.controls['password'].value;
     const confirmPassword = patientControls.controls['confirmPassword'].value;
     if (password !== confirmPassword) {
@@ -73,4 +86,39 @@ export class RegistationFormComponent {
       patientControls.controls['confirmPassword'].setErrors(null);
     }
   }
+
+  onSubmit(form: NgForm){
+      console.log(form.value);
+      this.apiService.registerPatient(form).subscribe(response => console.log(response));
+  }
+
+  // onSubmit(form: NgForm){
+  //   const patient = {
+  //     firstName: form.value.firstName,
+  //     lastName: form.value.lastName,
+  //     pesel: form.value.pesel,
+  //     birthDate: this.dateOfBirth,
+  //     sex: this.selectedSex,
+  //     phoneNr: form.value.phoneNumber
+  //   };
+  //   const loginData = {
+  //     email: form.value.email,
+  //     password: form.value.password
+  //   };
+  //   const addressData = {
+  //     country: form.value.country,
+  //     city: form.value.city,
+  //     street: form.value.street,
+  //     houseNr: form.value.houseNumber,
+  //     apartmentNr: form.value.aparmentNumber,
+  //     postalCode: form.value.zipCode
+  //   };
+  //   const data ={
+  //     patient,
+  //     loginData,
+  //     addressData
+  //   };
+
+  //   console.log(data);
+  // }
 }

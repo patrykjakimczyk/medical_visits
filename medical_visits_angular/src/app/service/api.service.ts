@@ -9,10 +9,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // registerPatient() {
-  //   console.log(this.url);
-  // }
-
   registerPatient(form: NgForm): Observable<any> {
     return this.http.post(this.url + "registerPatient", form.value);
   }

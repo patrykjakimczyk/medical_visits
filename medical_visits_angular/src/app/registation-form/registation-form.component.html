@@ -26,6 +26,7 @@
             <div *ngIf="pesel.errors?.['required']">PESEL jest wymagany</div>
             <div *ngIf="pesel.errors?.['pattern']">PESEL musi składać się z 11 cyfr</div>
             <div *ngIf="pesel.errors?.['invalid']">Niepoprawny PESEL</div>
+            <div *ngIf="pesel.errors?.['underage']">Nie jesteś pełnoletni nie możesz się zarejestrować w MedicalVisits</div>
         </div>
     </div>
 
@@ -40,15 +41,11 @@
     </div>
 
     <div>
-        <label for="sex">Płeć:</label>
-        <select name="sex" id="sex" #sex="ngModel" ngModel required>
-            <option value="male">Mężczyzna</option>
-            <option value="female">Kobieta</option>
-            <option value="other">Inna</option>
-        </select>
-        <div *ngIf="sex.invalid && (sex.dirty || sex.touched)" class="error-message">
-            <div *ngIf="sex.errors?.['required']">Płeć jest wymagana</div>
-        </div>
+        <!-- Płeć -->
+        <span *ngFor="let gen of gender">
+            <input type="radio" name="gender" id="{{gen.id}}" value="{{gen.value}}" #gender="ngModel" ngModel>
+            <label for="{{gen.id}}">{{gen.value}}</label>
+        </span>
     </div>
 
     <div>
@@ -108,7 +105,6 @@
     <div>
         <!-- Numer mieszkania -->
         <input name="apartmentNr" id="apartmentNr" #apartmentNr="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="Apartment number">
-
         <div *ngIf="apartmentNr.invalid && (apartmentNr.dirty || apartmentNr.touched)" class="error-message">
             <div *ngIf="apartmentNr.errors?.['required']">Numer mieszkania jest wymagany</div>
             <div *ngIf="apartmentNr.errors?.['pattern']">Numer mieszkania musi składać się z maksymalne 3 cyfr, dodatkowo może zawierać maksymalnie 3 litery na końcu</div>
@@ -160,6 +156,6 @@
         </div>
     </div>
   </div>
-
-    <button type="submit" [disabled]="!form.valid">Zarejestruj się</button>
+    <button type="submit" [disabled]="!form.valid">SIGN UP</button>
+    <div *ngIf="form.invalid && form.touched" class="error-message">Wypełnij cały formularz!</div>
 </form>
