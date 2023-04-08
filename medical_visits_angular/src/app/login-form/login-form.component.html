@@ -1,0 +1,43 @@
+<div id="Menu">
+    <div><img src="./assets/MV_icon.png" id="MV_menuLogo"></div>
+    <div><img src="./assets/home_page.png" class="menu_icons" id="home_page"></div>
+    <div><img src="./assets/contact.png" class="menu_icons" id="contact"></div>
+    <div><img src="./assets/documents.png" class="menu_icons" id="documents"></div>
+</div>
+
+<div id="MV_head"><img src="./assets/MV_icon.png" id="MV_png"> MedicalVisits</div>
+<div id="head">WELCOME BACK</div>
+
+<form #form="ngForm">
+    <div class="inputs">
+        <!-- E-mail -->
+        <input type="email" name="email" id="email" #email="ngModel" ngModel required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail address" class="large_input">
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+            <span *ngIf="email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.errors?.['pattern']">Invalid email address</span>
+            <span *ngIf="email.errors?.['invalid']">Invalid email address</span>
+        </div>
+    </div>
+    
+    <div class="inputs">
+        <!-- Hasło -->
+        <input type="password" name="password" id="password" #passwordInput="ngModel" ngModel required
+            pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).*$" minlength="8" placeholder="Password" class="large_input">
+        <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
+            <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
+            <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one digit,
+                one special character</span>
+            <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long</span>
+        </div>
+    </div>
+
+    <div class="inputs">
+        <input type="checkbox" name="remember" id="remember">
+        <label>Remember</label>
+    </div>
+
+    <button type="submit" [disabled]="!form.valid" class="inputs">LOG IN</button>
+    <div id="MV_head">Forgot your password?</div>
+    <div id="MV_head">Don’t have an account? Sign Up</div>
+</form>

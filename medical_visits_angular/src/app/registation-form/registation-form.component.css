@@ -1,67 +1,161 @@
-#head{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 50px;
+*{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+form{
+    text-align: center;
+    margin: auto;
+    width: 700px;
+    height: 850px;
 }
 
-label {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    font-weight: bold;
-}
-
-input {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid gray;
-}
-
-button {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
+input{
+    float: left;
+    width: 250px;
+    height: 30px;
+    text-align: center;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
     border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    margin-top: 20px;
+    font-size: 20px;
 }
 
-button:hover {
-    background-color: #0069d9;
+input:hover{
+    border: 2px solid #28587A;
 }
 
-input.ng-invalid.ng-touched{
+input:focus {
+    outline: none;
+    border: 2px solid #28587A;
+}
+
+button{
+    font-size: 30px;
+    background-color: 28587A;
+}
+
+input.ng-invalid.ng-touched {
     border: 2px solid red;
 }
 
 .error-message {
-    margin-top: 5px;
     color: red;
-    font-size: 12px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-label,input {
-    display: inline-block;
-    margin-bottom: 10px;
+.inputs{
+    width: 100%;
+    height: 55px;
+    margin: 5px 5px 0px 5px;
 }
 
-label[for="pesel"],
-input#pesel {
-    display: block;
+.large_input{
+    width: 683px;
+    margin: 5px 5px 0px 5px;
 }
 
-::-webkit-input-placeholder {
+.small_input{
+    width: 320px;
     text-align: center;
+    margin: 5px 5px 0px 5px;
+}
+
+.addresses_inputs{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#Menu{
+    position: fixed;
+    top: 50px;
+    left: 10px;
+    width: 60px;
+    height: 400px;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    text-align: center;
+    align-items: center;
+}
+
+#MV_head{
+    color: #3B7EBE;
+    font-size: 20px;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+#MV_png{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+#head{
+    font-size: 50px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    color: #28587A;
+    font-weight: bold;
+}
+
+#names_input{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#birthDate{
+    width: 685px;
+}
+
+#genders{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gender_input{
+    display: flex;
+    align-items: center;
+    margin: 0 50px;
+}
+
+label{
+    margin-top: 2px;
+}
+
+input[type="radio"]{
+    width: 20px;
+}
+
+.menu_icons{
+    margin-bottom: 20px;
+}
+
+#MV_menuLogo{
+    width: 30px;
+    margin-top: 5px;
+    margin-bottom: 60px;
+    margin-left: 2px;
+}
+
+#home_page{
+    width: 50px;
+    margin-left: 2px;
+}
+
+#contact{
+    width: 50px;
+    margin-left: 2px;
+}
+
+#documents{
+    width: 35px;
+    margin-left: 2px;
 }

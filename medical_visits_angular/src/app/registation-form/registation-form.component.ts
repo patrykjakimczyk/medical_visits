@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ApiService } from '../service/api.service';
 
@@ -6,6 +6,7 @@ import { ApiService } from '../service/api.service';
   selector: 'app-registation-form',
   templateUrl: './registation-form.component.html',
   styleUrls: ['./registation-form.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RegistationFormComponent {
   dateOfBirth: Date;
@@ -60,7 +61,6 @@ export class RegistationFormComponent {
         }
 
         patientControls.controls['birthDate'].setValue(this.dateOfBirth.toISOString().substring(0, 10));
-        patientControls.controls['age'].setValue(age);
 
         const gender = Number(pesel.charAt(9));
         if (gender % 2 === 0) {
