@@ -12,13 +12,12 @@ import pl.medical.visits.dto.DoctorDTO;
 import pl.medical.visits.dto.PatientDTO;
 import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.ValidationException;
+import pl.medical.visits.exception.WrongRequestParametersException;
 import pl.medical.visits.model.entity.user.Doctor;
 import pl.medical.visits.model.entity.user.Patient;
 import pl.medical.visits.model.entity.user.UserAddressData;
 import pl.medical.visits.model.entity.user.UserLoginData;
-import pl.medical.visits.model.enums.Role;
 import pl.medical.visits.model.response.AuthenticationResponse;
-import pl.medical.visits.model.user.*;
 import pl.medical.visits.model.wrapper.DoctorRequestWrapper;
 import pl.medical.visits.model.wrapper.PatientRequestWrapper;
 import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
@@ -26,11 +25,10 @@ import pl.medical.visits.repository.UserAddressRepository;
 import pl.medical.visits.repository.UserLoginRepository;
 import pl.medical.visits.repository.UserRepository;
 import pl.medical.visits.repository.VisitRepository;
-import pl.medical.visits.util.ValidationUtil;
+import pl.medical.visits.util.StringUtil;
+import pl.medical.visits.util.ValidationService;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -43,26 +41,27 @@ public class WebService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
+    private final ValidationService validationService;
 
     public PatientDTO registerPatient(PatientRequestWrapper requestWrapper)
             throws ValidationException, NotUniqueValueException {
         Patient givenPatient = requestWrapper.getPatient();
+        validationService.validateUser(givenPatient);
 
         givenPatient.setFirstName(
-                ValidationUtil.firstCapital(givenPatient.getFirstName())
+                StringUtil.firstCapital(givenPatient.getFirstName())
         );
         givenPatient.setLastName(
-                ValidationUtil.firstCapital(givenPatient.getLastName())
+                StringUtil.firstCapital(givenPatient.getLastName())
         );
 
-        if(!ValidationUtil.isPeselValid(givenPatient))
-            throw new ValidationException("Error has occurred during validation");
-
         UserLoginData loginData = requestWrapper.getLoginData();
+        validationService.validateUserEmail(loginData);
         loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
         loginData.setUser(givenPatient);
 
         UserAddressData addressData = requestWrapper.getAddressData();
+        validationService.validateUserAddress(addressData);
         addressData.setUser(givenPatient);
 
         try {
@@ -80,11 +79,10 @@ public class WebService {
     public DoctorDTO registerDoctor(DoctorRequestWrapper requestWrapper)
             throws NotUniqueValueException, ValidationException {
         Doctor givenDoctor = requestWrapper.getDoctor();
-
-        if(!ValidationUtil.isPeselValid(givenDoctor))
-            throw new ValidationException("Error has occurred during validation");
+        validationService.validateUser(givenDoctor);
 
         UserLoginData loginData = requestWrapper.getLoginData();
+        validationService.validateUserEmail(loginData);
         loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
         loginData.setUser(givenDoctor);
 
@@ -99,22 +97,53 @@ public class WebService {
     }
 
     public Page<PatientDTO> getPatients(Map<String, String> reqParams) {
-        int offset = Integer.parseInt(reqParams.get("offset"));
-        int pageSize = Integer.parseInt(reqParams.get("pageSize"));
+        int offset;
+        int pageSize;
 
-        Page<Patient> page = userRepository.findAllPatientsPaging(PageRequest.of(offset, pageSize));
-        return page.map(PatientDTO::new);
+        try {
+            offset = Integer.parseInt(reqParams.get("offset"));
+            pageSize = Integer.parseInt(reqParams.get("pageSize"));
+        } catch (NumberFormatException e) {
+            throw new WrongRequestParametersException("Wrong request parameters");
+        }
+
+        return userRepository
+                .findAllPatientsPaging(PageRequest.of(offset, pageSize))
+                .map(PatientDTO::new);
     }
 
-    public List<DoctorDTO> getAllDoctors() {
-        return userRepository.findAllDoctors()
-                .stream()
-                .map(DoctorDTO::new)
-                .collect(Collectors.toList());
+    public Page<DoctorDTO> getDoctors(Map<String, String> reqParams) {
+        int offset;
+        int pageSize;
+
+        try {
+            offset = Integer.parseInt(reqParams.get("offset"));
+            pageSize = Integer.parseInt(reqParams.get("pageSize"));
+        } catch (NumberFormatException e) {
+            throw new WrongRequestParametersException("Wrong request parameters");
+        }
+
+        return userRepository
+                .findAllDoctorsPaging(PageRequest.of(offset, pageSize))
+                .map(DoctorDTO::new);
     }
 
-    public List<PatientDTO> getAllPatientsForDoctorId(long id) {
-        return userRepository.findPatientsForDoctor(Role.PATIENT.name(), id);
+    public Page<PatientDTO> getAllPatientsForDoctorId(Map<String, String> reqParams) {
+        int offset;
+        int pageSize;
+        long id;
+
+        try {
+            offset = Integer.parseInt(reqParams.get("offset"));
+            pageSize = Integer.parseInt(reqParams.get("pageSize"));
+            id = Long.getLong(reqParams.get("id"));
+        } catch (NumberFormatException e) {
+            throw new WrongRequestParametersException("Wrong request parameters");
+        }
+
+        return userRepository
+                .findPatientsForDoctor(id, PageRequest.of(offset, pageSize))
+                .map(PatientDTO::new);
     }
 
     public AuthenticationResponse loginPatient(UserLoginRequestWrapper userLogin) {
@@ -126,6 +155,7 @@ public class WebService {
         );
         UserLoginData userLoginData = userLoginRepository.findByEmail(userLogin.getEmail());
         String token = jwtService.generateToken(userLoginData);
+
         return new AuthenticationResponse(token);
     }
 }

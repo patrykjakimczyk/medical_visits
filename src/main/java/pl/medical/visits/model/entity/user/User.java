@@ -3,7 +3,6 @@ package pl.medical.visits.model.entity.user;
 import pl.medical.visits.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import pl.medical.visits.model.enums.Sex;
 
 import javax.persistence.*;
 

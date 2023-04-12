@@ -37,10 +37,10 @@ public class UserAddressData {
     @Column(length = 50, nullable = false)
     private String street;
 
-    @Column(name = "house_nr", length = 3, nullable = false)
+    @Column(name = "house_nr", length = 4, nullable = false)
     private String houseNr;
 
-    @Column(name = "apartment_nr", length = 3, nullable = false)
+    @Column(name = "apartment_nr", length = 4)
     private String apartmentNr;
 
     @Column(name = "postal_code", length = 6, nullable = false)

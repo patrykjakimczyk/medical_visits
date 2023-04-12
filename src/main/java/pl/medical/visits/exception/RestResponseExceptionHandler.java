@@ -22,4 +22,12 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<ExceptionMessage> sqlException(NotUniqueValueException exception, WebRequest webRequest) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(exception.getMessage()));
     }
+
+    @ExceptionHandler(WrongRequestParametersException.class)
+    public ResponseEntity<ExceptionMessage> wrongParametersException(
+            WrongRequestParametersException exception,
+            WebRequest webRequest
+    ) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(exception.getMessage()));
+    }
 }

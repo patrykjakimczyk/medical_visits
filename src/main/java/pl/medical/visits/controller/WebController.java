@@ -15,7 +15,6 @@ import pl.medical.visits.model.wrapper.PatientRequestWrapper;
 import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
 import pl.medical.visits.service.WebService;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -42,19 +41,17 @@ public class WebController {
 
     @GetMapping("patients")
     public ResponseEntity<Page<PatientDTO>> getPatientsWithPaging(@RequestParam Map<String, String> reqParams) {
-//        List<PatientDTO> patients = webService.getPatients(reqParams);
         return ResponseEntity.status(HttpStatus.OK).body(webService.getPatients(reqParams));
     }
 
     @GetMapping("doctors")
-    public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
-        List<DoctorDTO> doctors = webService.getAllDoctors();
-        return ResponseEntity.status(HttpStatus.OK).body(doctors);
+    public ResponseEntity<Page<DoctorDTO>> getDoctorsWithPaging(@RequestParam Map<String, String> reqParams) {
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctors(reqParams));
     }
 
     @GetMapping("doctorsPatients")
-    public ResponseEntity<List<PatientDTO>> getAllPatientsForDoctorId(@RequestParam long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctorId(id));
+    public ResponseEntity<Page<PatientDTO>> getAllPatientsForDoctorId(@RequestParam Map<String, String> reqParams) {
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctorId(reqParams));
     }
 
     @GetMapping("patient/login")
