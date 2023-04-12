@@ -1,4 +1,4 @@
-package pl.medical.visits.model.user;
+package pl.medical.visits.model.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;

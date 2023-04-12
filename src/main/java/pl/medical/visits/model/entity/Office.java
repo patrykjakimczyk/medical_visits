@@ -1,9 +1,9 @@
-package pl.medical.visits.model;
+package pl.medical.visits.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.medical.visits.model.user.Doctor;
+import pl.medical.visits.model.entity.user.Doctor;
 
 import javax.persistence.*;
 

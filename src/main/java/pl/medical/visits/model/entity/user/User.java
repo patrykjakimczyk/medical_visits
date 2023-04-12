@@ -1,8 +1,9 @@
-package pl.medical.visits.model.user;
+package pl.medical.visits.model.entity.user;
 
 import pl.medical.visits.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import pl.medical.visits.model.enums.Sex;
 
 import javax.persistence.*;
 
@@ -39,7 +40,7 @@ public abstract class User {
     @Column(name = "birth_date", length = 10, nullable = false)
     private String birthDate;
 
-    @Column(name = "sex", length = 9, nullable = false)
+    @Column(name = "sex", length = 6, nullable = false)
     private String sex;
 
     @Column(name = "phone_nr", length = 11, unique = true, nullable = false)

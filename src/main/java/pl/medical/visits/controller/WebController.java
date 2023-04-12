@@ -9,7 +9,10 @@ import pl.medical.visits.dto.DoctorDTO;
 import pl.medical.visits.dto.PatientDTO;
 import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.ValidationException;
-import pl.medical.visits.model.user.*;
+import pl.medical.visits.model.response.AuthenticationResponse;
+import pl.medical.visits.model.wrapper.DoctorRequestWrapper;
+import pl.medical.visits.model.wrapper.PatientRequestWrapper;
+import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
 import pl.medical.visits.service.WebService;
 
 import java.util.List;
@@ -52,5 +55,10 @@ public class WebController {
     @GetMapping("doctorsPatients")
     public ResponseEntity<List<PatientDTO>> getAllPatientsForDoctorId(@RequestParam long id) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctorId(id));
+    }
+
+    @GetMapping("patient/login")
+    public ResponseEntity<AuthenticationResponse> loginPatient(@RequestBody UserLoginRequestWrapper userLogin) {
+        return ResponseEntity.status(HttpStatus.OK).body(webService.loginPatient(userLogin));
     }
 }

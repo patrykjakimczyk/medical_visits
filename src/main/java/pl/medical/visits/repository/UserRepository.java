@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.medical.visits.dto.PatientDTO;
-import pl.medical.visits.model.user.Doctor;
-import pl.medical.visits.model.user.Patient;
-import pl.medical.visits.model.user.User;
+import pl.medical.visits.model.entity.user.Doctor;
+import pl.medical.visits.model.entity.user.Patient;
+import pl.medical.visits.model.entity.user.User;
 
 import java.util.List;
 

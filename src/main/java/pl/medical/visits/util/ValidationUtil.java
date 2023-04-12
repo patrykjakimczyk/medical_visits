@@ -1,15 +1,28 @@
 package pl.medical.visits.util;
 
-import pl.medical.visits.model.user.User;
+import pl.medical.visits.model.entity.user.User;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Locale;
 
 public class ValidationUtil {
+    private static final String BIRTHDAY_REGEX = "^(\\d{4})(-)([0-1][1-9])(-)([0-3]\\d)$";
+    private static final String PHONE_NR_REGEX = "\\d{9,11}";
+    private static final String PESEL_REGEX = "\\d{11}";
+    private ValidationUtil() {}
     public static String firstCapital(String str) {
         return str.substring(0, 1).toUpperCase(Locale.ROOT)
                 + str.substring(1).toLowerCase();
+    }
+
+    public static boolean isStringNotNull(String string) {
+        if(string == null) return false;
+        return !string.isEmpty();
+    }
+
+    public static boolean isBirthDayInvalid(String birthday) {
+        return birthday.matches(BIRTHDAY_REGEX);
     }
 
     public static boolean isPeselValid(User user) {

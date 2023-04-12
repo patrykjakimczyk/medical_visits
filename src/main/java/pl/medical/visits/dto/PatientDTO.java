@@ -2,7 +2,7 @@ package pl.medical.visits.dto;
 
 import lombok.Getter;
 import lombok.ToString;
-import pl.medical.visits.model.user.Patient;
+import pl.medical.visits.model.entity.user.Patient;
 
 @Getter
 @ToString

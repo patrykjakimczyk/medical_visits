@@ -2,8 +2,8 @@ package pl.medical.visits.dto;
 
 import lombok.Getter;
 import lombok.ToString;
-import pl.medical.visits.model.user.Doctor;
-import pl.medical.visits.model.user.Speciality;
+import pl.medical.visits.model.entity.user.Doctor;
+import pl.medical.visits.model.entity.user.Speciality;
 
 import java.util.List;
 

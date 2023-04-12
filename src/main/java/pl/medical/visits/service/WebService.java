@@ -3,33 +3,46 @@ package pl.medical.visits.service;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.medical.visits.config.JwtService;
 import pl.medical.visits.dto.DoctorDTO;
 import pl.medical.visits.dto.PatientDTO;
 import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.ValidationException;
+import pl.medical.visits.model.entity.user.Doctor;
+import pl.medical.visits.model.entity.user.Patient;
+import pl.medical.visits.model.entity.user.UserAddressData;
+import pl.medical.visits.model.entity.user.UserLoginData;
 import pl.medical.visits.model.enums.Role;
+import pl.medical.visits.model.response.AuthenticationResponse;
 import pl.medical.visits.model.user.*;
+import pl.medical.visits.model.wrapper.DoctorRequestWrapper;
+import pl.medical.visits.model.wrapper.PatientRequestWrapper;
+import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
 import pl.medical.visits.repository.UserAddressRepository;
 import pl.medical.visits.repository.UserLoginRepository;
 import pl.medical.visits.repository.UserRepository;
 import pl.medical.visits.repository.VisitRepository;
 import pl.medical.visits.util.ValidationUtil;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class WebService {
 
-    private UserRepository userRepository;
-    private UserLoginRepository userLoginRepository;
-    private UserAddressRepository userAddressRepository;
-    private VisitRepository visitRepository;
+    private final UserRepository userRepository;
+    private final UserLoginRepository userLoginRepository;
+    private final UserAddressRepository userAddressRepository;
+    private final VisitRepository visitRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authManager;
+    private final JwtService jwtService;
 
     public PatientDTO registerPatient(PatientRequestWrapper requestWrapper)
             throws ValidationException, NotUniqueValueException {
@@ -46,6 +59,7 @@ public class WebService {
             throw new ValidationException("Error has occurred during validation");
 
         UserLoginData loginData = requestWrapper.getLoginData();
+        loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
         loginData.setUser(givenPatient);
 
         UserAddressData addressData = requestWrapper.getAddressData();
@@ -71,6 +85,7 @@ public class WebService {
             throw new ValidationException("Error has occurred during validation");
 
         UserLoginData loginData = requestWrapper.getLoginData();
+        loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
         loginData.setUser(givenDoctor);
 
         try {
@@ -100,5 +115,17 @@ public class WebService {
 
     public List<PatientDTO> getAllPatientsForDoctorId(long id) {
         return userRepository.findPatientsForDoctor(Role.PATIENT.name(), id);
+    }
+
+    public AuthenticationResponse loginPatient(UserLoginRequestWrapper userLogin) {
+        authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        userLogin.getEmail(),
+                        userLogin.getPassword()
+                )
+        );
+        UserLoginData userLoginData = userLoginRepository.findByEmail(userLogin.getEmail());
+        String token = jwtService.generateToken(userLoginData);
+        return new AuthenticationResponse(token);
     }
 }

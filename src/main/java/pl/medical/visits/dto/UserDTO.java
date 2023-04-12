@@ -3,7 +3,7 @@ package pl.medical.visits.dto;
 import lombok.Getter;
 import lombok.ToString;
 import pl.medical.visits.model.enums.Role;
-import pl.medical.visits.model.user.User;
+import pl.medical.visits.model.entity.user.User;
 
 @Getter
 @ToString
