@@ -8,8 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.medical.visits.config.JwtService;
-import pl.medical.visits.dto.DoctorDTO;
-import pl.medical.visits.dto.PatientDTO;
+import pl.medical.visits.model.dto.DoctorDTO;
+import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.ValidationException;
 import pl.medical.visits.exception.WrongRequestParametersException;
@@ -26,7 +26,6 @@ import pl.medical.visits.repository.UserLoginRepository;
 import pl.medical.visits.repository.UserRepository;
 import pl.medical.visits.repository.VisitRepository;
 import pl.medical.visits.util.StringUtil;
-import pl.medical.visits.util.ValidationService;
 
 import java.util.Map;
 

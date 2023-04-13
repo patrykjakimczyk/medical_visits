@@ -1,4 +1,4 @@
-package pl.medical.visits.dto;
+package pl.medical.visits.model.dto;
 
 import lombok.Getter;
 import lombok.ToString;

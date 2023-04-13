@@ -23,11 +23,7 @@ public class SecurityConfiguration {
         http.csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers(
-                        new AntPathRequestMatcher("/registerPatient"),
-                        new AntPathRequestMatcher("/registerDoctor"),
-                        new AntPathRequestMatcher("/patient/login")
-                )
+                .requestMatchers(new AntPathRequestMatcher("/noAuth/**"))
                 .permitAll()
                 .anyRequest()
                 .authenticated()
