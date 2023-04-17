@@ -36,8 +36,8 @@ public class WebController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedDoctor);
     }
 
-    @GetMapping("/patient/login")
-    public ResponseEntity<AuthenticationResponse> loginPatient(@RequestBody UserLoginRequestWrapper userLogin) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.loginPatient(userLogin));
+    @GetMapping("/login")
+    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody UserLoginRequestWrapper userLogin) {
+        return ResponseEntity.status(HttpStatus.OK).body(webService.loginUser(userLogin));
     }
 }

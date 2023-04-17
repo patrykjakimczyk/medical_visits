@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select * from user_t u where u.ROLE = 'PATIENT'", nativeQuery = true)
     Page<Patient> findAllPatientsPaging(PageRequest pageable);
 
-    @Query(value = "select * from user_t u where u.ROLE = 'PATIENT' and u.doctor_id = ?2", nativeQuery = true)
+    @Query(value = "select * from user_t u where u.ROLE = 'PATIENT' and u.doctor_id = ?1", nativeQuery = true)
     Page<Patient> findPatientsForDoctor(long id, PageRequest pageable);
 }

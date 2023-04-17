@@ -14,12 +14,12 @@ import java.time.Period;
 @Service
 @NoArgsConstructor
 public class ValidationService {
-    private static final String BIRTHDAY_REGEX = "^(\\d{4})(-)([0-1][1-9])(-)([0-3]\\d)$";
+    private static final String BIRTHDAY_REGEX = "^([0-3]\\d)(-)([0-1][1-9])(-)(\\d{4})$";
     private static final String PHONE_NR_REGEX = "^(\\d{9,11})$";
     private static final String PESEL_REGEX = "^(\\d{11})$";
     private static final String POSTAL_CODE_REGEX = "^(\\d{2})(-)(\\d{3})$";
     private static final String HOUSE_REGEX = "^(\\d{1,3})([a-zA-Z]?)$";
-    private static final String EMAIL_REGEX = "(@)([a-zA-Z]+)(.)([a-zA-Z]{2,})$";
+    private static final String EMAIL_REGEX = "^.{2,}(@)([a-zA-Z]+)(.)([a-zA-Z]{2,})$";
     private static final String MESSAGE_TEMPLATE_TOO_LONG = "ValidationException: %s is too long";
     private static final String MESSAGE_TEMPLATE_NULL = "ValidationException: %s is null";
     private static final String MESSAGE_TEMPLATE_REGEX = "ValidationException: %s doesn't match regex";
@@ -27,7 +27,7 @@ public class ValidationService {
     public void validateUser(User user) throws ValidationException {
         this.checkStringWithLength(user.getFirstName(), 20, "First name");
         this.checkStringWithLength(user.getLastName(), 30, "Last name");
-        this.checkStringWithRegex(user.getLastName(), PESEL_REGEX, "Pesel");
+        this.checkStringWithRegex(user.getPesel(), PESEL_REGEX, "Pesel");
         this.checkStringWithRegex(user.getBirthDate(), BIRTHDAY_REGEX, "Birthday");
         this.checkStringWithRegex(user.getPhoneNr(), PHONE_NR_REGEX, "Phone nr");
 
@@ -54,13 +54,7 @@ public class ValidationService {
     }
 
     public void validateUserEmail(UserLoginData userLogin) throws ValidationException {
-        if (StringUtil.isStringNotNull(userLogin.getEmail())) {
-            if (!userLogin.getEmail().matches(EMAIL_REGEX)) {
-                throw new ValidationException("ValidationException: E-mail doesn't match regex");
-            }
-        } else {
-            throw new ValidationException("ValidationException: E-mail code nr is null");
-        }
+        checkStringWithRegex(userLogin.getEmail(), EMAIL_REGEX, "E-mail");
     }
 
     private void checkStringWithLength(String string, int length, String value) throws ValidationException {
@@ -75,7 +69,7 @@ public class ValidationService {
 
     private void checkStringWithRegex(String string, String regex, String value) throws ValidationException {
         if (StringUtil.isStringNotNull(string)) {
-            if (string.matches(regex)) {
+            if (!string.matches(regex)) {
                 throw new ValidationException(String.format(MESSAGE_TEMPLATE_REGEX, value));
             }
         } else {
@@ -124,9 +118,9 @@ public class ValidationService {
         String peselDay = pesel.substring(4, 6);
         LocalDate currentDate = LocalDate.now();
         LocalDate birthDay = LocalDate.of(
-                Integer.parseInt(birthDate[0]),
+                Integer.parseInt(birthDate[2]),
                 Integer.parseInt(birthDate[1]),
-                Integer.parseInt(birthDate[2])
+                Integer.parseInt(birthDate[0])
         );
 
         if (Period.between(birthDay, currentDate).getYears() < 18) return false;
@@ -141,8 +135,8 @@ public class ValidationService {
             peselMonth -= 80;
         } else if(peselMonth > 12 && peselMonth < 21) return false;
 
-        if (!birthDate[2].equals(peselDay)) return false;
+        if (!birthDate[0].equals(peselDay)) return false;
         if (Integer.parseInt(birthDate[1]) != peselMonth) return false;
-        return birthDate[0].substring(2).equals(peselYear);
+        return birthDate[2].substring(2).equals(peselYear);
     }
 }

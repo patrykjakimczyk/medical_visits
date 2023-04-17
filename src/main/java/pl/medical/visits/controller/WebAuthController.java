@@ -14,23 +14,23 @@ import pl.medical.visits.service.WebService;
 
 import java.util.Map;
 
-@RestController("/")
+@RestController("/auth")
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
 public class WebAuthController {
     private WebService webService;
 
-    @GetMapping("patients")
+    @GetMapping("/auth/admin/patients")
     public ResponseEntity<Page<PatientDTO>> getPatientsWithPaging(@RequestParam Map<String, String> reqParams) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getPatients(reqParams));
     }
 
-    @GetMapping("doctors")
+    @GetMapping("/auth/admin/doctors")
     public ResponseEntity<Page<DoctorDTO>> getDoctorsWithPaging(@RequestParam Map<String, String> reqParams) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctors(reqParams));
     }
 
-    @GetMapping("doctorsPatients")
+    @GetMapping("/auth/doctor/doctorsPatients")
     public ResponseEntity<Page<PatientDTO>> getAllPatientsForDoctorId(@RequestParam Map<String, String> reqParams) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctorId(reqParams));
     }

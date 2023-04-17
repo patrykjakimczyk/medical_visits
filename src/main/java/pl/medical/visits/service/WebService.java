@@ -86,7 +86,7 @@ public class WebService {
         loginData.setUser(givenDoctor);
 
         try {
-            userRepository.save(givenDoctor);
+            userLoginRepository.save(loginData);
         } catch (RuntimeException e) {
             throw new NotUniqueValueException(
                     "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
@@ -103,7 +103,7 @@ public class WebService {
             offset = Integer.parseInt(reqParams.get("offset"));
             pageSize = Integer.parseInt(reqParams.get("pageSize"));
         } catch (NumberFormatException e) {
-            throw new WrongRequestParametersException("Wrong request parameters");
+            throw new WrongRequestParametersException("Invalid request parameters");
         }
 
         return userRepository
@@ -119,7 +119,7 @@ public class WebService {
             offset = Integer.parseInt(reqParams.get("offset"));
             pageSize = Integer.parseInt(reqParams.get("pageSize"));
         } catch (NumberFormatException e) {
-            throw new WrongRequestParametersException("Wrong request parameters");
+            throw new WrongRequestParametersException("Invalid request parameters");
         }
 
         return userRepository
@@ -135,9 +135,9 @@ public class WebService {
         try {
             offset = Integer.parseInt(reqParams.get("offset"));
             pageSize = Integer.parseInt(reqParams.get("pageSize"));
-            id = Long.getLong(reqParams.get("id"));
+            id = Long.parseLong(reqParams.get("id"));
         } catch (NumberFormatException e) {
-            throw new WrongRequestParametersException("Wrong request parameters");
+            throw new WrongRequestParametersException("Invalid request parameters");
         }
 
         return userRepository
@@ -145,7 +145,7 @@ public class WebService {
                 .map(PatientDTO::new);
     }
 
-    public AuthenticationResponse loginPatient(UserLoginRequestWrapper userLogin) {
+    public AuthenticationResponse loginUser(UserLoginRequestWrapper userLogin) {
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userLogin.getEmail(),
