@@ -1,12 +1,13 @@
-<div id="MV_head"><img src="./assets/MV_icon.png" id="MV_png">  MedicalVisits</div>
-<div id="head">CREATE AN ACCOUNT</div>
+<div id="MV_head"><img src="./assets/MV_icon.png" id="MV_png">MedicalVisits</div>
+<div id="head">CREATE ACCOUNT</div>
 
 
 <div id="Menu">
     <div><img src="./assets/MV_icon.png" id="MV_menuLogo"></div>
     <div><img src="./assets/home_page.png" class="menu_icons" id="home_page"></div>
     <div><img src="./assets/contact.png" class="menu_icons" id="contact"></div>
-    <div><img src="./assets/documents.png" class="menu_icons" id="documents"></div>
+    <div><img src="./assets/doctor.png" class="menu_icons" id="doctor"></div>
+    <div><img src="./assets/calendar.png" class="menu_icons" id="calendar"></div>
 </div>
 
 
@@ -18,8 +19,8 @@
                 <!-- Imię -->
                 <input name="firstName" id="firstName" #firstName="ngModel" ngModel required pattern="[a-zA-Z]+" placeholder="First Name" class="small_input">
                 <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
-                    <span *ngIf="firstName.errors?.['required']">Name is required</span>
-                    <span *ngIf="firstName.errors?.['pattern']">Name must consist of letters only</span>
+                    <span *ngIf="firstName.errors?.['required']">Name is required.&nbsp;</span>
+                    <span *ngIf="firstName.errors?.['pattern']">Name must consist of letters only.&nbsp;</span>
                 </div>
             </div>
 
@@ -27,8 +28,8 @@
                 <!-- Nazwisko -->
                 <input name="lastName" id="lastName" #lastName="ngModel" ngModel required pattern="[a-zA-Z]+" placeholder="Surname" class="small_input">
                 <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
-                    <span *ngIf="lastName.errors?.['required']">Surname is required</span>
-                    <span *ngIf="lastName.errors?.['pattern']">Surname must consist of letters only</span>
+                    <span *ngIf="lastName.errors?.['required']">Surname is required.&nbsp;</span>
+                    <span *ngIf="lastName.errors?.['pattern']">Surname must consist of letters only.&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -37,10 +38,10 @@
             <!-- PESEL -->
             <input name="pesel" id="pesel" #pesel="ngModel" ngModel pattern="[0-9]{11}" required (ngModelChange)="calculateBirthdate(form)" placeholder="PESEL" class="large_input">
             <div *ngIf="pesel.invalid && (pesel.dirty || pesel.touched)" class="error-message">
-                <span *ngIf="pesel.errors?.['required']">PESEL is required</span>
-                <span *ngIf="pesel.errors?.['pattern']">PESEL must consist of 11 digits</span>
-                <span *ngIf="pesel.errors?.['invalid']">Invalid PESEL</span>
-                <span *ngIf="pesel.errors?.['underage']">You are not of legal age and cannot register for MedicalVisits</span>
+                <span *ngIf="pesel.errors?.['required']">PESEL is required.&nbsp;</span>
+                <span *ngIf="pesel.errors?.['pattern']">PESEL must consist of 11 digits.&nbsp;</span>
+                <span *ngIf="pesel.errors?.['invalid']">Invalid PESEL.&nbsp;</span>
+                <span *ngIf="pesel.errors?.['underage']">You are not of legal age and cannot register for MedicalVisits.&nbsp;</span>
             </div>
         </div>
 
@@ -78,9 +79,9 @@
             <!-- Kraj -->
             <input name="country" id="country" #country="ngModel" ngModel required pattern="[a-zA-Z]+" placeholder="Country" class="large_input">
             <div *ngIf="country.invalid && (country.dirty || country.touched)" class="error-message">
-                <span *ngIf="country.errors?.['required']">Country is required</span>
-                <span *ngIf="country.errors?.['pattern']">Country name must consist of letters only</span>
-                <span *ngIf="country.errors?.['invalid']">Incorrect country name</span>
+                <span *ngIf="country.errors?.['required']">Country is required.&nbsp;</span>
+                <span *ngIf="country.errors?.['pattern']">Country name must consist of letters only.&nbsp;</span>
+                <span *ngIf="country.errors?.['invalid']">Incorrect country name.&nbsp;</span>
             </div>
         </div>
 
@@ -88,8 +89,8 @@
             <!-- Ulica -->
             <input name="street" id="street" #street="ngModel" ngModel required placeholder="Street" class="large_input">
             <div *ngIf="street.invalid && (street.dirty || street.touched)" class="error-message">
-                <span *ngIf="street.errors?.['required']">Street name is required</span>
-                <span *ngIf="street.errors?.['invalid']">Incorrect street name</span>
+                <span *ngIf="street.errors?.['required']">Street name is required.&nbsp;</span>
+                <span *ngIf="street.errors?.['invalid']">Incorrect street name.&nbsp;</span>
             </div>
         </div>
 
@@ -98,9 +99,9 @@
                 <!-- Miasto -->
                 <input name="city" id="city" #city="ngModel" ngModel required pattern="[a-zA-Z]+" placeholder="City" class="small_input">
                 <div *ngIf="city.invalid && (city.dirty || city.touched)" class="error-message">
-                    <span *ngIf="city.errors?.['required']">City is required</span>
-                    <span *ngIf="city.errors?.['pattern']">City name must consist of letters only</span>
-                    <span *ngIf="city.errors?.['invalid']">Incorrect city name</span>
+                    <span *ngIf="city.errors?.['required']">City is required.&nbsp;</span>
+                    <span *ngIf="city.errors?.['pattern']">City name must consist of letters only.&nbsp;</span>
+                    <span *ngIf="city.errors?.['invalid']">Incorrect city name.&nbsp;</span>
                 </div>
             </div>
 
@@ -108,9 +109,9 @@
                 <!-- Numer domu -->
                 <input name="houseNr" id="houseNr" #houseNr="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="House number" class="small_input">
                 <div *ngIf="houseNr.invalid && (houseNr.dirty || houseNr.touched)" class="error-message">
-                    <span *ngIf="houseNr.errors?.['required']">House number is required</span>
-                    <span *ngIf="houseNr.errors?.['pattern']">House number must consist of maximum 3 digits, additionally may contain maximum 3 letters at the end</span>
-                    <span *ngIf="houseNr.errors?.['invalid']">Invalid house number</span>
+                    <span *ngIf="houseNr.errors?.['required']">House number is required.&nbsp;</span>
+                    <span *ngIf="houseNr.errors?.['pattern']">House number must consist of maximum 3 digits, additionally may contain maximum 3 letters at the end.&nbsp;</span>
+                    <span *ngIf="houseNr.errors?.['invalid']">Invalid house number.&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -120,9 +121,9 @@
                 <!-- Numer mieszkania -->
                 <input name="apartmentNr" id="apartmentNr" #apartmentNr="ngModel" ngModel required pattern="^\d+[A-Za-z]?$" placeholder="Apartment number" class="small_input">
                 <div *ngIf="apartmentNr.invalid && (apartmentNr.dirty || apartmentNr.touched)" class="error-message">
-                    <span *ngIf="apartmentNr.errors?.['required']">Apartment number is required</span>
-                    <span *ngIf="apartmentNr.errors?.['pattern']">Apartment number must consist of maximum 3 digits, additionally may contain maximum 3 letters at the end</span>
-                    <span *ngIf="apartmentNr.errors?.['invalid']">Invalid apartment number</span>
+                    <span *ngIf="apartmentNr.errors?.['required']">Apartment number is required.&nbsp;</span>
+                    <span *ngIf="apartmentNr.errors?.['pattern']">Apartment number must consist of maximum 3 digits, additionally may contain maximum 3 letters at the end.&nbsp;</span>
+                    <span *ngIf="apartmentNr.errors?.['invalid']">Invalid apartment number.&nbsp;</span>
                 </div>
             </div>
 
@@ -130,9 +131,9 @@
                 <!-- Kod pocztowy -->
                 <input name="postalCode" id="postalCode" #postalCode="ngModel" ngModel required pattern="[0-9]{2}-[0-9]{3}" placeholder="Postal code" class="small_input">
                 <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="error-message">
-                    <span *ngIf="postalCode.errors?.['required']">Postal code is required</span>
-                    <span *ngIf="postalCode.errors?.['pattern']">Postal code must follow the pattern e.g. 00-000</span>
-                    <span *ngIf="postalCode.errors?.['invalid']">Invalid postal code</span>
+                    <span *ngIf="postalCode.errors?.['required']">Postal code is required.&nbsp;</span>
+                    <span *ngIf="postalCode.errors?.['pattern']">Postal code must follow the pattern e.g. 00-000.&nbsp;</span>
+                    <span *ngIf="postalCode.errors?.['invalid']">Invalid postal code.&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -144,9 +145,9 @@
             <!-- E-mail -->
             <input type="email" name="email" id="email" #email="ngModel" ngModel required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail address" class="large_input">
             <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
-                <span *ngIf="email.errors?.['required']">Email is required</span>
-                <span *ngIf="email.errors?.['pattern']">Invalid email address</span>
-                <span *ngIf="email.errors?.['invalid']">Invalid email address</span>
+                <span *ngIf="email.errors?.['required']">Email is required.&nbsp;</span>
+                <span *ngIf="email.errors?.['pattern']">Invalid email address.&nbsp;</span>
+                <span *ngIf="email.errors?.['invalid']">Invalid email address.&nbsp;</span>
             </div>
         </div>
 
@@ -154,9 +155,9 @@
             <!-- Hasło -->
             <input type="password" name="password" id="password" #passwordInput="ngModel" ngModel required pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).*$" minlength="8" placeholder="Password" class="large_input">
             <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
-                <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
-                <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one digit, one special character</span>
-                <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long</span>
+                <span *ngIf="passwordInput.errors?.['required']">Password is required.&nbsp;</span>
+                <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one digit, one special character.&nbsp;</span>
+                <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.&nbsp;</span>
             </div>
         </div>
 
@@ -164,8 +165,8 @@
             <!-- Powtórz hasło -->
             <input type="password" name="confirmPassword" id="confirmPassword" #confirmPasswordInput="ngModel" ngModel (ngModelChange)="validatePasswords(form)" required placeholder="Confirm password" class="large_input">
             <div *ngIf="confirmPasswordInput.invalid && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="error-message">
-                <span *ngIf="confirmPasswordInput.errors?.['required']">Repeat password!</span>
-                <span *ngIf="confirmPasswordInput.errors?.['notMatch']">Passwords must match!</span>
+                <span *ngIf="confirmPasswordInput.errors?.['required']">Repeat password!&nbsp;</span>
+                <span *ngIf="confirmPasswordInput.errors?.['notMatch']">Passwords must match!&nbsp;</span>
             </div>
         </div>
     </div>

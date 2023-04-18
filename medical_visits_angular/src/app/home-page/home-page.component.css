@@ -1,0 +1,63 @@
+.top_buttons{
+    position: absolute;
+    top: 60px;
+    right: 20px;
+}
+
+.head_buttons{
+    float: left;
+    margin-right: 20px;
+}
+
+.button_style{
+    width: 200px;
+    height: 45px;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    color: #28587A;
+    font-size: 25px;
+    font-weight: bold;
+    border: none;
+}
+
+.main_button_style{
+    width: 450px;
+    height: 100px;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    color: #28587A;
+    font-size: 40px;
+    font-weight: bold;
+    border: none;
+}
+
+.main_page_photo{
+    position: absolute;
+    top: 150px;
+    left: 800px;
+
+    width: 600px;
+    height: 450px;
+    background-image: url("src/assets/main_page_image.png");
+    background-size: cover;
+    background-position: center;
+    float: left;
+}
+
+.main_button{
+    position: absolute;
+    top: 350px;
+    left: 200px;
+}
+
+#main_page_head {
+    position: absolute;
+    top: 200px;
+    left: 200px;
+
+    color: #28587A;
+    font-size: 80px;
+    font-weight: bold;
+}

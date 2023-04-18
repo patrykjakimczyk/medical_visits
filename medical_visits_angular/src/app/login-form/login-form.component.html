@@ -2,10 +2,11 @@
     <div><img src="./assets/MV_icon.png" id="MV_menuLogo"></div>
     <div><img src="./assets/home_page.png" class="menu_icons" id="home_page"></div>
     <div><img src="./assets/contact.png" class="menu_icons" id="contact"></div>
-    <div><img src="./assets/documents.png" class="menu_icons" id="documents"></div>
+    <div><img src="./assets/doctor.png" class="menu_icons" id="doctor"></div>
+    <div><img src="./assets/calendar.png" class="menu_icons" id="calendar"></div>
 </div>
 
-<div id="MV_head"><img src="./assets/MV_icon.png" id="MV_png"> MedicalVisits</div>
+<div id="MV_head"><img src="./assets/MV_icon.png" id="MV_png">MedicalVisits</div>
 <div id="head">WELCOME BACK</div>
 
 <form #form="ngForm">
@@ -14,9 +15,9 @@
         <input type="email" name="email" id="email" #email="ngModel" ngModel required
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail address" class="large_input">
         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
-            <span *ngIf="email.errors?.['required']">Email is required</span>
-            <span *ngIf="email.errors?.['pattern']">Invalid email address</span>
-            <span *ngIf="email.errors?.['invalid']">Invalid email address</span>
+            <span *ngIf="email.errors?.['required']">Email is required.&nbsp;</span>
+            <!-- <span *ngIf="email.errors?.['pattern']">Invalid email address.&nbsp;</span> -->
+            <span *ngIf="email.errors?.['invalid']">Invalid email address.&nbsp;</span>
         </div>
     </div>
     
@@ -25,17 +26,19 @@
         <input type="password" name="password" id="password" #passwordInput="ngModel" ngModel required
             pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).*$" minlength="8" placeholder="Password" class="large_input">
         <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
-            <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
-            <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one digit,
-                one special character</span>
-            <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long</span>
+            <span *ngIf="passwordInput.errors?.['required']">Password is required.&nbsp;</span>
+            <!-- <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one digit,
+                one special character.&nbsp;</span>
+            <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.&nbsp;</span> -->
+            <span *ngIf="passwordInput.errors?.['invalid']">Invalid password.&nbsp;</span>
         </div>
     </div>
 
-    <div class="inputs">
-        <input type="checkbox" name="remember" id="remember">
-        <label>Remember</label>
+    <div class="inputs checkbox-container">
+        <input type="checkbox" name="remember" id="remember-checkbox" class="checkbox">
+        <label for="remember-checkbox">Remember Me</label>
     </div>
+
 
     <button type="submit" [disabled]="!form.valid" class="inputs">LOG IN</button>
     <div id="MV_head">Forgot your password?</div>

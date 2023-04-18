@@ -12,13 +12,20 @@ import { ApiService } from './service/api.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { RouterModule, Routes } from '@angular/router';
+import { HomePageLoggedComponent } from './home-page-logged/home-page-logged.component';
+import { PatientsListComponent } from './patients-list/patients-list.component';
+import { DoctorsListComponent } from './doctors-list/doctors-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistationFormComponent,
     LoginFormComponent,
-    HomePageComponent
+    HomePageComponent,
+    HomePageLoggedComponent,
+    PatientsListComponent,
+    DoctorsListComponent
   ],
   imports: [
     BrowserModule,
@@ -33,4 +40,6 @@ import { HomePageComponent } from './home-page/home-page.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

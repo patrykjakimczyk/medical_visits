@@ -1,0 +1,25 @@
+input[type="checkbox"] {
+    width: 30px !important;
+    float: left;
+    width: 250px;
+    height: 30px;
+    border: none;
+    box-shadow: none;
+}
+
+.checkbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+label{
+    color: #28587A;
+    font-size: 20px;
+    font-weight: bold;
+}
