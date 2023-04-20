@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { RegistationFormComponent } from './registation-form/registation-form.component';
 import { ApiService } from './service/api.service';
@@ -16,6 +12,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePageLoggedComponent } from './home-page-logged/home-page-logged.component';
 import { PatientsListComponent } from './patients-list/patients-list.component';
 import { DoctorsListComponent } from './doctors-list/doctors-list.component';
+
+const appRoutes: Routes = [
+  {
+    path: 'registration-form',
+    component: RegistationFormComponent,
+  },
+  {
+    path: 'login-form',
+    component: LoginFormComponent
+  }
+]
 
 @NgModule({
   declarations: [
@@ -32,10 +39,10 @@ import { DoctorsListComponent } from './doctors-list/doctors-list.component';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatButtonModule
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true }
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]
