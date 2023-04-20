@@ -11,5 +11,5 @@ export class AppComponent {
 
   ngOnInit() {
   this.titleService.setTitle('MedicalVisits');
-}
+  }
 }
