@@ -30,4 +30,16 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(exception.getMessage()));
     }
+
+    @ExceptionHandler(UserDoesNotExistException.class)
+    public ResponseEntity<ExceptionMessage> userDoesNotExist(UserDoesNotExistException exception, WebRequest webRequest) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionMessage(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UserPerformedForbiddenActionException.class)
+    public ResponseEntity<ExceptionMessage> userPerformedForbiddenAction(
+            UserPerformedForbiddenActionException exception, WebRequest webRequest
+    ) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionMessage(exception.getMessage()));
+    }
 }

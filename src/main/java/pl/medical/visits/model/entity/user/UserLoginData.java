@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_login")
-public class UserLoginData implements UserDetails {
+public class    UserLoginData implements UserDetails {
     @Id
     @SequenceGenerator(
             name = "user_log_seq",
