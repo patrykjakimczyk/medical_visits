@@ -23,3 +23,10 @@ label{
     font-size: 20px;
     font-weight: bold;
 }
+
+#important-font {
+    color: #3B7EBE;
+    font-size: 20px;
+    margin-top: 30px;
+    font-weight: bold;
+}

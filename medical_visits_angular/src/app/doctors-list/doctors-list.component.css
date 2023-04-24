@@ -27,6 +27,10 @@
     border: none;
 }
 
+option{
+    text-align: center;
+}
+
 #search_input{
     width: 800px;
     text-align: left;
@@ -43,7 +47,9 @@
     color: #FFFFFF;
 }
 
-.table-list{
+/*Lista START
+
+ul{
     position: absolute;
     top: 280px;
     left: 100px;
@@ -51,21 +57,109 @@
     height: 300px;
     border-radius: 20px;
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
-}
-
-ul{
-    width: 97.1%;
-    height: 30px;
-    text-align: center;
-    border-bottom: 1px solid #CAC9C9;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 li{
-    display: inline-block;
-    list-style-type: none;
-    margin-left: 32px;
-    margin-right: 90px;
+    height: 12%;
+    display: flex;
+    justify-content: center;
+}
+
+#list-header {
+    justify-content: space-between;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+    border-bottom: 1px solid gray;
+}
+
+.list-header-element {
     color: #28587A;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
+}
+
+.list-div{
+    float: left;
+}
+
+li:last-child{
+}
+
+#list-footer{
+    border: 1px solid gray;
+}
+
+Lista STOP*/
+
+ul {
+    position: absolute;
+    top: 280px;
+    left: 100px;
+    width: 1380px;
+    height: 500px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    counter-reset: item;
+}
+
+li {
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    counter-increment: item;
+}
+
+#list-header {
+    justify-content: space-between;
+    padding-left: 5%;
+    padding-right: 5%;
+    border-bottom: 1px solid gray;
+}
+
+.list-header-element {
+    color: #28587A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.list-div {
+    float: left;
+}
+
+li:last-child {
+    margin-top: auto;
+}
+
+#list-footer {
+    border-top: 1px solid gray;
+}
+
+.footer-btn{
+    margin: 0 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #28587A;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.list-counter::before{
+    content: "1 of ";
+}
+
+.list-counter::after{
+    content: counter(item);
 }

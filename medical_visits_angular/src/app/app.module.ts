@@ -7,11 +7,12 @@ import { RegistationFormComponent } from './registation-form/registation-form.co
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { Routes } from '@angular/router';
 import { HomePageLoggedComponent } from './home-page-logged/home-page-logged.component';
 import { PatientsListComponent } from './patients-list/patients-list.component';
 import { DoctorsListComponent } from './doctors-list/doctors-list.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { MedicalVisitsHeadLogoComponent } from './medical-visits-head-logo/medical-visits-head-logo.component';
 
 
 @NgModule({
@@ -22,7 +23,9 @@ import { AppRoutingModule } from './app-routing.module';
     HomePageComponent,
     HomePageLoggedComponent,
     PatientsListComponent,
-    DoctorsListComponent
+    DoctorsListComponent,
+    NavMenuComponent,
+    MedicalVisitsHeadLogoComponent
   ],
   imports: [
     BrowserModule,
