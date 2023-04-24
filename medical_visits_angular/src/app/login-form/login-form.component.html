@@ -1,6 +1,6 @@
 <div id="head">WELCOME BACK</div>
 
-<form #form="ngForm">
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <div class="inputs">
         <!-- E-mail -->
         <input type="email" name="email" id="email" #email="ngModel" ngModel required
@@ -11,7 +11,7 @@
             <span *ngIf="email.errors?.['invalid']">Invalid email address.&nbsp;</span>
         </div>
     </div>
-    
+
     <div class="inputs">
         <!-- Hasło -->
         <input type="password" name="password" id="password" #passwordInput="ngModel" ngModel required
@@ -30,8 +30,17 @@
         <label for="remember-checkbox">Remember Me</label>
     </div>
 
+    <div *ngIf="showError">
+      <p class="error-message">{{errorMessage}}</p>
+    </div>
 
     <button type="submit" [disabled]="!form.valid" class="inputs">LOG IN</button>
+<<<<<<< Updated upstream
     <div id="important-font">Forgot your password?</div>
     <div id="important-font">Don’t have an account? Sign Up</div>
 </form>
+=======
+    <div id="MV_head">Forgot your password?</div>
+    <div id="MV_head">Don’t have an account? Sign Up</div>
+</form>
+>>>>>>> Stashed changes
