@@ -1,0 +1,22 @@
+.top_buttons {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+}
+
+.head_buttons {
+    float: left;
+    margin-right: 20px;
+}
+
+.button_style {
+    width: 200px;
+    height: 45px;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    color: #28587A;
+    font-size: 25px;
+    font-weight: bold;
+    border: none;
+}

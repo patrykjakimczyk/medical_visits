@@ -13,6 +13,8 @@ import { DoctorsListComponent } from './list/doctors-list/doctors-list.component
 import { AppRoutingModule } from './app-routing.module';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { MedicalVisitsHeadLogoComponent } from './medical-visits-head-logo/medical-visits-head-logo.component';
+import { TopButtonsUnloggedComponent } from './top-buttons/top-buttons-unlogged/top-buttons-unlogged.component';
+import { TopButtonsLoggedComponent } from './top-buttons/top-buttons-logged/top-buttons-logged.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { MedicalVisitsHeadLogoComponent } from './medical-visits-head-logo/medic
     PatientsListComponent,
     DoctorsListComponent,
     NavMenuComponent,
-    MedicalVisitsHeadLogoComponent
+    MedicalVisitsHeadLogoComponent,
+    TopButtonsUnloggedComponent,
+    TopButtonsLoggedComponent
   ],
   imports: [
     BrowserModule,

@@ -47,54 +47,6 @@ option{
     color: #FFFFFF;
 }
 
-/*Lista START
-
-ul{
-    position: absolute;
-    top: 280px;
-    left: 100px;
-    width: 1380px;
-    height: 300px;
-    border-radius: 20px;
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-li{
-    height: 12%;
-    display: flex;
-    justify-content: center;
-}
-
-#list-header {
-    justify-content: space-between;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 1%;
-    border-bottom: 1px solid gray;
-}
-
-.list-header-element {
-    color: #28587A;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.list-div{
-    float: left;
-}
-
-li:last-child{
-}
-
-#list-footer{
-    border: 1px solid gray;
-}
-
-Lista STOP*/
-
 ul {
     position: absolute;
     top: 280px;
@@ -122,8 +74,6 @@ li {
 
 #list-header {
     justify-content: space-between;
-    padding-left: 5%;
-    padding-right: 5%;
     border-bottom: 1px solid gray;
 }
 
@@ -135,6 +85,7 @@ li {
 
 .list-div {
     float: left;
+    width: 20%;
 }
 
 li:last-child {
@@ -162,4 +113,19 @@ li:last-child {
 
 .list-counter::after{
     content: counter(item);
+}
+
+.li-element{
+    justify-content: space-between;
+}
+
+.li-element-div{
+    width: 20%;
+    float: left;
+}
+
+a{
+    color: #28587A;
+    font-weight: bold;
+    text-decoration: underline;
 }
