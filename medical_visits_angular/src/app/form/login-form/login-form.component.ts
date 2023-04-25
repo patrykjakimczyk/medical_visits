@@ -1,10 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ApiService } from '../service/api.service';
-import { AuthenticationService } from '../service/authentication.service.service';
+import { ApiService } from '../../service/api.service';
+import { AuthenticationService } from '../../service/authentication.service.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { User } from '../model/user';
+import { User } from '../../model/user';
 
 @Component({
   selector: 'app-login-form',

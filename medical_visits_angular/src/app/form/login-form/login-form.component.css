@@ -24,17 +24,16 @@ label{
     font-weight: bold;
 }
 
-<<<<<<< Updated upstream
 #important-font {
     color: #3B7EBE;
     font-size: 20px;
     margin-top: 30px;
     font-weight: bold;
 }
-=======
+
 .error-message {
   color: red;
   font-size: 15px;
   font-weight: bold;
 }
->>>>>>> Stashed changes
+
