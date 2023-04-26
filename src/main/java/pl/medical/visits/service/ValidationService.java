@@ -14,7 +14,7 @@ import java.time.Period;
 @Service
 @NoArgsConstructor
 public class ValidationService {
-    private static final String BIRTHDAY_REGEX = "^([0-3]\\d)(-)([0-1][1-9])(-)(\\d{4})$";
+    private static final String BIRTHDAY_REGEX = "^(\\d{4})(-)([0-1][1-9])(-)([0-3]\\d)$";
     private static final String PHONE_NR_REGEX = "^(\\d{9,11})$";
     private static final String PESEL_REGEX = "^(\\d{11})$";
     private static final String POSTAL_CODE_REGEX = "^(\\d{2})(-)(\\d{3})$";
@@ -32,7 +32,7 @@ public class ValidationService {
         this.checkStringWithRegex(user.getPhoneNr(), PHONE_NR_REGEX, "Phone nr");
 
         if (!this.isBirthDayEqualPesel(user))
-            throw new ValidationException("ValidationException: Birthday doesn't match pesel");
+            throw new ValidationException("ValidationException: Birthday doesn't match pesel or user is under 18");
 
         if (!this.isPeselValid(user))
             throw new ValidationException("ValidationException: Pesel is invalid");
@@ -79,7 +79,7 @@ public class ValidationService {
 
     private boolean isPeselValid(User user) {
         String pesel = user.getPesel();
-        String sex = user.getSex();
+        String sex = user.getGender();
 
         if (pesel.length() != 11) return false;
 
@@ -118,9 +118,9 @@ public class ValidationService {
         String peselDay = pesel.substring(4, 6);
         LocalDate currentDate = LocalDate.now();
         LocalDate birthDay = LocalDate.of(
-                Integer.parseInt(birthDate[2]),
+                Integer.parseInt(birthDate[0]),
                 Integer.parseInt(birthDate[1]),
-                Integer.parseInt(birthDate[0])
+                Integer.parseInt(birthDate[2])
         );
 
         if (Period.between(birthDay, currentDate).getYears() < 18) return false;
@@ -135,8 +135,8 @@ public class ValidationService {
             peselMonth -= 80;
         } else if(peselMonth > 12 && peselMonth < 21) return false;
 
-        if (!birthDate[0].equals(peselDay)) return false;
+        if (!birthDate[2].equals(peselDay)) return false;
         if (Integer.parseInt(birthDate[1]) != peselMonth) return false;
-        return birthDate[2].substring(2).equals(peselYear);
+        return birthDate[0].substring(2).equals(peselYear);
     }
 }

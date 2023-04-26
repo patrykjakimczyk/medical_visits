@@ -40,7 +40,7 @@ public abstract class User {
     private String birthDate;
 
     @Column(name = "sex", length = 6, nullable = false)
-    private String sex;
+    private String gender;
 
     @Column(name = "phone_nr", length = 11, unique = true, nullable = false)
     private String phoneNr;

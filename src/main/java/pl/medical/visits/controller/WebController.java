@@ -23,20 +23,18 @@ public class WebController {
     private WebService webService;
 
     @PostMapping("/registerPatient")
-    public ResponseEntity<PatientDTO> registerPatient(@RequestBody PatientRequestWrapper requestWrapper)
+    public ResponseEntity<AuthenticationResponse> registerPatient(@RequestBody PatientRequestWrapper requestWrapper)
             throws ValidationException, NotUniqueValueException {
-        PatientDTO savedPatient = webService.registerPatient(requestWrapper);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPatient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(webService.registerPatient(requestWrapper));
     }
 
     @PostMapping("/registerDoctor")
-    public ResponseEntity<DoctorDTO> registerDoctor(@RequestBody DoctorRequestWrapper requestWrapper)
+    public ResponseEntity<AuthenticationResponse> registerDoctor(@RequestBody DoctorRequestWrapper requestWrapper)
             throws NotUniqueValueException, ValidationException {
-        DoctorDTO savedDoctor = webService.registerDoctor(requestWrapper);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedDoctor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(webService.registerDoctor(requestWrapper));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody UserLoginRequestWrapper userLogin) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.loginUser(userLogin));
     }

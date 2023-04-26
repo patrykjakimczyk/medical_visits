@@ -24,7 +24,7 @@ public class UserDTO {
         this.lastName = user.getLastName();
         this.pesel = user.getPesel();
         this.birthDate = user.getBirthDate();
-        this.sex = user.getSex();
+        this.sex = user.getGender();
         this.phoneNr = user.getPhoneNr();
     }
 }

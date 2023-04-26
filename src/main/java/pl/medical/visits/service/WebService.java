@@ -42,7 +42,7 @@ public class WebService {
     private final JwtService jwtService;
     private final ValidationService validationService;
 
-    public PatientDTO registerPatient(PatientRequestWrapper requestWrapper)
+    public AuthenticationResponse registerPatient(PatientRequestWrapper requestWrapper)
             throws ValidationException, NotUniqueValueException {
         Patient givenPatient = requestWrapper.getPatient();
         validationService.validateUser(givenPatient);
@@ -51,6 +51,7 @@ public class WebService {
         givenPatient.setLastName(StringUtil.firstCapital(givenPatient.getLastName()));
 
         UserLoginData loginData = requestWrapper.getLoginData();
+        String password = loginData.getPassword();
         validationService.validateUserEmail(loginData);
         loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
         loginData.setUser(givenPatient);
@@ -67,11 +68,11 @@ public class WebService {
                     "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
             );
         }
-
-        return new PatientDTO(givenPatient);
+        UserLoginRequestWrapper userLoginRequestWrapper = new UserLoginRequestWrapper(loginData.getEmail(), password);
+        return loginUser(userLoginRequestWrapper);
     }
 
-    public DoctorDTO registerDoctor(DoctorRequestWrapper requestWrapper)
+    public AuthenticationResponse registerDoctor(DoctorRequestWrapper requestWrapper)
             throws NotUniqueValueException, ValidationException {
         Doctor givenDoctor = requestWrapper.getDoctor();
         validationService.validateUser(givenDoctor);
@@ -80,6 +81,7 @@ public class WebService {
         givenDoctor.setLastName(StringUtil.firstCapital(givenDoctor.getLastName()));
 
         UserLoginData loginData = requestWrapper.getLoginData();
+        String password = loginData.getPassword();
         validationService.validateUserEmail(loginData);
         loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
         loginData.setUser(givenDoctor);
@@ -91,7 +93,9 @@ public class WebService {
                     "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
             );
         }
-        return new DoctorDTO(givenDoctor);
+        UserLoginRequestWrapper userLoginRequestWrapper = new UserLoginRequestWrapper(loginData.getEmail(), password);
+        return loginUser(userLoginRequestWrapper);
+
     }
 
     public Page<PatientDTO> getPatients(Map<String, String> reqParams) {
@@ -228,9 +232,11 @@ public class WebService {
                 )
         );
         UserLoginData userLoginData = userLoginRepository.findByEmail(userLogin.getEmail());
+        Optional<User> user = userRepository.findById(userLoginData.getUser().getId());
         String token = jwtService.generateToken(userLoginData);
 
-        return new AuthenticationResponse(token);
+        if (user.isPresent()) return new AuthenticationResponse(token, user.get().getRole());
+        throw new UserDoesNotExistException("User does not exist in database");
     }
 
     private boolean canAuthUserAccessUserOfId(String email, long id) {
