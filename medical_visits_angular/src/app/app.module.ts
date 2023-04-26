@@ -7,7 +7,6 @@ import { RegistationFormComponent } from './form/registation-form/registation-fo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginFormComponent } from './form/login-form/login-form.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { HomePageLoggedComponent } from './home-page-logged/home-page-logged.component';
 import { PatientsListComponent } from './list/patients-list/patients-list.component';
 import { DoctorsListComponent } from './list/doctors-list/doctors-list.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +22,6 @@ import { TopButtonsLoggedComponent } from './top-buttons/top-buttons-logged/top-
     RegistationFormComponent,
     LoginFormComponent,
     HomePageComponent,
-    HomePageLoggedComponent,
     PatientsListComponent,
     DoctorsListComponent,
     NavMenuComponent,

@@ -1,6 +1,10 @@
-<app-top-buttons-unlogged></app-top-buttons-unlogged>
+<div *ngIf="userLogged"><app-top-buttons-logged [user]="user" (logoutButtonClicked)="logout()"></app-top-buttons-logged></div>
+<div *ngIf="!userLogged"><app-top-buttons-unlogged></app-top-buttons-unlogged></div>
 
 <div class="main_page_photo"></div>
 
 <div id="main_page_head">WELCOME</div>
-<div class="main_button"><button class="main_button_style" routerLink="/registration-form">START HERE</button></div>
+<div class="main_button" [ngSwitch]="userLogged">
+  <button class="main_button_style" *ngSwitchCase="false" routerLink="/registration-form">{{mainButtonText}}</button>
+  <button class="main_button_style" *ngSwitchDefault>{{mainButtonText}}</button>
+</div>

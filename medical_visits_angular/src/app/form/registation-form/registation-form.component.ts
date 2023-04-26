@@ -104,7 +104,6 @@ export class RegistationFormComponent {
       this.apiService.registerPatient(form)
         .subscribe({
           next: (response: User) => {
-            console.log(response);
             this.authService.loginUser(response);
             this.errorMessage = "";
             this.showError = !this.showError;

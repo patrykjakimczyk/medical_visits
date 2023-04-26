@@ -26,12 +26,9 @@ export class LoginFormComponent {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
-
     this.apiService.login(form)
       .subscribe({
         next: (response: User) => {
-          console.log(response);
           this.authService.loginUser(response);
           this.errorMessage = "";
           this.showError = !this.showError;
