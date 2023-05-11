@@ -14,6 +14,12 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { MedicalVisitsHeadLogoComponent } from './medical-visits-head-logo/medical-visits-head-logo.component';
 import { TopButtonsUnloggedComponent } from './top-buttons/top-buttons-unlogged/top-buttons-unlogged.component';
 import { TopButtonsLoggedComponent } from './top-buttons/top-buttons-logged/top-buttons-logged.component';
+import { EditPatientForAdminComponent } from './edit/edit-patient-for-admin/edit-patient-for-admin.component';
+import { EditPatientForDoctorComponent } from './edit/edit-patient-for-doctor/edit-patient-for-doctor.component';
+import { EditDoctorForAdminComponent } from './edit/edit-doctor-for-admin/edit-doctor-for-admin.component';
+import { DetailsDoctorForAdminComponent } from './details/details-doctor-for-admin/details-doctor-for-admin.component';
+import { DetailsPatientForAdminComponent } from './details/details-patient-for-admin/details-patient-for-admin.component';
+import { DetailsPatientForDoctorComponent } from './details/details-patient-for-doctor/details-patient-for-doctor.component';
 
 
 @NgModule({
@@ -27,7 +33,13 @@ import { TopButtonsLoggedComponent } from './top-buttons/top-buttons-logged/top-
     NavMenuComponent,
     MedicalVisitsHeadLogoComponent,
     TopButtonsUnloggedComponent,
-    TopButtonsLoggedComponent
+    TopButtonsLoggedComponent,
+    EditPatientForAdminComponent,
+    EditPatientForDoctorComponent,
+    EditDoctorForAdminComponent,
+    DetailsDoctorForAdminComponent,
+    DetailsPatientForAdminComponent,
+    DetailsPatientForDoctorComponent
   ],
   imports: [
     BrowserModule,
