@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./top-buttons-logged.component.css']
 })
 export class TopButtonsLoggedComponent {
-  @Input() user: string;
+  // @Input() user: string;
   @Output() logoutButtonClicked: EventEmitter<boolean>;
 
   constructor() {
