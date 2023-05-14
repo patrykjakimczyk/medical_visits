@@ -1,11 +1,21 @@
 export enum Sort {
-  ASC,
-  DESC
+  ASC = "ASC",
+  DESC = "DESC"
 }
+
+export const SORT_ORDERS = [
+  Sort.ASC,
+  Sort.DESC
+]
 
 export enum SortProperty {
   LAST_NAME = "last_name",
   FIRST_NAME = "first_name"
+}
+
+export type SortType = {
+  sortOrder: Sort | null,
+  sortProperty: SortProperty;
 }
 
 export enum FilterTypeParam {

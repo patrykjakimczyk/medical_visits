@@ -5,7 +5,7 @@ import { Observable, catchError, map, switchMap } from 'rxjs';
 
 import { User } from '../model/user';
 import { AuthenticationService } from './authentication.service';
-import { FilterTypeParam } from '../model/get-method-enums';
+import { FilterTypeParam, Sort, SortProperty } from '../model/get-method-enums';
 
 
 @Injectable({providedIn:"root"})
@@ -38,7 +38,7 @@ export class ApiService {
       );
   }
 
-  getDoctors(page: number, filterType?: FilterTypeParam, filterKey?: string): Observable<any> {
+  getDoctors(page: number, sorts: Map<SortProperty, Sort>, filterType?: FilterTypeParam, filterKey?: string): Observable<any> {
     return this.authService.loggedUser.pipe(
       switchMap((user) => {
         let headers = new HttpHeaders();
@@ -52,6 +52,18 @@ export class ApiService {
           queryParams = queryParams
               .append("filterType", filterType)
               .append("filterKey", filterKey);
+        }
+
+        const firstNameSortOrder = sorts.get(SortProperty.FIRST_NAME);
+        if (firstNameSortOrder != undefined)  {
+          queryParams = queryParams
+              .append(SortProperty.FIRST_NAME, firstNameSortOrder);
+        }
+
+        const lastNameSortOrder = sorts.get(SortProperty.LAST_NAME);
+        if (lastNameSortOrder != undefined)  {
+          queryParams = queryParams
+              .append(SortProperty.LAST_NAME, lastNameSortOrder);
         }
 
         queryParams = queryParams.append("offset", page.toString());

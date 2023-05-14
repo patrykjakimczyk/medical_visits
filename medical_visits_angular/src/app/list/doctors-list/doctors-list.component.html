@@ -9,7 +9,7 @@
     <div class="list-input-item">
       <select class="list_input" id="select_input"  name="filterType" ngModel>
         <option value="" disabled>Choose filter type</option>
-        <option *ngFor="let type of filterType" [value]="type.param">{{ type.name }}</option>
+        <option *ngFor="let type of filterTypes" [value]="type.param">{{ type.name }}</option>
       </select>
     </div>
     <div class="list-input-item">
@@ -20,8 +20,8 @@
 
 <ul>
     <li id="list-header">
-        <div class="list-div list-header-element">First name</div>
-        <div class="list-div list-header-element">Last name</div>
+        <div class="list-div list-header-element" (click)="firstNameSorting()">First name</div>
+        <div class="list-div list-header-element" (click)="lastNameSorting()">Last name</div>
         <div class="list-div list-header-element">Specialization</div>
         <div class="list-div list-header-element">Phone number</div>
         <div class="list-div list-header-element">E-mail address</div>
