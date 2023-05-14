@@ -1,108 +1,48 @@
-<app-top-buttons-logged></app-top-buttons-logged>
+<!-- <app-top-buttons-logged></app-top-buttons-logged> -->
 
 <div class="list-head">Doctors</div>
-<div class="list-items">
-    <div class="list-input-item"><input type="search" placeholder="Type here..." class="list_input" id="search_input"></div>
-    <div class="list-input-item"><select class="list_input" id="select_input">
-        <option value="">First Name</option>
-    </select></div>
-    <div class="list-input-item"><button class="list_input" id="search_button">SEARCH</button></div>
-</div>
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="list-items">
+    <div class="list-input-item">
+      <input type="search" placeholder="Type here..." class="list_input" id="search_input" name="filterKey" #filterKey="ngModel" ngModel>
+    </div>
+    <div class="list-input-item">
+      <select class="list_input" id="select_input"  name="filterType" ngModel>
+        <option value="" disabled>Choose filter type</option>
+        <option *ngFor="let type of filterType" [value]="type.param">{{ type.name }}</option>
+      </select>
+    </div>
+    <div class="list-input-item">
+      <button type="submit" [disabled]="!form.valid" class="list_input" id="search_button">SEARCH</button>
+    </div>
+  </div>
+</form>
 
 <ul>
     <li id="list-header">
         <div class="list-div list-header-element">First name</div>
-        <div class="list-div list-header-element">Surname</div>
-        <div class="list-div list-header-element">Specalization</div>
+        <div class="list-div list-header-element">Last name</div>
+        <div class="list-div list-header-element">Specialization</div>
         <div class="list-div list-header-element">Phone number</div>
         <div class="list-div list-header-element">E-mail address</div>
         <div class="list-div list-header-element">Action</div>
     </li>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
+    <li class="li-element" *ngFor="let doctorListElem of doctorsArray">
+        <div class="li-element-div">{{doctorListElem.firstName}}</div>
+        <div class="li-element-div">{{doctorListElem.lastName}}</div>
+        <div class="li-element-div">
+          {{doctorListElem.specializations != undefined && doctorListElem.specializations.length > 0 ? doctorListElem.specializations[0] : "None"}}
+        </div>
+        <div class="li-element-div">{{doctorListElem.phoneNr}}</div>
+        <div class="li-element-div">{{doctorListElem.email}}</div>
         <div class="li-element-div">
             <a>Details</a>&nbsp;&nbsp;&nbsp;
             <a>Edit</a>
         </div>
     </li>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
-    </li>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
-    <li class="li-element">
-        <div class="li-element-div">Zbychu</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">Gynecologist</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">zbyszekkozak@zut.edu.pl</div>
-        <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
-        </div>
     <li id="list-footer">
-        <button class="footer-btn" id="prev-btn">&lt;</button>
-        <div class="list-counter"></div>
-        <button class="footer-btn" id="next-btn">&gt;</button>
+        <button class="footer-btn" id="prev-btn" (click)="previousPage()">&lt;</button>
+        <div class="list-counter">{{currentPage + 1 + " of " + totalPages}}</div>
+        <button class="footer-btn" id="next-btn" (click)="nextPage()">&gt;</button>
     </li>
 </ul>

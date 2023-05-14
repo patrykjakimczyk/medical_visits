@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthenticationService } from '../service/authentication.service.service';
 import { Subscription } from 'rxjs';
+
+import { AuthenticationService } from '../service/authentication.service';
+
 
 @Component({
   selector: 'app-home-page',
@@ -9,7 +11,6 @@ import { Subscription } from 'rxjs';
 })
 export class HomePageComponent implements OnInit, OnDestroy{
   public userLogged: boolean;
-  public user: string;
   public mainButtonText: string;
   private loggedUserSubscription: Subscription;
 
@@ -17,14 +18,12 @@ export class HomePageComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.loggedUserSubscription = this.authService.loggedUser.subscribe((user) => {
-      console.log(user);
+      // console.log(user);
       if (user === undefined || Object.keys(user).length === 0) {
         this.userLogged = false;
-        this.user = "";
         this.mainButtonText = "START HERE";
       } else {
         this.userLogged = true;
-        this.user = user.role;
         this.mainButtonText = "BOOK YOUR APPOINTMENT";
       }
     });
@@ -32,8 +31,8 @@ export class HomePageComponent implements OnInit, OnDestroy{
 
   logout() {
     this.authService.logout();
-    // this.userLogged = false;
-    // this.mainButtonText = "START HERE"
+    this.userLogged = false;
+    this.mainButtonText = "START HERE"
   }
 
   ngOnDestroy(): void {

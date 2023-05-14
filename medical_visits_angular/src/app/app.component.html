@@ -2,7 +2,9 @@
 <div class="container">
   <app-medical-visits-head-logo></app-medical-visits-head-logo>
   <app-nav-menu></app-nav-menu>
-  <!-- <router-outlet></router-outlet> -->
+  <div *ngIf="userLogged"><app-top-buttons-logged (logoutButtonClicked)="logout()"></app-top-buttons-logged></div>
+  <div *ngIf="!userLogged"><app-top-buttons-unlogged></app-top-buttons-unlogged></div>
+  <router-outlet></router-outlet>
 
 
   <!-- <app-home-page></app-home-page> -->
