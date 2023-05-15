@@ -20,6 +20,9 @@ import { EditDoctorForAdminComponent } from './edit/edit-doctor-for-admin/edit-d
 import { DetailsDoctorForAdminComponent } from './details/details-doctor-for-admin/details-doctor-for-admin.component';
 import { DetailsPatientForAdminComponent } from './details/details-patient-for-admin/details-patient-for-admin.component';
 import { DetailsPatientForDoctorComponent } from './details/details-patient-for-doctor/details-patient-for-doctor.component';
+import { EditDataFormComponent } from './form/edit-data-form/edit-data-form.component';
+import { VisitDetailsForDoctorComponent } from './visits/visit-details-for-doctor/visit-details-for-doctor.component';
+import { VisitDetailsForAdminComponent } from './visits/visit-details-for-admin/visit-details-for-admin.component';
 
 
 @NgModule({
@@ -39,7 +42,10 @@ import { DetailsPatientForDoctorComponent } from './details/details-patient-for-
     EditDoctorForAdminComponent,
     DetailsDoctorForAdminComponent,
     DetailsPatientForAdminComponent,
-    DetailsPatientForDoctorComponent
+    DetailsPatientForDoctorComponent,
+    EditDataFormComponent,
+    VisitDetailsForDoctorComponent,
+    VisitDetailsForAdminComponent
   ],
   imports: [
     BrowserModule,

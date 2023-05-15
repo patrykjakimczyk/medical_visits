@@ -1,6 +1,6 @@
-<div id="head">EDIT</div>
+<div id="head">EDIT YOUR DATA</div>
 
-<form #form="ngForm">
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <!-- Dane Pacjenta -->
     <div ngModelGroup="patient" #patient="ngModelGroup">
         <div id="names_input" class="inputs">
@@ -21,6 +21,38 @@
                 <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
                     <span *ngIf="lastName.errors?.['required']">Surname is required.&nbsp;</span>
                     <span *ngIf="lastName.errors?.['pattern']">Surname must consist of letters only.&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- PESEL -->
+            <input name="pesel" id="pesel" #pesel="ngModel" ngModel pattern="[0-9]{11}" required
+                (ngModelChange)="calculateBirthdate(form)" placeholder="PESEL" class="large_input">
+            <div *ngIf="pesel.invalid && (pesel.dirty || pesel.touched)" class="error-message">
+                <span *ngIf="pesel.errors?.['required']">PESEL is required.&nbsp;</span>
+                <span *ngIf="pesel.errors?.['pattern']">PESEL must consist of 11 digits.&nbsp;</span>
+                <span *ngIf="pesel.errors?.['invalid']">Invalid PESEL.&nbsp;</span>
+                <span *ngIf="pesel.errors?.['underage']">You are not of legal age and cannot register for
+                    MedicalVisits.&nbsp;</span>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Data urodzenia -->
+            <input type="date" name="birthDate" id="birthDate" #birthDate="ngModel" ngModel placeholder="Date of birth"
+                readonly class="large_input">
+        </div>
+
+        <div class="inputs">
+            <div id="genders">
+                <!-- Płeć -->
+                <div *ngFor="let gen of gender">
+                    <div id="gender_input">
+                        <input type="radio" name="gender" id="{{gen.id}}" value="{{gen.value}}" #gender="ngModel"
+                            ngModel [style.pointer-events]="'none'">
+                        <label for="{{gen.id}}" [style.pointer-events]="'none'">{{gen.value}}</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,20 +105,6 @@
             </div>
 
             <div>
-                <!-- Kod pocztowy -->
-                <input name="postalCode" id="postalCode" #postalCode="ngModel" ngModel required
-                    pattern="[0-9]{2}-[0-9]{3}" placeholder="Postal code" class="small_input">
-                <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="error-message">
-                    <span *ngIf="postalCode.errors?.['required']">Postal code is required.&nbsp;</span>
-                    <span *ngIf="postalCode.errors?.['pattern']">Postal code must follow the pattern e.g.
-                        00-000.&nbsp;</span>
-                    <span *ngIf="postalCode.errors?.['invalid']">Invalid postal code.&nbsp;</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="inputs addresses_inputs">
-            <div>
                 <!-- Numer domu -->
                 <input name="houseNr" id="houseNr" #houseNr="ngModel" ngModel required pattern="^\d+[A-Za-z]?$"
                     placeholder="House number" class="small_input">
@@ -97,7 +115,9 @@
                     <span *ngIf="houseNr.errors?.['invalid']">Invalid house number.&nbsp;</span>
                 </div>
             </div>
+        </div>
 
+        <div class="inputs addresses_inputs">
             <div>
                 <!-- Numer mieszkania -->
                 <input name="apartmentNr" id="apartmentNr" #apartmentNr="ngModel" ngModel required
@@ -107,6 +127,18 @@
                     <span *ngIf="apartmentNr.errors?.['pattern']">Apartment number must consist of maximum 3 digits,
                         additionally may contain maximum 3 letters at the end.&nbsp;</span>
                     <span *ngIf="apartmentNr.errors?.['invalid']">Invalid apartment number.&nbsp;</span>
+                </div>
+            </div>
+
+            <div>
+                <!-- Kod pocztowy -->
+                <input name="postalCode" id="postalCode" #postalCode="ngModel" ngModel required
+                    pattern="[0-9]{2}-[0-9]{3}" placeholder="Postal code" class="small_input">
+                <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="error-message">
+                    <span *ngIf="postalCode.errors?.['required']">Postal code is required.&nbsp;</span>
+                    <span *ngIf="postalCode.errors?.['pattern']">Postal code must follow the pattern e.g.
+                        00-000.&nbsp;</span>
+                    <span *ngIf="postalCode.errors?.['invalid']">Invalid postal code.&nbsp;</span>
                 </div>
             </div>
         </div>
@@ -124,8 +156,37 @@
                 <span *ngIf="email.errors?.['invalid']">Invalid email address.&nbsp;</span>
             </div>
         </div>
+
+        <div class="inputs">
+            <!-- Hasło -->
+            <input type="password" name="password" id="password" #passwordInput="ngModel" ngModel required
+                pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).*$" minlength="8" placeholder="Password" class="large_input">
+            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
+                <span *ngIf="passwordInput.errors?.['required']">Password is required.&nbsp;</span>
+                <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one
+                    digit, one special character.&nbsp;</span>
+                <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters
+                    long.&nbsp;</span>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Powtórz hasło -->
+            <input type="password" name="confirmPassword" id="confirmPassword" #confirmPasswordInput="ngModel" ngModel
+                (ngModelChange)="validatePasswords(form)" required placeholder="Confirm password" class="large_input">
+            <div *ngIf="confirmPasswordInput.invalid && (confirmPasswordInput.dirty || confirmPasswordInput.touched)"
+                class="error-message">
+                <span *ngIf="confirmPasswordInput.errors?.['required']">Repeat password!&nbsp;</span>
+                <span *ngIf="confirmPasswordInput.errors?.['notMatch']">Passwords must match!&nbsp;</span>
+            </div>
+        </div>
     </div>
 
-    <button type="submit" [disabled]="!form.valid" class="inputs">SAVE</button>
+    <div *ngIf="showError">
+        <p class="error-message">{{errorMessage}}</p>
+    </div>
+
+    <button type="submit" [disabled]="!form.valid" class="inputs">SIGN UP</button>
+    <div *ngIf="showError" class="error-message">{{errorMessage}}</div>
     <div *ngIf="form.invalid && form.touched" class="error-message">Please fill out the entire form!</div>
 </form>

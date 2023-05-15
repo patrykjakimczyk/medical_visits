@@ -4,12 +4,13 @@
   <app-nav-menu></app-nav-menu>
   <div *ngIf="userLogged"><app-top-buttons-logged (logoutButtonClicked)="logout()"></app-top-buttons-logged></div>
   <div *ngIf="!userLogged"><app-top-buttons-unlogged></app-top-buttons-unlogged></div>
-  <router-outlet></router-outlet>
+  <!-- <router-outlet></router-outlet> -->
 
 
   <!-- <app-home-page></app-home-page> -->
   <!-- <app-registation-form></app-registation-form> -->
   <!-- <app-login-form></app-login-form> -->
+  <!-- <app-edit-data-form></app-edit-data-form> -->
   <!-- <app-home-page-logged></app-home-page-logged> -->
   <!-- <app-doctors-list></app-doctors-list> -->
   <!-- <app-patients-list></app-patients-list> -->
@@ -19,11 +20,15 @@
 
 
 
-  <app-edit-patient-for-admin></app-edit-patient-for-admin>
+  <!-- <app-edit-patient-for-admin></app-edit-patient-for-admin> -->
   <!-- <app-edit-patient-for-doctor></app-edit-patient-for-doctor> -->
   <!-- <app-edit-doctor-for-admin></app-edit-doctor-for-admin> -->
 
   <!-- <app-details-patient-for-admin></app-details-patient-for-admin> -->
   <!-- <app-details-patient-for-doctor></app-details-patient-for-doctor> -->
   <!-- <app-details-doctor-for-admin></app-details-doctor-for-admin> -->
+
+
+  <app-visit-details-for-admin></app-visit-details-for-admin>
+  <!-- <app-visit-details-for-doctor></app-visit-details-for-doctor> -->
 </div>
