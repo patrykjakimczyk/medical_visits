@@ -11,7 +11,9 @@ import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.ValidationException;
 import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
+import pl.medical.visits.model.entity.user.Doctor;
 import pl.medical.visits.model.entity.user.Patient;
+import pl.medical.visits.model.wrapper.DoctorEditDataForAdminWrapper;
 import pl.medical.visits.service.WebService;
 
 import java.util.Map;
@@ -40,16 +42,29 @@ public class WebAuthController {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctorId(reqParams));
     }
 
-    @GetMapping("/patient/allPatientsData")
-    public ResponseEntity<Patient> getAllPatientData(@RequestParam long id, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsData(auth.getName(), id));
+    @GetMapping("/patient/patientData")
+    public ResponseEntity<Patient> getPatientsDataForEdit(@RequestParam long id, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getPatientsFullData(auth.getName(), id));
     }
 
     @PatchMapping("/patient/updatePatient")
-    public ResponseEntity<String > updateDataForUser(
+    public ResponseEntity<String> updateDataForUser(
             @RequestBody Patient patient, Authentication auth
     ) throws NotUniqueValueException, ValidationException {
         webService.updatePatientData(auth.getName(), patient);
         return ResponseEntity.status(HttpStatus.OK).body("Patient's data has been updated");
+    }
+
+    @GetMapping("/doctor/doctorData")
+    public ResponseEntity<DoctorDTO> getDoctorsDataForEdit(@RequestParam long id, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctorsFullData(auth.getName(), id));
+    }
+
+    @PatchMapping("/doctor/updateDoctor")
+    public ResponseEntity<String> updateDataForDoctor(
+            @RequestBody DoctorEditDataForAdminWrapper doctor, Authentication auth
+    ) throws NotUniqueValueException, ValidationException {
+        webService.updateDoctorData(auth.getName(), doctor);
+        return ResponseEntity.status(HttpStatus.OK).body("Doctor's data has been updated");
     }
 }

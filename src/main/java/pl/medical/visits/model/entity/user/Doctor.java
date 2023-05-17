@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(value = Role.Values.DOCTOR)
 public final class Doctor extends User {
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "doctor_speciality",
             joinColumns = @JoinColumn(

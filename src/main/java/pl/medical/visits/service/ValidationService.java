@@ -14,7 +14,7 @@ import java.time.Period;
 @Service
 @NoArgsConstructor
 public class ValidationService {
-    private static final String BIRTHDAY_REGEX = "^(\\d{4})(-)([0-1][1-9])(-)([0-3]\\d)$";
+    private static final String BIRTHDAY_REGEX = "^(\\d{4})(-)([0-1]\\d)(-)([0-3]\\d)$";
     private static final String PHONE_NR_REGEX = "^(\\d{9,11})$";
     private static final String PESEL_REGEX = "^(\\d{11})$";
     private static final String POSTAL_CODE_REGEX = "^(\\d{2})(-)(\\d{3})$";

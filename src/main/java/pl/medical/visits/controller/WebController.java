@@ -8,11 +8,14 @@ import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.ValidationException;
+import pl.medical.visits.model.entity.user.Speciality;
 import pl.medical.visits.model.response.AuthenticationResponse;
 import pl.medical.visits.model.wrapper.DoctorRequestWrapper;
 import pl.medical.visits.model.wrapper.PatientRequestWrapper;
 import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
 import pl.medical.visits.service.WebService;
+
+import java.util.List;
 
 
 @RestController("/noAuth")
@@ -37,5 +40,10 @@ public class WebController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody UserLoginRequestWrapper userLogin) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.loginUser(userLogin));
+    }
+
+    @GetMapping("/getSpecialities")
+    public ResponseEntity<List<Speciality>> getSpecialities() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getSpecialities());
     }
 }

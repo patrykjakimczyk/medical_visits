@@ -15,13 +15,11 @@ import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.model.entity.user.*;
 import pl.medical.visits.model.enums.Role;
 import pl.medical.visits.model.response.AuthenticationResponse;
+import pl.medical.visits.model.wrapper.DoctorEditDataForAdminWrapper;
 import pl.medical.visits.model.wrapper.DoctorRequestWrapper;
 import pl.medical.visits.model.wrapper.PatientRequestWrapper;
 import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
-import pl.medical.visits.repository.UserAddressRepository;
-import pl.medical.visits.repository.UserLoginRepository;
-import pl.medical.visits.repository.UserRepository;
-import pl.medical.visits.repository.VisitRepository;
+import pl.medical.visits.repository.*;
 import pl.medical.visits.util.StringUtil;
 
 import java.util.ArrayList;
@@ -37,6 +35,7 @@ public class WebService {
     private final UserLoginRepository userLoginRepository;
     private final UserAddressRepository userAddressRepository;
     private final VisitRepository visitRepository;
+    private final SpecialityRepository specialityRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
@@ -132,20 +131,32 @@ public class WebService {
             if (filterType.equals("firstName")) {
                 return userRepository
                         .findAllDoctorsWithFirstNamePaging(filterKey, pageRequest)
-                        .map(DoctorDTO::new);
+                        .map(doctor -> {
+                            String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                            return new DoctorDTO(doctor, email);
+                        });
             } else if (filterType.equals("lastName")) {
                 return userRepository
                         .findAllDoctorsWithLastNamePaging(filterKey, pageRequest)
-                        .map(DoctorDTO::new);
+                        .map(doctor -> {
+                            String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                            return new DoctorDTO(doctor, email);
+                        });
             }  else if (filterType.equals("pesel")) {
                 return userRepository
                         .findAllDoctorsWithPeselPaging(filterKey, pageRequest)
-                        .map(DoctorDTO::new);
+                        .map(doctor -> {
+                            String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                            return new DoctorDTO(doctor, email);
+                        });
             }
         }
         return userRepository
                 .findAllDoctorsPaging(pageRequest)
-                .map(DoctorDTO::new);
+                .map(doctor -> {
+                    String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                    return new DoctorDTO(doctor, email);
+                });
     }
 
     public Page<PatientDTO> getAllPatientsForDoctorId(Map<String, String> reqParams) {
@@ -189,9 +200,13 @@ public class WebService {
                 .map(PatientDTO::new);
     }
 
-    public Patient getAllPatientsData(String tokenEmail, long id) {
-        if (this.canAuthUserAccessUserOfId(tokenEmail, id)) {
-            Optional<Patient> patientOptional =  userRepository.findAllById(id);
+    public List<Speciality> getSpecialities() {
+        return this.specialityRepository.findAll();
+    }
+
+    public Patient getPatientsFullData(String tokenEmail, long id) {
+        if (this.canAuthUserAccessUserOfId(tokenEmail, id, Role.PATIENT)) {
+            Optional<Patient> patientOptional =  userRepository.findPatientById(id);
 
             return patientOptional.orElseThrow(() ->
                     new UserDoesNotExistException("User with given ID is not a patient"));
@@ -199,9 +214,24 @@ public class WebService {
         throw new UserPerformedForbiddenActionException("Patient cannot access other users' data!");
     }
 
+    public DoctorDTO getDoctorsFullData(String tokenEmail, long id) {
+        if (this.canAuthUserAccessUserOfId(tokenEmail, id, Role.DOCTOR)) {
+            Optional<Doctor> doctorOptional =  userRepository.findDoctorById(id);
+
+            if(doctorOptional.isPresent()) {
+                return new DoctorDTO(
+                        doctorOptional.get(),
+                        userLoginRepository.findEmailForUserId(id)
+                );
+            }
+            throw new UserDoesNotExistException("User with given ID is not a doctor");
+        }
+        throw new UserPerformedForbiddenActionException("Doctors cannot access other doctors' data!");
+    }
+
     public void updatePatientData(String tokenEmail, Patient patient)
             throws ValidationException, NotUniqueValueException {
-        if (this.canAuthUserAccessUserOfId(tokenEmail, patient.getId())
+        if (this.canAuthUserAccessUserOfId(tokenEmail, patient.getId(), Role.PATIENT)
                 && userRepository.existsById(patient.getId())) {
             validationService.validateUser(patient);
 
@@ -224,6 +254,56 @@ public class WebService {
         throw new UserPerformedForbiddenActionException("Patient cannot access other users' data!");
     }
 
+    public void updateDoctorData(String tokenEmail, DoctorEditDataForAdminWrapper doctorData)
+            throws ValidationException, NotUniqueValueException {
+        if (this.canAuthUserAccessUserOfId(tokenEmail, doctorData.getId(), Role.DOCTOR)
+                && userRepository.existsById(doctorData.getId())) {
+            Optional<UserLoginData> loginDataOptional = userLoginRepository.findByUser(doctorData.getId());
+
+            if (loginDataOptional.isEmpty()) {
+                throw new UserDoesNotExistException(
+                        "Doctor has not got a login data. His account was created incorrectly"
+                );
+            }
+
+            UserLoginData loginData = loginDataOptional.get();
+            Doctor doctor = (Doctor)loginData.getUser();
+
+            doctor.setFirstName(StringUtil.firstCapital(doctorData.getFirstName()));
+            doctor.setLastName(StringUtil.firstCapital(doctorData.getLastName()));
+
+            if (!doctorData.getSpecialities().isEmpty() || doctorData.getSpecialities() != null) {
+                doctor.getSpecialities().clear();
+                for (long id : doctorData.getSpecialities()) {
+                    Optional<Speciality> optionalSpeciality = specialityRepository.findById(id);
+                    optionalSpeciality.ifPresent(speciality -> doctor.getSpecialities().add(optionalSpeciality.get()));
+                }
+            }
+
+            if (!doctor.getPhoneNr().equals(doctorData.getPhoneNr())) {
+                doctor.setPhoneNr(doctorData.getPhoneNr());
+            }
+
+            validationService.validateUserEmail(loginData);
+            validationService.validateUser(doctor);
+            loginData.setUser(doctor);
+            if (!loginData.getEmail().equals(doctorData.getEmail())) {
+                loginData.setEmail(doctorData.getEmail());
+            }
+
+            try {
+                userRepository.save(doctor);
+                userLoginRepository.save(loginData);
+            } catch (RuntimeException e) {
+                throw new NotUniqueValueException(
+                        "Error has occurred during user's data update. e-mail/phone number isn't unique"
+                );
+            }
+            return;
+        }
+        throw new UserPerformedForbiddenActionException("You are not allowed to access other users' data!");
+    }
+
     public AuthenticationResponse loginUser(UserLoginRequestWrapper userLogin) {
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -239,14 +319,14 @@ public class WebService {
         throw new UserDoesNotExistException("User does not exist in database");
     }
 
-    private boolean canAuthUserAccessUserOfId(String email, long id) {
+    private boolean canAuthUserAccessUserOfId(String email, long id, Role role) {
         UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
-        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getId());
+        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
 
         if (authenticatedUser.isPresent()) {
             User user = authenticatedUser.get();
 
-            if (user.getRole().equals(Role.PATIENT)) {
+            if (user.getRole().equals(role)) {
                 return user.getId() == id;
             } else {
                 return true;

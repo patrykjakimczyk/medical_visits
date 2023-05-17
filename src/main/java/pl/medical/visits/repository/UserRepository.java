@@ -18,7 +18,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     String SELECT_PATIENT = "select * from user_t u where u.ROLE = 'PATIENT'";
     String SELECT_PATIENT_W_DOCTOR_ID = "select * from user_t u where u.ROLE = 'PATIENT' and u.doctor_id = ?1";
 
-    Optional<Patient> findAllById(long id);
+    @Query(value = SELECT_PATIENT + " and u.user_id = ?1", nativeQuery = true)
+    Optional<Patient> findPatientById(long id);
+
+    @Query(value = SELECT_DOCTOR + " and u.user_id = ?1", nativeQuery = true)
+    Optional<Doctor> findDoctorById(long id);
 
     @Query(value = SELECT_DOCTOR, nativeQuery = true)
     Page<Doctor> findAllDoctorsPaging(PageRequest pageable);
