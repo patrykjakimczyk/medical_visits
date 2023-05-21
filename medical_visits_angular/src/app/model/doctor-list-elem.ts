@@ -1,8 +1,13 @@
+export type Speciality = {
+  id: number,
+  specialityName: string
+}
+
 export class DoctorListElem {
   id: number;
   firstName: string;
   lastName: string;
-  specializations: string[];
+  specialities: Speciality[];
   phoneNr: string;
   email: string;
 
@@ -11,14 +16,14 @@ export class DoctorListElem {
     id: number,
     firstName: string,
     lastName: string,
-    specializations: string[],
+    specialities: Speciality[],
     phoneNr: string,
     email: string
     ) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.specializations = specializations;
+    this.specialities = specialities;
     this.phoneNr = phoneNr;
     this.email = email;
   }

@@ -1,0 +1,72 @@
+<div id="head">EDIT</div>
+
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <!-- Dane Doctora -->
+        <div id="names_input" class="inputs">
+            <div>
+                <!-- Imię -->
+                <input name="firstName" id="firstName" #firstName="ngModel" ngModel required pattern="[a-zA-Z]+"
+                    placeholder="First Name" class="small_input" [(ngModel)]="doctorsData.firstName">
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
+                    <span *ngIf="firstName.errors?.['required']">Name is required.&nbsp;</span>
+                    <span *ngIf="firstName.errors?.['pattern']">Name must consist of letters only.&nbsp;</span>
+                </div>
+            </div>
+
+            <div>
+                <!-- Nazwisko -->
+                <input name="lastName" id="lastName" #lastName="ngModel" ngModel required pattern="[a-zA-Z]+"
+                    placeholder="Surname" class="small_input" [(ngModel)]="doctorsData.lastName">
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
+                    <span *ngIf="lastName.errors?.['required']">Surname is required.&nbsp;</span>
+                    <span *ngIf="lastName.errors?.['pattern']">Surname must consist of letters only.&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Numer telefonu -->
+            <input name="phoneNr" id="phoneNr" #phoneNr="ngModel" ngModel pattern="[0-9]{9}" required
+                placeholder="Phone number" class="large_input" [(ngModel)]="doctorsData.phoneNr">
+            <div *ngIf="phoneNr.invalid && (phoneNr.dirty || phoneNr.touched)" class="error-message">
+                <span *ngIf="phoneNr.errors?.['required']">Phone number is required</span>
+                <span *ngIf="phoneNr.errors?.['pattern']">Phone number must consist of 9 digits</span>
+                <span *ngIf="phoneNr.errors?.['invalid']">Invalid phone number</span>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Specjalizacja lekarza -->
+            <select class="list_input" id="select_input"  name="filterType" ngModel (ngModelChange)="addSpeciality($event)">
+              <option value="" disabled>Choose filter type</option>
+              <option *ngFor="let speciality of allSpecialities" [ngValue]="speciality">{{ speciality["specialityName"] }}</option>
+            </select>
+            <ul>
+              <li *ngFor="let speciality of doctorsSpecialities">
+                  {{speciality.specialityName}}
+                  <button class="delete-button" (click)="deleteSpeciality(speciality)">X</button>
+              </li>
+            </ul>
+            <!-- </div> -->
+          </div>
+
+      <div class="inputs">
+          <!-- E-mail -->
+          <input type="email" name="email" id="email" #email="ngModel" ngModel required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail address" class="large_input" [(ngModel)]="doctorsData.email">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+              <span *ngIf="email.errors?.['required']">Email is required.&nbsp;</span>
+              <span *ngIf="email.errors?.['pattern']">Invalid email address.&nbsp;</span>
+              <span *ngIf="email.errors?.['invalid']">Invalid email address.&nbsp;</span>
+          </div>
+      </div>
+
+    <button type="submit" [disabled]="!form.valid" class="inputs">SAVE</button>
+    <div *ngIf="form.invalid && form.touched" class="error-message">Please fill out the entire form!</div>
+    <div *ngIf="message">
+      <p id="success-message">{{message}}</p>
+    </div>
+    <div *ngIf="errorMessage">
+      <p id="error-message">{{errorMessage}}</p>
+    </div>
+</form>

@@ -5,11 +5,14 @@ import { RegistationFormComponent } from './form/registation-form/registation-fo
 import { LoginFormComponent } from './form/login-form/login-form.component';
 import { PatientsListComponent } from './list/patients-list/patients-list.component';
 import { DoctorsListComponent } from './list/doctors-list/doctors-list.component';
+import { EditDoctorForAdminComponent } from './list/doctors-list/edit-doctor-for-admin/edit-doctor-for-admin.component';
+import { DetailsDoctorForAdminComponent } from './list/doctors-list/details-doctor-for-admin/details-doctor-for-admin.component';
 
 
 const routes: Routes = [
   {
-    path: '', component: HomePageComponent,
+    path: '',
+    component: HomePageComponent,
   },
   {
     path: 'registration-form',
@@ -24,8 +27,26 @@ const routes: Routes = [
     component: DoctorsListComponent,
   },
   {
+    path: 'doctors-list',
+    children: [
+      {
+        path: "doctor/:id/edit",
+        component: EditDoctorForAdminComponent,
+      },
+      {
+        path: "doctor/:id/details",
+        component: DetailsDoctorForAdminComponent,
+      }
+    ]
+  },
+  {
     path: 'patients-list',
-    component: PatientsListComponent
+    component: PatientsListComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ]
 

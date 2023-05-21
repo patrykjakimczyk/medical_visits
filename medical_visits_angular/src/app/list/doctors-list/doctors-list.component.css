@@ -121,3 +121,10 @@ a{
     font-weight: bold;
     text-decoration: underline;
 }
+
+.arrow-div {
+  position: relative;
+  right: 50px;
+  top: 2px;
+  float: right;
+}

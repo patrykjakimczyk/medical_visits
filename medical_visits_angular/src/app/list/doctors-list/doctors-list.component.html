@@ -21,23 +21,36 @@
 <ul>
     <li id="list-header">
         <div class="list-div list-header-element" (click)="firstNameSorting()">First name</div>
+        <div [ngSwitch]="firstNameSortIndex" class="arrow-div">
+          <img src="../../../assets/arrow-up.png" alt="arrow up" *ngSwitchCase="1">
+          <img src="../../../assets/arrow-down.png" alt="arrow down" *ngSwitchCase="2">
+          <div *ngSwitchDefault></div>
+        </div>
         <div class="list-div list-header-element" (click)="lastNameSorting()">Last name</div>
+        <div [ngSwitch]="lastNameSortIndex" class="arrow-div">
+          <img src="../../../assets/arrow-up.png" alt="arrow up" *ngSwitchCase="1">
+          <img src="../../../assets/arrow-down.png" alt="arrow down" *ngSwitchCase="2">
+          <div *ngSwitchDefault></div>
+        </div>
         <div class="list-div list-header-element">Specialization</div>
         <div class="list-div list-header-element">Phone number</div>
         <div class="list-div list-header-element">E-mail address</div>
         <div class="list-div list-header-element">Action</div>
     </li>
-    <li class="li-element" *ngFor="let doctorListElem of doctorsArray">
+    <li class="li-element" *ngFor="let doctorListElem of doctorsArray; let i = index" [attr.data-index]="i">
         <div class="li-element-div">{{doctorListElem.firstName}}</div>
         <div class="li-element-div">{{doctorListElem.lastName}}</div>
         <div class="li-element-div">
-          {{doctorListElem.specializations != undefined && doctorListElem.specializations.length > 0 ? doctorListElem.specializations[0] : "None"}}
+          <select>
+            <option *ngIf="doctorListElem.specialities.length === 0">None</option>
+            <option *ngFor="let speciality of doctorListElem.specialities">{{speciality.specialityName}}</option>
+          </select>
         </div>
         <div class="li-element-div">{{doctorListElem.phoneNr}}</div>
         <div class="li-element-div">{{doctorListElem.email}}</div>
         <div class="li-element-div">
-            <a>Details</a>&nbsp;&nbsp;&nbsp;
-            <a>Edit</a>
+            <a (click)="goToDetails(i)">Details</a>&nbsp;&nbsp;&nbsp;
+            <a (click)="goToEdit(i)">Edit</a>
         </div>
     </li>
     <li id="list-footer">

@@ -6,6 +6,7 @@ import { Observable, catchError, map, switchMap } from 'rxjs';
 import { User } from '../model/user';
 import { AuthenticationService } from './authentication.service';
 import { FilterTypeParam, Sort, SortProperty } from '../model/get-method-enums';
+import { DoctorListElem, Speciality } from '../model/doctor-list-elem';
 
 
 @Injectable({providedIn:"root"})
@@ -17,9 +18,7 @@ export class ApiService {
   registerPatient(form: NgForm): Observable<User> {
     return this.http.post<User>(`${ApiService.url}registerPatient`, form.value)
       .pipe(
-        map((user) => {
-          return user;
-        }),
+        map((user) => user),
         catchError((error) => {
           console.error(error);
           throw error as HttpErrorResponse;
@@ -36,6 +35,17 @@ export class ApiService {
           throw error as HttpErrorResponse;
         })
       );
+  }
+
+  getSpecialities(): Observable<Speciality[]> {
+    return this.http.get<Speciality[]>(`${ApiService.url}getSpecialities`)
+    .pipe(
+      map(specialities => specialities),
+      catchError((error) => {
+        console.error(error);
+        throw error as HttpErrorResponse;
+      })
+    );
   }
 
   getDoctors(page: number, sorts: Map<SortProperty, Sort>, filterType?: FilterTypeParam, filterKey?: string): Observable<any> {
@@ -79,5 +89,56 @@ export class ApiService {
         throw error as HttpErrorResponse;
       })
     );
+  }
+
+  getDoctorsFullData(id: number): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap((user) => {
+        let headers = new HttpHeaders();
+        let queryParams = new HttpParams();
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        queryParams = queryParams
+              .append("id", id);
+
+        return this.http.get<any>(`${ApiService.url}auth/doctor/doctorData`, {
+          headers: headers,
+          params: queryParams
+        }).pipe(
+          map(patientData => patientData),
+          catchError(error => {
+            console.error(error);
+            throw error as HttpErrorResponse;
+          })
+        )
+      })
+    );
+  }
+
+  editDoctorsData(doctor: DoctorListElem): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap(user => {
+        let headers = new HttpHeaders({
+          'Content-Type': 'application/json'
+        });
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        return this.http.patch<any>(`${ApiService.url}auth/doctor/updateDoctor`, doctor, {
+          headers: headers
+        })
+          .pipe(
+            map(response => response),
+            catchError(error => {
+                console.error(error);
+                throw error as HttpErrorResponse;
+            }));
+      })
+    )
   }
 }

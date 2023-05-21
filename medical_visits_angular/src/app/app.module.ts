@@ -16,8 +16,8 @@ import { TopButtonsUnloggedComponent } from './top-buttons/top-buttons-unlogged/
 import { TopButtonsLoggedComponent } from './top-buttons/top-buttons-logged/top-buttons-logged.component';
 import { EditPatientForAdminComponent } from './edit/edit-patient-for-admin/edit-patient-for-admin.component';
 import { EditPatientForDoctorComponent } from './edit/edit-patient-for-doctor/edit-patient-for-doctor.component';
-import { EditDoctorForAdminComponent } from './edit/edit-doctor-for-admin/edit-doctor-for-admin.component';
-import { DetailsDoctorForAdminComponent } from './details/details-doctor-for-admin/details-doctor-for-admin.component';
+import { EditDoctorForAdminComponent } from './list/doctors-list/edit-doctor-for-admin/edit-doctor-for-admin.component';
+import { DetailsDoctorForAdminComponent } from './list/doctors-list/details-doctor-for-admin/details-doctor-for-admin.component';
 import { DetailsPatientForAdminComponent } from './details/details-patient-for-admin/details-patient-for-admin.component';
 import { DetailsPatientForDoctorComponent } from './details/details-patient-for-doctor/details-patient-for-doctor.component';
 import { EditDataFormComponent } from './form/edit-data-form/edit-data-form.component';
