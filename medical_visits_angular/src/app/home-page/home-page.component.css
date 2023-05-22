@@ -1,4 +1,4 @@
-.main_button_style{
+.main_button_style {
     width: 450px;
     height: 100px;
     background: #FFFFFF;
@@ -8,13 +8,14 @@
     font-size: 40px;
     font-weight: bold;
     border: none;
+    float: left;
+    margin-bottom: 10px;
 }
 
-.main_page_photo{
+.main_page_photo {
     position: absolute;
     top: 150px;
     left: 800px;
-
     width: 600px;
     height: 450px;
     background-image: url("src/assets/main_page_image.png");
@@ -23,10 +24,25 @@
     float: left;
 }
 
+.main_buttons_multiple {
+    clear: left;
+}
+
+.main_buttons_position{
+    position: absolute;
+    top: 350px;
+    left: 200px;
+}
+
 .main_button{
     position: absolute;
     top: 350px;
     left: 200px;
+}
+
+.main_buttons_multiple{
+    float: left;
+
 }
 
 #main_page_head {
