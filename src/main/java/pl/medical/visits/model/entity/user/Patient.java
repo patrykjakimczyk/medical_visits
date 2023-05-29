@@ -24,6 +24,4 @@ public final class Patient extends User {
         super();
         this.setRole(Role.PATIENT);
     }
-
-//    public Patient()
 }

@@ -12,13 +12,12 @@ import pl.medical.visits.config.JwtService;
 import pl.medical.visits.exception.*;
 import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
+import pl.medical.visits.model.dto.PatientDetailsDTO;
+import pl.medical.visits.model.dto.UserAddressDTO;
 import pl.medical.visits.model.entity.user.*;
 import pl.medical.visits.model.enums.Role;
 import pl.medical.visits.model.response.AuthenticationResponse;
-import pl.medical.visits.model.wrapper.DoctorEditDataForAdminWrapper;
-import pl.medical.visits.model.wrapper.DoctorRequestWrapper;
-import pl.medical.visits.model.wrapper.PatientRequestWrapper;
-import pl.medical.visits.model.wrapper.UserLoginRequestWrapper;
+import pl.medical.visits.model.wrapper.*;
 import pl.medical.visits.repository.*;
 import pl.medical.visits.util.StringUtil;
 
@@ -106,20 +105,32 @@ public class WebService {
             if (filterType.equals("firstName")) {
                 return userRepository
                         .findAllPatientsWithFirstNamePaging(filterKey, pageRequest)
-                        .map(PatientDTO::new);
+                        .map(patient -> {
+                            String email = userLoginRepository.findEmailForUserId(patient.getId());
+                            return new PatientDTO(patient, email);
+                        });
             } else if (filterType.equals("lastName")) {
                 return userRepository
                         .findAllPatientsWithLastNamePaging(filterKey, pageRequest)
-                        .map(PatientDTO::new);
+                        .map(patient -> {
+                            String email = userLoginRepository.findEmailForUserId(patient.getId());
+                            return new PatientDTO(patient, email);
+                        });
             }  else if (filterType.equals("pesel")) {
                 return userRepository
                         .findAllPatientsWithPeselPaging(filterKey, pageRequest)
-                        .map(PatientDTO::new);
+                        .map(patient -> {
+                            String email = userLoginRepository.findEmailForUserId(patient.getId());
+                            return new PatientDTO(patient, email);
+                        });
             }
         }
         return userRepository
                 .findAllPatientsPaging(pageRequest)
-                .map(PatientDTO::new);
+                .map(patient -> {
+                    String email = userLoginRepository.findEmailForUserId(patient.getId());
+                    return new PatientDTO(patient, email);
+                });
     }
 
     public Page<DoctorDTO> getDoctors(Map<String, String> reqParams) {
@@ -184,32 +195,51 @@ public class WebService {
             if (filterType.equals("firstName")) {
                 return userRepository
                         .findPatientsWithFirstNameForDoctor(id, filterKey, pageRequest)
-                        .map(PatientDTO::new);
+                        .map(patient -> {
+                            String email = userLoginRepository.findEmailForUserId(patient.getId());
+                            return new PatientDTO(patient, email);
+                        });
             } else if (filterType.equals("lastName")) {
                 return userRepository
                         .findPatientsWithLastNameForDoctor(id, filterKey, pageRequest)
-                        .map(PatientDTO::new);
+                        .map(patient -> {
+                            String email = userLoginRepository.findEmailForUserId(patient.getId());
+                            return new PatientDTO(patient, email);
+                        });
             }  else if (filterType.equals("pesel")) {
                 return userRepository
                         .findPatientsWithPeselForDoctor(id, filterKey, pageRequest)
-                        .map(PatientDTO::new);
+                        .map(patient -> {
+                            String email = userLoginRepository.findEmailForUserId(patient.getId());
+                            return new PatientDTO(patient, email);
+                        });
             }
         }
         return userRepository
                 .findPatientsForDoctor(id, pageRequest)
-                .map(PatientDTO::new);
+                .map(patient -> {
+                    String email = userLoginRepository.findEmailForUserId(patient.getId());
+                    return new PatientDTO(patient, email);
+                });
     }
 
     public List<Speciality> getSpecialities() {
         return this.specialityRepository.findAll();
     }
 
-    public Patient getPatientsFullData(String tokenEmail, long id) {
+    public PatientDetailsDTO getPatientsFullData(String tokenEmail, long id) {
         if (this.canAuthUserAccessUserOfId(tokenEmail, id, Role.PATIENT)) {
             Optional<Patient> patientOptional =  userRepository.findPatientById(id);
 
-            return patientOptional.orElseThrow(() ->
+            Patient patient = patientOptional.orElseThrow(() ->
                     new UserDoesNotExistException("User with given ID is not a patient"));
+            String email = userLoginRepository.findEmailForUserId(patient.getId());
+
+            return new PatientDetailsDTO(
+                    patient,
+                    new UserAddressDTO(patient.getAddressData()),
+                    email
+            );
         }
         throw new UserPerformedForbiddenActionException("Patient cannot access other users' data!");
     }
@@ -229,21 +259,46 @@ public class WebService {
         throw new UserPerformedForbiddenActionException("Doctors cannot access other doctors' data!");
     }
 
-    public void updatePatientData(String tokenEmail, Patient patient)
+    public void updatePatientData(String tokenEmail, PatientEditDataForAdminWrapper patientData)
             throws ValidationException, NotUniqueValueException {
-        if (this.canAuthUserAccessUserOfId(tokenEmail, patient.getId(), Role.PATIENT)
-                && userRepository.existsById(patient.getId())) {
+        if (this.canAuthUserAccessUserOfId(tokenEmail, patientData.getId(), Role.PATIENT)
+                && userRepository.existsById(patientData.getId())) {
+            Optional<UserLoginData> loginDataOptional = userLoginRepository.findByUser(patientData.getId());
+
+            if (loginDataOptional.isEmpty()) {
+                throw new UserDoesNotExistException(
+                        "Patient has not got a login data. His account was created incorrectly"
+                );
+            }
+            UserLoginData loginData = loginDataOptional.get();
+            Patient patient = (Patient) loginData.getUser();
+
+            patient.setFirstName(StringUtil.firstCapital(patientData.getFirstName()));
+            patient.setLastName(StringUtil.firstCapital(patientData.getLastName()));
+            patient.setPhoneNr(patientData.getPhoneNr());
+
+            Optional<Doctor> doctorOptional = userRepository.findDoctorById(patientData.getAssignedDoctorId());
+            doctorOptional.ifPresent(patient::setAssignedDoctor);
+
             validationService.validateUser(patient);
 
-            patient.setFirstName(StringUtil.firstCapital(patient.getFirstName()));
-            patient.setLastName(StringUtil.firstCapital(patient.getLastName()));
+            loginData.setEmail(patientData.getEmail());
+            loginData.setUser(patient);
+            validationService.validateUserEmail(loginData);
 
             UserAddressData addressData = patient.getAddressData();
-            validationService.validateUserAddress(addressData);
             addressData.setUser(patient);
+            addressData.setCountry(patientData.getCountry());
+            addressData.setCity(patientData.getCity());
+            addressData.setStreet(patientData.getStreet());
+            addressData.setHouseNr(patientData.getHouseNr());
+            addressData.setApartmentNr(patientData.getApartmentNr());
+            addressData.setPostalCode(patientData.getPostalCode());
+            validationService.validateUserAddress(addressData);
 
             try {
                 userAddressRepository.save(addressData);
+                userLoginRepository.save(loginData);
             } catch (RuntimeException e) {
                 throw new NotUniqueValueException(
                         "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
@@ -283,13 +338,13 @@ public class WebService {
             if (!doctor.getPhoneNr().equals(doctorData.getPhoneNr())) {
                 doctor.setPhoneNr(doctorData.getPhoneNr());
             }
-
-            validationService.validateUserEmail(loginData);
             validationService.validateUser(doctor);
+
             loginData.setUser(doctor);
             if (!loginData.getEmail().equals(doctorData.getEmail())) {
                 loginData.setEmail(doctorData.getEmail());
             }
+            validationService.validateUserEmail(loginData);
 
             try {
                 userRepository.save(doctor);

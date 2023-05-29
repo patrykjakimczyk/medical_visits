@@ -7,10 +7,12 @@ import pl.medical.visits.model.entity.user.Patient;
 @Getter
 @ToString
 public class PatientDTO extends UserDTO{
-    private final long assignedDoctorId;
+    private final AssignedDoctorDTO assignedDoctor;
 
-    public PatientDTO(Patient patient) {
-        super(patient);
-        this.assignedDoctorId = patient.getAssignedDoctor() != null ? patient.getAssignedDoctor().getId() : 0;
+    public PatientDTO(Patient patient, String email) {
+        super(patient, email);
+        this.assignedDoctor = patient.getAssignedDoctor() != null
+                ? new AssignedDoctorDTO(patient.getAssignedDoctor())
+                : null;
     }
 }
