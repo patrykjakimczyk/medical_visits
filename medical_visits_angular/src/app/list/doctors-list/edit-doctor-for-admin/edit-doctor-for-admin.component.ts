@@ -18,6 +18,7 @@ export class EditDoctorForAdminComponent implements OnInit{
   protected allSpecialities: any;
   protected message: string;
   protected errorMessage: string;
+
   constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
@@ -66,7 +67,6 @@ export class EditDoctorForAdminComponent implements OnInit{
       error: (error: HttpErrorResponse) => {
         this.errorMessage = error.message;
         this.message = "";
-        console.log(error)
       }
     })
   }

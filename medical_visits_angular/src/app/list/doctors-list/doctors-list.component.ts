@@ -40,17 +40,17 @@
 
     insertDoctors() {
       if (this._filterType == undefined && this._filterKey == undefined) {
-        this.apiService.getDoctors(this.currentPage, this._currentSorts).subscribe({
+        this.apiService.getDoctors(this.currentPage, 10, undefined, undefined, this._currentSorts).subscribe({
           next: (response: any) => {
              this.doctorsArray = response.content;
-             this.doctorsArray
+             this.totalPages = response.totalPages;
           },
           error: (error: HttpErrorResponse) => {
             console.log(error)
           }
         });
       } else {
-        this.apiService.getDoctors(this.currentPage, this._currentSorts, this._filterType, this._filterKey).subscribe({
+        this.apiService.getDoctors(this.currentPage, 10,  this._filterType, this._filterKey, this._currentSorts).subscribe({
           next: (response: any) => {
             this.doctorsArray = [...response.content];
             this.totalPages = response.totalPages;

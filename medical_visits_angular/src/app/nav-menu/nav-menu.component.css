@@ -4,14 +4,16 @@
 
 #Menu {
     position: fixed;
-    top: 20px;
-    left: 10px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 2%;
     width: 60px;
-    height: 500px;
+    height: 100%;
     background: #FFFFFF;
     box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
     text-align: center;
+    
     align-items: center;
 }
 

@@ -1,0 +1,74 @@
+<div id="head">DETAILS</div>
+
+  <div id="main-container">
+    <div id="names_input" class="inputs">
+        <div>
+            <!-- Imię -->
+            <input id="firstName" placeholder="firstName" class="small_input" readonly [value]="patientData.firstName">
+        </div>
+
+        <div>
+            <!-- Nazwisko -->
+            <input id="lastName" placeholder="lastName" class="small_input" readonly [value]="patientData.lastName">
+        </div>
+    </div>
+
+    <div class="inputs">
+        <!-- Numer telefonu -->
+        <input id="phoneNr" placeholder="phoneNr" class="large_input" readonly [value]="patientData.phoneNr">
+    </div>
+
+    <div class="inputs">
+        <!-- Przypisany lekarz -->
+        <input
+          id=""
+          placeholder="Assigned Doctor"
+          class="large_input"
+          readonly
+          [value]="getDoctorsFullName()"
+        >
+    </div>
+
+    <div class="inputs">
+        <!-- Kraj -->
+        <input id="country" placeholder="country" class="large_input" readonly [value]="patientData.userAddress.country">
+    </div>
+
+    <div class="inputs">
+        <!-- Ulica -->
+        <input id="street" placeholder="street" class="large_input" readonly [value]="patientData.userAddress.street">
+    </div>
+
+    <div class="inputs addresses_inputs">
+        <div>
+            <!-- Miasto -->
+            <input id="city" placeholder="city" class="small_input" readonly [value]="patientData.userAddress.city">
+        </div>
+
+        <div>
+            <!-- Kod pocztowy -->
+            <input id="postalCode" placeholder="postalCode" class="small_input" readonly [value]="patientData.userAddress.postalCode">
+        </div>
+    </div>
+
+    <div class="inputs addresses_inputs">
+        <div>
+            <!-- Numer domu -->
+            <input id="houseNr" placeholder="houseNr" class="small_input" readonly [value]="patientData.userAddress.houseNr">
+        </div>
+
+        <div>
+            <!-- Numer mieszkania -->
+            <input id="apartmentNr" placeholder="apartmentNr" class="small_input" readonly [value]="patientData.userAddress.apartmentNr">
+        </div>
+    </div>
+
+
+    <div class="inputs">
+        <!-- E-mail -->
+        <input type="email" id="email" placeholder="email" class="large_input" readonly [value]="patientData.email">
+    </div>
+
+
+    <button type="submit" class="inputs">RETURN</button>
+  </div>

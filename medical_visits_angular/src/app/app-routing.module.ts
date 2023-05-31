@@ -7,6 +7,8 @@ import { PatientsListComponent } from './list/patients-list/patients-list.compon
 import { DoctorsListComponent } from './list/doctors-list/doctors-list.component';
 import { EditDoctorForAdminComponent } from './list/doctors-list/edit-doctor-for-admin/edit-doctor-for-admin.component';
 import { DetailsDoctorForAdminComponent } from './list/doctors-list/details-doctor-for-admin/details-doctor-for-admin.component';
+import { EditPatientForAdminComponent } from './list/patients-list/edit-patient-for-admin/edit-patient-for-admin.component';
+import { DetailsPatientForAdminComponent } from './list/patients-list/details-patient-for-admin/details-patient-for-admin.component';
 
 
 const routes: Routes = [
@@ -41,7 +43,20 @@ const routes: Routes = [
   },
   {
     path: 'patients-list',
-    component: PatientsListComponent,
+    component: PatientsListComponent
+  },
+  {
+    path: 'patients-list',
+    children: [
+      {
+        path: "patient/:id/edit",
+        component: EditPatientForAdminComponent,
+      },
+      {
+        path: "patient/:id/details",
+        component: DetailsPatientForAdminComponent,
+      }
+    ]
   },
   {
     path: '**',
