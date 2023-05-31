@@ -40,7 +40,7 @@
     <li class="li-element" *ngFor="let doctorListElem of doctorsArray; let i = index" [attr.data-index]="i">
         <div class="li-element-div">{{doctorListElem.firstName}}</div>
         <div class="li-element-div">{{doctorListElem.lastName}}</div>
-        <div class="li-element-div">
+        <div class="li-element-div li-select-list">
           <select>
             <option *ngIf="doctorListElem.specialities.length === 0">None</option>
             <option *ngFor="let speciality of doctorListElem.specialities">{{speciality.specialityName}}</option>

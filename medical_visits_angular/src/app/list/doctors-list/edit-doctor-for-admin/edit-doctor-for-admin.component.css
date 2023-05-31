@@ -1,8 +1,11 @@
 .delete-button {
-  width: 30px;
-  height: 15px;
+  width: 60px;
+  height: 20px;
   font-size: 10px;
   float: right;
+  background-color: white;
+  border: 5px solid #28587A;
+  font-weight: bold;
 }
 
 #success-message {
@@ -11,4 +14,8 @@
 
 #error-message {
   color: coral;
+}
+
+li{
+  margin-left: 60px;
 }

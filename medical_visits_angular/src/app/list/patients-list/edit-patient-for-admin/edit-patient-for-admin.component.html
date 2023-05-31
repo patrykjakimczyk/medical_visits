@@ -35,24 +35,27 @@
         </div>
     </div>
 
-    <div class="inputs">
+    <div class="li-inputs-searchbar">
         <!-- Przydzielony lekarz -->
         <input name="doctorName" id="doctorName" #doctorName="ngModel" ngModel placeholder="Assigned Doctor"
             class="large_input" [(ngModel)]="patientData.assignedDoctor" [ngModel]="getDoctorsFullName()" (ngModelChange)="searchForDoctors($event)">
+    </div>
+
+    <div class="margin-bottom">
         <select class="list_input" id="select_input" ngModel [(ngModel)]="filterType">
-          <option value="" disabled>Choose filter type</option>
-          <option *ngFor="let type of filterTypes" [value]="type.param">{{ type.name }}</option>
+            <option value="" disabled>Choose filter type</option>
+            <option *ngFor="let type of filterTypes" [value]="type.param">{{ type.name }}</option>
         </select>
     </div>
 
-    <div class="inputs" *ngIf="doctors && doctors.length > 0">
-      <nav>
-        <ul id="doctors-list">
-          <li *ngFor="let doctor of doctors">
-            <button (click)="assignDoctor(doctor)">{{doctor.firstName}} {{doctor.lastName}}</button>
-          </li>
-        </ul>
-      </nav>
+    <div class="margin-bottom">
+        <nav *ngIf="doctors && doctors.length > 0">
+            <ul id="doctors-list">
+                <li *ngFor="let doctor of doctors">
+                    <button (click)="assignDoctor(doctor)">{{doctor.firstName}} {{doctor.lastName}}</button>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <!-- Adres Pacjenta -->

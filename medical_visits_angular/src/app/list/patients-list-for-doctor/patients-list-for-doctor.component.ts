@@ -7,11 +7,11 @@ import { PatientListElem } from 'src/app/model/patient-list-elem';
 import { ApiService } from 'src/app/service/api.service';
 
 @Component({
-  selector: 'app-patients-list',
-  templateUrl: './patients-list.component.html',
-  styleUrls: ['./patients-list.component.css', '../doctors-list/doctors-list.component.css']
+  selector: 'app-patients-list-for-doctor',
+  templateUrl: './patients-list-for-doctor.component.html',
+  styleUrls: ['./patients-list-for-doctor.component.css']
 })
-export class PatientsListComponent implements OnInit {
+export class PatientsListForDoctorComponent implements OnInit{
   protected filterTypes: {param: FilterTypeParam, name: FilterTypeName}[];
   protected currentPage: number;
   protected totalPages: number;
@@ -39,7 +39,7 @@ export class PatientsListComponent implements OnInit {
 
     insertPatients() {
       if (this._filterType == undefined && this._filterKey == undefined) {
-        this.apiService.getPatients(this.currentPage, this._currentSorts).subscribe({
+        this.apiService.getPatientsForDoctor(this.currentPage, this._currentSorts).subscribe({
           next: (response: any) => {
              this.patientsArray = response.content;
              this.totalPages = response.totalPages;
@@ -49,7 +49,7 @@ export class PatientsListComponent implements OnInit {
           }
         });
       } else {
-        this.apiService.getPatients(this.currentPage, this._currentSorts, this._filterType, this._filterKey).subscribe({
+        this.apiService.getPatientsForDoctor(this.currentPage, this._currentSorts, this._filterType, this._filterKey).subscribe({
           next: (response: any) => {
             this.patientsArray = [...response.content];
             this.totalPages = response.totalPages;
