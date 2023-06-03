@@ -1,5 +1,7 @@
 package pl.medical.visits.model.entity.user;
 
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import pl.medical.visits.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +10,8 @@ import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="role", discriminatorType = DiscriminatorType.STRING)
 @Entity
@@ -44,9 +48,4 @@ public abstract class User {
 
     @Column(name = "phone_nr", length = 11, unique = true, nullable = false)
     private String phoneNr;
-
-    public User() {
-        super();
-        this.setRole(Role.ADMIN);
-    }
 }

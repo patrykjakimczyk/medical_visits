@@ -3,6 +3,8 @@ package pl.medical.visits.model.entity.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +15,11 @@ import java.util.List;
 
 @Data
 @Entity
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_login")
-public class    UserLoginData implements UserDetails {
+public class UserLoginData implements UserDetails {
     @Id
     @SequenceGenerator(
             name = "user_log_seq",

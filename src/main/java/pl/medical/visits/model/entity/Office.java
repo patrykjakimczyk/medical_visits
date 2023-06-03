@@ -3,12 +3,14 @@ package pl.medical.visits.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import pl.medical.visits.model.entity.user.Doctor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Office {

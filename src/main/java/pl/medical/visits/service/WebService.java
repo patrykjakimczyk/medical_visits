@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.medical.visits.config.JwtService;
@@ -93,7 +94,29 @@ public class WebService {
         }
         UserLoginRequestWrapper userLoginRequestWrapper = new UserLoginRequestWrapper(loginData.getEmail(), password);
         return loginUser(userLoginRequestWrapper);
+    }
 
+    public AuthenticationResponse registerAdmin(Admin admin, UserLoginData loginData)
+            throws NotUniqueValueException, ValidationException {
+        validationService.validateUser(admin);
+
+        admin.setFirstName(StringUtil.firstCapital(admin.getFirstName()));
+        admin.setLastName(StringUtil.firstCapital(admin.getLastName()));
+
+        String password = loginData.getPassword();
+        validationService.validateUserEmail(loginData);
+        loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
+        loginData.setUser(admin);
+
+        try {
+            userLoginRepository.save(loginData);
+        } catch (RuntimeException e) {
+            throw new NotUniqueValueException(
+                    "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
+            );
+        }
+        UserLoginRequestWrapper userLoginRequestWrapper = new UserLoginRequestWrapper(loginData.getEmail(), password);
+        return loginUser(userLoginRequestWrapper);
     }
 
     public Page<PatientDTO> getPatients(Map<String, String> reqParams) {
@@ -170,17 +193,30 @@ public class WebService {
                 });
     }
 
-    public Page<PatientDTO> getAllPatientsForDoctorId(Map<String, String> reqParams) {
+    public Page<PatientDTO> getAllPatientsForDoctor(Map<String, String> reqParams, String tokenEmail) {
         int offset;
         int pageSize;
-        long id;
+        User user;
         final String filterKey = reqParams.get("filterKey");
         final String filterType = reqParams.get("filterType");
+        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(tokenEmail);
+        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
+
+        if (authenticatedUser.isPresent()) {
+            user = authenticatedUser.get();
+
+            if (!user.getRole().equals(Role.DOCTOR))  {
+                throw new UserPerformedForbiddenActionException("Only doctor can access his assigned patients!");
+            }
+        } else {
+            throw new UserDoesNotExistException("User from given token does not exist");
+        }
+
+        long id = user.getId();
 
         try {
             offset = Integer.parseInt(reqParams.get("offset"));
             pageSize = Integer.parseInt(reqParams.get("pageSize"));
-            id = Long.parseLong(reqParams.get("id"));
         } catch (NumberFormatException e) {
             throw new WrongRequestParametersException("Invalid request parameters (no paging information or ID)");
         }

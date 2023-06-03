@@ -1,6 +1,7 @@
 package pl.medical.visits.model.entity.user;
 
 import lombok.AllArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import pl.medical.visits.model.enums.Role;
 import lombok.Data;
 
@@ -9,10 +10,11 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@SuperBuilder
 @Entity
 @DiscriminatorValue(value = Role.Values.DOCTOR)
 public final class Doctor extends User {
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "doctor_speciality",
             joinColumns = @JoinColumn(

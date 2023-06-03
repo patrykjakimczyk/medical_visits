@@ -12,7 +12,6 @@ import pl.medical.visits.exception.ValidationException;
 import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.model.dto.PatientDetailsDTO;
-import pl.medical.visits.model.entity.user.Patient;
 import pl.medical.visits.model.response.ResponseMessage;
 import pl.medical.visits.model.wrapper.DoctorEditDataForAdminWrapper;
 import pl.medical.visits.model.wrapper.PatientEditDataForAdminWrapper;
@@ -27,21 +26,22 @@ import java.util.Map;
 public class WebAuthController {
     private WebService webService;
 
-    @GetMapping("/doctor/patients")
+    @GetMapping("/admin/patients")
     public ResponseEntity<Page<PatientDTO>> getPatientsWithPaging(@RequestParam Map<String, String> reqParams) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getPatients(reqParams));
     }
 
-    @GetMapping("/doctor/doctors")
+    @GetMapping("/admin/doctors")
     public ResponseEntity<Page<DoctorDTO>> getDoctorsWithPaging(@RequestParam Map<String, String> reqParams) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctors(reqParams));
     }
 
     @GetMapping("/doctor/doctorsPatients")
     public ResponseEntity<Page<PatientDTO>> getAllPatientsForDoctorId(
-            @NotNull @RequestParam Map<String, String> reqParams
+            @NotNull @RequestParam Map<String, String> reqParams,
+            Authentication auth
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctorId(reqParams));
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctor(reqParams, auth.getName()));
     }
 
     @GetMapping("/patient/patientData")
@@ -49,7 +49,7 @@ public class WebAuthController {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getPatientsFullData(auth.getName(), id));
     }
 
-    @PatchMapping("/doctor/updatePatient")
+    @PatchMapping("/patient/updatePatient")
     public ResponseEntity<ResponseMessage> updateDataForUser(
             @RequestBody PatientEditDataForAdminWrapper patient, Authentication auth
     ) throws NotUniqueValueException, ValidationException {

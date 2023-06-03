@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_address")
@@ -23,7 +25,7 @@ public class UserAddressData {
     @Column(name = "address_id", insertable = false, updatable = false, unique = true, nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @JsonBackReference
     private User user;
