@@ -25,11 +25,10 @@ import { VisitDetailsForDoctorComponent } from './visits/visit-details-for-docto
 import { VisitDetailsForAdminComponent } from './visits/visit-details-for-admin/visit-details-for-admin.component';
 import { VisitsListForAdminComponent } from './list/visits-list-for-admin/visits-list-for-admin.component';
 import { VisitsListForDoctorComponent } from './list/visits-list-for-doctor/visits-list-for-doctor.component';
-import { AdminHomePageComponent } from './home-page/admin-home-page/admin-home-page.component';
-import { DoctorHomePageComponent } from './home-page/doctor-home-page/doctor-home-page.component';
 import { PatientsListForDoctorComponent } from './list/patients-list-for-doctor/patients-list-for-doctor.component';
 import { DetailsPatientsListForDoctorComponent } from './list/patients-list-for-doctor/details-patients-list-for-doctor/details-patients-list-for-doctor.component';
 import { EditPatientsListForDoctorComponent } from './list/patients-list-for-doctor/edit-patients-list-for-doctor/edit-patients-list-for-doctor.component';
+
 
 
 @NgModule({
@@ -55,9 +54,8 @@ import { EditPatientsListForDoctorComponent } from './list/patients-list-for-doc
     VisitDetailsForAdminComponent,
     VisitsListForAdminComponent,
     VisitsListForDoctorComponent,
-    AdminHomePageComponent,
-    DoctorHomePageComponent,
-    PatientsListForDoctorComponent
+    PatientsListForDoctorComponent,
+    VisitsListForDoctorComponent
   ],
   imports: [
     BrowserModule,

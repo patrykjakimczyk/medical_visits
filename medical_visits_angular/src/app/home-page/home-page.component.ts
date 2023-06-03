@@ -11,6 +11,7 @@ import { AuthenticationService } from '../service/authentication.service';
 })
 export class HomePageComponent implements OnInit, OnDestroy{
   public userLogged: boolean;
+  public userRole: string | undefined;
   public mainButtonText: string;
   private loggedUserSubscription: Subscription;
 
@@ -18,21 +19,18 @@ export class HomePageComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.loggedUserSubscription = this.authService.loggedUser.subscribe((user) => {
-      // console.log(user);
       if (user === undefined || Object.keys(user).length === 0) {
         this.userLogged = false;
         this.mainButtonText = "START HERE";
+        this.userRole = undefined;
+        console.log(this.userRole)
       } else {
+        this.userRole = user?.role;
         this.userLogged = true;
         this.mainButtonText = "BOOK YOUR APPOINTMENT";
+        console.log(this.userRole)
       }
     });
-  }
-
-  logout() {
-    this.authService.logout();
-    this.userLogged = false;
-    this.mainButtonText = "START HERE"
   }
 
   ngOnDestroy(): void {

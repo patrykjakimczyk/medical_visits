@@ -1,7 +1,37 @@
 <div class="main_page_photo"></div>
 
 <div id="main_page_head">WELCOME</div>
-<div class="main_button" [ngSwitch]="userLogged">
-  <button class="main_button_style" *ngSwitchCase="false" routerLink="/registration-form">{{mainButtonText}}</button>
-  <button class="main_button_style" *ngSwitchDefault>{{mainButtonText}}</button>
+<div *ngIf="!userRole">
+  <div class="main_button">
+    <button class="main_button_style" routerLink="/registration-form">{{mainButtonText}}</button>
+  </div>
 </div>
+<div *ngIf="userRole === 'ADMIN'">
+  <div class="main_buttons_position">
+    <div class="main_buttons_multiple">
+      <button class="main_button_style" routerLink="/patients-list">Patients</button>
+    </div>
+    <div class="main_buttons_multiple">
+        <button class="main_button_style" routerLink="/doctors-list">Doctors</button>
+    </div>
+    <div class="main_buttons_multiple">
+        <button class="main_button_style">Visits</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="userRole === 'DOCTOR'">
+  <div class="main_buttons_position">
+    <div class="main_buttons_multiple">
+        <button class="main_button_style">Patients</button>
+    </div>
+    <div class="main_buttons_multiple">
+        <button class="main_button_style">Visits</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="userRole === 'PATIENT'">
+  <div class="main_button">
+    <button class="main_button_style">{{mainButtonText}}</button>
+  </div>
+</div>
+

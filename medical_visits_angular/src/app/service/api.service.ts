@@ -80,7 +80,7 @@ export class ApiService {
         queryParams = queryParams.append("offset", page.toString());
         queryParams = queryParams.append("pageSize", "10")
 
-        return this.http.get<any>(`${ApiService.url}auth/doctor/patients`, {
+        return this.http.get<any>(`${ApiService.url}auth/admin/patients`, {
           headers: headers,
           params: queryParams
         })
@@ -169,7 +169,7 @@ export class ApiService {
         queryParams = queryParams.append("offset", page.toString());
         queryParams = queryParams.append("pageSize", pageSize.toString())
 
-        return this.http.get<any>(`${ApiService.url}auth/doctor/doctors`, {
+        return this.http.get<any>(`${ApiService.url}auth/admin/doctors`, {
           headers: headers,
           params: queryParams
         })
