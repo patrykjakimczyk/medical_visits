@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/service/api.service';
 @Component({
   selector: 'app-patients-list-for-doctor',
   templateUrl: './patients-list-for-doctor.component.html',
-  styleUrls: ['./patients-list-for-doctor.component.css']
+  styleUrls: ['./patients-list-for-doctor.component.css', '../doctors-list/doctors-list.component.css']
 })
 export class PatientsListForDoctorComponent implements OnInit{
   protected filterTypes: {param: FilterTypeParam, name: FilterTypeName}[];

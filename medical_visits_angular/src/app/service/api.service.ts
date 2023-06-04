@@ -12,7 +12,7 @@ import { PatientListElem } from '../model/patient-list-elem';
 
 @Injectable({providedIn:"root"})
 export class ApiService {
-  public static url = "http://localhost:8081/";
+  public static url = "http://localhost:8082/";
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {}
 
