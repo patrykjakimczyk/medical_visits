@@ -1,0 +1,41 @@
+#specalization-page-head {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    color: #28587A;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.panes {
+    position: relative;
+    top: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+    width: 1000px;
+    height: 600px;
+    margin: auto;
+}
+
+.specalization-pane {
+    width: 400px;
+    height: 150px;
+    margin: auto;
+
+    background: #FFFFFF;
+    box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    text-align: center;
+    border: none;
+
+    color: #28587A;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.specalization-pane:active{
+    background: #28587A;
+    color: #FFFFFF;
+}

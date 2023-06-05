@@ -1,0 +1,32 @@
+.contact_page_photo {
+    position: absolute;
+    top: 175px;
+    left: 700px;
+    width: 1000px;
+    height: 560px;
+    background-image: url("src/assets/contact.jpg");
+    background-size: cover;
+    background-position: center;
+    float: left;
+    border-radius: 60px;
+}
+
+#contact-pane{
+    position: absolute;
+    width: 380px;
+    height: 423px;
+    left: 200px;
+    top: 312px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 13px;
+    text-align: left;
+    padding-left: 40px;
+    line-height: 125%;
+    font-weight: bold;
+}
+
+h1, h2{
+    color: #28587A;
+    font-weight: bold;
+}

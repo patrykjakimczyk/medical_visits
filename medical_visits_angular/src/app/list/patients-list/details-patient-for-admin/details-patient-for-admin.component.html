@@ -4,22 +4,26 @@
     <div id="names_input" class="inputs">
         <div>
             <!-- Imię -->
+            <label for="firstName">First Name</label>
             <input id="firstName" placeholder="firstName" class="small_input" readonly [value]="patientData.firstName">
         </div>
 
         <div>
             <!-- Nazwisko -->
+            <label for="lastName">Last Name</label>
             <input id="lastName" placeholder="lastName" class="small_input" readonly [value]="patientData.lastName">
         </div>
     </div>
 
     <div class="inputs">
         <!-- Numer telefonu -->
+        <label for="phoneNr">Phone number</label>
         <input id="phoneNr" placeholder="phoneNr" class="large_input" readonly [value]="patientData.phoneNr">
     </div>
 
     <div class="inputs">
         <!-- Przypisany lekarz -->
+        <label>Assigned Doctor</label>
         <input
           id=""
           placeholder="Assigned Doctor"
@@ -31,22 +35,26 @@
 
     <div class="inputs">
         <!-- Kraj -->
+        <label for="country">Country</label>
         <input id="country" placeholder="country" class="large_input" readonly [value]="patientData.userAddress.country">
     </div>
 
     <div class="inputs">
         <!-- Ulica -->
+        <label for="street">Street</label>
         <input id="street" placeholder="street" class="large_input" readonly [value]="patientData.userAddress.street">
     </div>
 
     <div class="inputs addresses_inputs">
         <div>
             <!-- Miasto -->
+            <label for="city">City</label>
             <input id="city" placeholder="city" class="small_input" readonly [value]="patientData.userAddress.city">
         </div>
 
         <div>
             <!-- Kod pocztowy -->
+            <label for="postalCode">Postal Code</label>
             <input id="postalCode" placeholder="postalCode" class="small_input" readonly [value]="patientData.userAddress.postalCode">
         </div>
     </div>
@@ -54,11 +62,13 @@
     <div class="inputs addresses_inputs">
         <div>
             <!-- Numer domu -->
+            <label for="houseNr">House number</label>
             <input id="houseNr" placeholder="houseNr" class="small_input" readonly [value]="patientData.userAddress.houseNr">
         </div>
 
         <div>
             <!-- Numer mieszkania -->
+            <label for="apartmentNr">Apartment Number</label>
             <input id="apartmentNr" placeholder="apartmentNr" class="small_input" readonly [value]="patientData.userAddress.apartmentNr">
         </div>
     </div>
@@ -66,6 +76,7 @@
 
     <div class="inputs">
         <!-- E-mail -->
+        <label for="email">E-mail</label>
         <input type="email" id="email" placeholder="email" class="large_input" readonly [value]="patientData.email">
     </div>
 

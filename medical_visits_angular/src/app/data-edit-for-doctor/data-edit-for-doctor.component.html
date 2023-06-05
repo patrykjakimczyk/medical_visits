@@ -1,0 +1,79 @@
+<div id="head">EDIT YOUR DATA</div>
+
+<form #form="ngForm">
+    <!-- Dane Pacjenta -->
+    <div ngModelGroup="patient" #patient="ngModelGroup">
+        <div id="names_input" class="inputs">
+            <div>
+                <!-- Imię -->
+                <input name="firstName" id="firstName" #firstName="ngModel" ngModel required pattern="[a-zA-Z]+"
+                    placeholder="First Name" class="small_input">
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
+                    <span *ngIf="firstName.errors?.['required']">Name is required.&nbsp;</span>
+                    <span *ngIf="firstName.errors?.['pattern']">Name must consist of letters only.&nbsp;</span>
+                </div>
+            </div>
+
+            <div>
+                <!-- Nazwisko -->
+                <input name="lastName" id="lastName" #lastName="ngModel" ngModel required pattern="[a-zA-Z]+"
+                    placeholder="Surname" class="small_input">
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
+                    <span *ngIf="lastName.errors?.['required']">Surname is required.&nbsp;</span>
+                    <span *ngIf="lastName.errors?.['pattern']">Surname must consist of letters only.&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Numer telefonu -->
+            <input name="phoneNr" id="phoneNr" #phoneNr="ngModel" ngModel pattern="[0-9]{9}" required
+                placeholder="Phone number" class="large_input">
+            <div *ngIf="phoneNr.invalid && (phoneNr.dirty || phoneNr.touched)" class="error-message">
+                <span *ngIf="phoneNr.errors?.['required']">Phone number is required</span>
+                <span *ngIf="phoneNr.errors?.['pattern']">Phone number must consist of 9 digits</span>
+                <span *ngIf="phoneNr.errors?.['invalid']">Invalid phone number</span>
+            </div>
+        </div>
+    </div>
+
+    <div ngModelGroup="loginData" #loginData="ngModelGroup">
+        <div class="inputs">
+            <!-- E-mail -->
+            <input type="email" name="email" id="email" #email="ngModel" ngModel required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail address" class="large_input">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+                <span *ngIf="email.errors?.['required']">Email is required.&nbsp;</span>
+                <span *ngIf="email.errors?.['pattern']">Invalid email address.&nbsp;</span>
+                <span *ngIf="email.errors?.['invalid']">Invalid email address.&nbsp;</span>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Hasło -->
+            <input type="password" name="password" id="password" #passwordInput="ngModel" ngModel required
+                pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).*$" minlength="8" placeholder="Password" class="large_input">
+            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
+                <span *ngIf="passwordInput.errors?.['required']">Password is required.&nbsp;</span>
+                <span *ngIf="passwordInput.errors?.['pattern']">Password must contain at least one uppercase letter, one
+                    digit, one special character.&nbsp;</span>
+                <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters
+                    long.&nbsp;</span>
+            </div>
+        </div>
+
+        <div class="inputs">
+            <!-- Powtórz hasło -->
+            <input type="password" name="confirmPassword" id="confirmPassword" #confirmPasswordInput="ngModel" ngModel
+             required placeholder="Confirm password" class="large_input">
+            <div *ngIf="confirmPasswordInput.invalid && (confirmPasswordInput.dirty || confirmPasswordInput.touched)"
+                class="error-message">
+                <span *ngIf="confirmPasswordInput.errors?.['required']">Repeat password!&nbsp;</span>
+                <span *ngIf="confirmPasswordInput.errors?.['notMatch']">Passwords must match!&nbsp;</span>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="!form.valid" class="inputs">SAVE</button>
+    <div *ngIf="form.invalid && form.touched" class="error-message">Please fill out the entire form!</div>
+</form>

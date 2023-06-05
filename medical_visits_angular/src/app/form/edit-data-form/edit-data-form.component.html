@@ -186,7 +186,7 @@
         <p class="error-message">{{errorMessage}}</p>
     </div>
 
-    <button type="submit" [disabled]="!form.valid" class="inputs">SIGN UP</button>
+    <button type="submit" [disabled]="!form.valid" class="inputs">SAVE</button>
     <div *ngIf="showError" class="error-message">{{errorMessage}}</div>
     <div *ngIf="form.invalid && form.touched" class="error-message">Please fill out the entire form!</div>
 </form>
