@@ -42,4 +42,11 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionMessage(exception.getMessage()));
     }
+
+    @ExceptionHandler(DoctorDoesNotHaveAssignedOfficeException.class)
+    public ResponseEntity<ExceptionMessage> doctorDoesNotHaveAssignedOfficeException(
+            DoctorDoesNotHaveAssignedOfficeException exception, WebRequest webRequest
+    ) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionMessage(exception.getMessage()));
+    }
 }

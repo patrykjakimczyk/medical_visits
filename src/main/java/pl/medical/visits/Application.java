@@ -501,17 +501,35 @@ public class Application implements CommandLineRunner{
 //				.build();
 //
 //		Office office2 = Office.builder()
-//				.doctor(doctor3)
+//				.doctor(doctor2)
 //				.officeNr("124")
 //				.floor("1")
 //				.build();
 //
 //		Office office3 = Office.builder()
-//				.doctor(doctor5)
+//				.doctor(doctor3)
 //				.officeNr("212")
 //				.floor("2")
 //				.build();
 //
-//		officeRepository.saveAll(List.of(office, office2, office3));
+//		Office office4 = Office.builder()
+//				.doctor(doctor4)
+//				.officeNr("213")
+//				.floor("2")
+//				.build();
+//
+//		Office office5 = Office.builder()
+//				.doctor(doctor5)
+//				.officeNr("111")
+//				.floor("1")
+//				.build();
+//
+//		Office office6 = Office.builder()
+//				.doctor(doctor6)
+//				.officeNr("117")
+//				.floor("1")
+//				.build();
+//
+//		officeRepository.saveAll(List.of(office, office2, office3, office4, office5, office6));
 	}
 }

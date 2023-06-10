@@ -1,6 +1,5 @@
 package pl.medical.visits.controller;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -12,11 +11,12 @@ import pl.medical.visits.exception.ValidationException;
 import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.model.dto.PatientDetailsDTO;
+import pl.medical.visits.model.dto.VisitDTO;
 import pl.medical.visits.model.response.ResponseMessage;
-import pl.medical.visits.model.wrapper.DoctorEditDataForAdminWrapper;
-import pl.medical.visits.model.wrapper.PatientEditDataForAdminWrapper;
+import pl.medical.visits.model.wrapper.*;
 import pl.medical.visits.service.WebService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController("/auth")
@@ -38,7 +38,7 @@ public class WebAuthController {
 
     @GetMapping("/doctor/doctorsPatients")
     public ResponseEntity<Page<PatientDTO>> getAllPatientsForDoctorId(
-            @NotNull @RequestParam Map<String, String> reqParams,
+            @RequestParam Map<String, String> reqParams,
             Authentication auth
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctor(reqParams, auth.getName()));
@@ -50,7 +50,13 @@ public class WebAuthController {
     }
 
     @PatchMapping("/patient/updatePatient")
-    public ResponseEntity<ResponseMessage> updateDataForUser(
+    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForPatientWrapper patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
+        webService.updatePatientDataForPatient(auth.getName(), patientData);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Your data has been updated"));
+    }
+
+    @PatchMapping("/doctor/updatePatient")
+    public ResponseEntity<ResponseMessage> updateDataForPatient(
             @RequestBody PatientEditDataForAdminWrapper patient, Authentication auth
     ) throws NotUniqueValueException, ValidationException {
         webService.updatePatientData(auth.getName(), patient);
@@ -68,5 +74,33 @@ public class WebAuthController {
     ) throws NotUniqueValueException, ValidationException {
         webService.updateDoctorData(auth.getName(), doctor);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Doctor's data has been updated"));
+    }
+
+    @PostMapping("/patient/registerVisit")
+    public ResponseEntity<VisitDTO> registerVisit(
+            @RequestBody RegisterVisitWrapper visitWrapper,
+            Authentication auth
+    ) throws NotUniqueValueException {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.registerVisit(visitWrapper, auth.getName()));
+    }
+
+    @GetMapping("/admin/visits")
+    public ResponseEntity<List<VisitDTO>> getAllVisits() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits());
+    }
+
+    @GetMapping("/doctor/visit")
+    public ResponseEntity<VisitDTO> getVisitData(@RequestParam Long visitId, Authentication auth)  {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getVisitData(visitId, auth.getName()));
+    }
+
+    @GetMapping("/doctor/visits")
+    public ResponseEntity<List<VisitDTO>> getAllDoctorsVisits(@RequestParam Long doctorId, @RequestParam Map<String, String> reqParams, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllDoctorVisits(doctorId, reqParams, auth.getName()));
+    }
+
+    @PatchMapping("/doctor/visit")
+    public ResponseEntity<VisitDTO> updateVisit(@RequestBody EditVisitWrapper editVisit, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.updateVisit(editVisit, auth.getName()));
     }
 }

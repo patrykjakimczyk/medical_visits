@@ -7,14 +7,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.medical.visits.config.JwtService;
 import pl.medical.visits.exception.*;
-import pl.medical.visits.model.dto.DoctorDTO;
-import pl.medical.visits.model.dto.PatientDTO;
-import pl.medical.visits.model.dto.PatientDetailsDTO;
-import pl.medical.visits.model.dto.UserAddressDTO;
+import pl.medical.visits.model.dto.*;
+import pl.medical.visits.model.entity.Office;
+import pl.medical.visits.model.entity.Visit;
 import pl.medical.visits.model.entity.user.*;
 import pl.medical.visits.model.enums.Role;
 import pl.medical.visits.model.response.AuthenticationResponse;
@@ -22,10 +23,12 @@ import pl.medical.visits.model.wrapper.*;
 import pl.medical.visits.repository.*;
 import pl.medical.visits.util.StringUtil;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +38,7 @@ public class WebService {
     private final UserLoginRepository userLoginRepository;
     private final UserAddressRepository userAddressRepository;
     private final VisitRepository visitRepository;
+    private final OfficeRepository officeRepository;
     private final SpecialityRepository specialityRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
@@ -193,6 +197,36 @@ public class WebService {
                 });
     }
 
+    public Page<DoctorWithoutPeselDTO> getDoctorsBySpeciality(long specialityId, Map<String, String> reqParams) {
+        final String filterKey = reqParams.get("filterKey");
+        final String filterType = reqParams.get("filterType");
+        final PageRequest pageRequest = this.createPageRequest(reqParams);
+
+        if (StringUtil.isStringNotNull(filterKey) && StringUtil.isStringNotNull(filterType)) {
+            if (filterType.equals("firstName")) {
+                return userRepository
+                        .findDoctorsWithSpecialityAndFirstName(specialityId, filterKey, pageRequest)
+                        .map(doctor -> {
+                            String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                            return new DoctorWithoutPeselDTO(doctor, email);
+                        });
+            } else if (filterType.equals("lastName")) {
+                return userRepository
+                        .findDoctorsWithSpecialityAndLastName(specialityId, filterKey, pageRequest)
+                        .map(doctor -> {
+                            String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                            return new DoctorWithoutPeselDTO(doctor, email);
+                        });
+            }
+        }
+        return userRepository
+                .findDoctorsWithSpeciality(specialityId, pageRequest)
+                .map(doctor -> {
+                    String email = userLoginRepository.findEmailForUserId(doctor.getId());
+                    return new DoctorWithoutPeselDTO(doctor, email);
+                });
+    }
+
     public Page<PatientDTO> getAllPatientsForDoctor(Map<String, String> reqParams, String tokenEmail) {
         int offset;
         int pageSize;
@@ -345,6 +379,41 @@ public class WebService {
         throw new UserPerformedForbiddenActionException("Patient cannot access other users' data!");
     }
 
+    public void updatePatientDataForPatient(String tokenEmail, PatientEditDataForPatientWrapper patientData)
+            throws ValidationException, NotUniqueValueException {
+        UserLoginData loginData = this.userLoginRepository.findByEmail(tokenEmail);
+        Patient patient = (Patient) loginData.getUser();
+
+        patient.setFirstName(StringUtil.firstCapital(patientData.getFirstName()));
+        patient.setLastName(StringUtil.firstCapital(patientData.getLastName()));
+        patient.setPhoneNr(patientData.getPhoneNr());
+
+        validationService.validateUser(patient);
+
+        loginData.setEmail(patientData.getEmail());
+        loginData.setUser(patient);
+        validationService.validateUserEmail(loginData);
+
+        UserAddressData addressData = patient.getAddressData();
+        addressData.setUser(patient);
+        addressData.setCountry(patientData.getCountry());
+        addressData.setCity(patientData.getCity());
+        addressData.setStreet(patientData.getStreet());
+        addressData.setHouseNr(patientData.getHouseNr());
+        addressData.setApartmentNr(patientData.getApartmentNr());
+        addressData.setPostalCode(patientData.getPostalCode());
+        validationService.validateUserAddress(addressData);
+
+        try {
+            userAddressRepository.save(addressData);
+            userLoginRepository.save(loginData);
+        } catch (RuntimeException e) {
+            throw new NotUniqueValueException(
+                    "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
+            );
+        }
+    }
+
     public void updateDoctorData(String tokenEmail, DoctorEditDataForAdminWrapper doctorData)
             throws ValidationException, NotUniqueValueException {
         if (this.canAuthUserAccessUserOfId(tokenEmail, doctorData.getId(), Role.DOCTOR)
@@ -408,6 +477,137 @@ public class WebService {
 
         if (user.isPresent()) return new AuthenticationResponse(token, user.get().getRole());
         throw new UserDoesNotExistException("User does not exist in database");
+    }
+
+    public VisitDTO registerVisit(RegisterVisitWrapper visitWrapper, String authUserEmail) throws NotUniqueValueException {
+//        if (this.canAuthUserAccessUserOfId(authUserEmail, visitWrapper.getPatientId(), Role.PATIENT)) {
+
+            UserLoginData loginData = this.userLoginRepository.findByEmail(authUserEmail);
+            Optional<Doctor> doctorOptional = this.userRepository.findDoctorById(visitWrapper.getDoctorId());
+
+            if (!loginData.getUser().getRole().equals(Role.PATIENT)) {
+                throw new UserPerformedForbiddenActionException("Only patient can register visit!");
+            }
+
+            Patient patient = (Patient) loginData.getUser();
+
+            if (doctorOptional.isEmpty()) {
+                throw new UserDoesNotExistException(
+                        "Cannot register visit because patient or doctor with given id does not exist!"
+                );
+            }
+
+            Doctor doctor = doctorOptional.get();
+
+            Visit visit = new Visit();
+            visit.setPatient(patient);
+            visit.setDoctor(doctor);
+            visit.setDescription(visitWrapper.getDescription());
+            visit.setTimeStamp(visitWrapper.getTimestamp());
+
+            Optional<Office> officeOptional = officeRepository.findByDoctor(doctor);
+            visit.setOffice(
+                    officeOptional.orElseThrow(() ->
+                            new DoctorDoesNotHaveAssignedOfficeException("Doctor does not have assigned office!"))
+            );
+
+            try {
+                visitRepository.save(visit);
+            } catch (RuntimeException e) {
+                throw new NotUniqueValueException("Cannot register visit for occupied date");
+            }
+
+            return new VisitDTO(visit,  authUserEmail);
+//        }
+//        throw new UserPerformedForbiddenActionException("You are not allowed to register visit for another patient");
+    }
+
+    public List<VisitDTO> getAllVisits() {
+        return visitRepository.findAll(Sort.by(Sort.Direction.DESC, "timeStamp"))
+                .stream()
+                .map(visit -> new VisitDTO(visit, null))
+                .collect(Collectors.toList());
+    }
+
+    public VisitDTO getVisitData(Long visitId, String email) {
+        Optional<Visit> visitOptional = visitRepository.findById(visitId);
+
+        if (visitOptional.isEmpty()) {
+            throw new UserPerformedForbiddenActionException("Visit with given id does not exist");
+        }
+
+        Visit visit = visitOptional.get();
+        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
+        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
+
+        if (authenticatedUser.isEmpty()) {
+            throw new UserDoesNotExistException("User from given token does not exist");
+        }
+
+        User user = authenticatedUser.get();
+
+        if (visit.getDoctor().getId() != user.getId()) {
+            if (user.getRole().equals(Role.ADMIN)) {
+                return new VisitDTO(visit, null);
+            }
+            throw new UserPerformedForbiddenActionException("You cannot access this visit's data");
+        }
+        return new VisitDTO(visit, null);
+    }
+
+    public List<VisitDTO> getAllDoctorVisits(Long doctorId, Map<String, String> reqParams, String email) {
+        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
+        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
+
+        if (authenticatedUser.isEmpty()) {
+            throw new UserDoesNotExistException("User from given token does not exist");
+        }
+
+        List<Visit> visits;
+        User user = authenticatedUser.get();
+
+        if (doctorId != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+            throw new UserPerformedForbiddenActionException("You cannot access those visits' data");
+        }
+
+
+        final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "timeStamp");
+        visits = visitRepository.findAllDoctorVisits(doctorId, pageRequest);
+        return visits
+                .stream()
+                .map(visit -> new VisitDTO(visit, null))
+                .collect(Collectors.toList());
+    }
+
+    public VisitDTO updateVisit(EditVisitWrapper givenVisit, String email) {
+        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
+        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
+
+        if (authenticatedUser.isEmpty()) {
+            throw new UserDoesNotExistException("User from given token does not exist");
+        }
+
+        User user = authenticatedUser.get();
+
+        Optional<Visit> visitOptional = visitRepository.findById(givenVisit.getId());
+
+        if(visitOptional.isEmpty()) {
+            throw new UserPerformedForbiddenActionException("Cannot update visit which does not exist");
+        }
+        Visit visit = visitOptional.get();
+
+        if (givenVisit.getDoctorId() != user.getId()
+                && !user.getRole().equals(Role.ADMIN)
+                && visit.getDoctor().getId() == givenVisit.getDoctorId()
+        ) {
+            throw new UserPerformedForbiddenActionException("You cannot access those visits' data");
+        }
+
+        visit.setDescription(givenVisit.getDescription());
+        visit.setTimeStamp(givenVisit.getTimeStamp());
+
+        visitRepository.save(visit);
+        return new VisitDTO(visit, null);
     }
 
     private boolean canAuthUserAccessUserOfId(String email, long id, Role role) {

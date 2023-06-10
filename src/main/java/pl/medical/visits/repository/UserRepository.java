@@ -59,4 +59,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = SELECT_PATIENT_W_DOCTOR_ID + " and u.pesel like CONCAT(?2, '%')", nativeQuery = true)
     Page<Patient> findPatientsWithPeselForDoctor(long id, String pesel, PageRequest pageable);
+
+    @Query(value = "select distinct u.* from user_t u join doctor_speciality ds ON ds.doctor_id = u.user_id JOIN speciality s ON s.speciality_id = ds.speciality_id where s.speciality_id = ?1", nativeQuery = true)
+    Page<Doctor> findDoctorsWithSpeciality(Long specialityId, PageRequest pageable);
+    @Query(value = "select distinct u.* from user_t u join doctor_speciality ds ON ds.doctor_id = u.user_id JOIN speciality s ON s.speciality_id = ds.speciality_id where s.speciality_id = ?1 and UPPER(u.firstName) like UPPER(CONCAT(?2, '%'))", nativeQuery = true )
+    Page<Doctor> findDoctorsWithSpecialityAndFirstName(Long specialityId, String firstName, PageRequest pageable);
+    @Query(value = "select distinct u.* from user_t u join doctor_speciality ds ON ds.doctor_id = u.user_id JOIN speciality s ON s.speciality_id = ds.speciality_id where s.speciality_id = ?1 and UPPER(u.lastName) like UPPER(CONCAT(?2, '%'))", nativeQuery = true)
+    Page<Doctor> findDoctorsWithSpecialityAndLastName(Long specialityId, String lastName, PageRequest pageable);
 }
+//u.user_id, u.role, u.first_name, u.last_name, u.pesel, u.birthDate, u.sex, u.phoneNr

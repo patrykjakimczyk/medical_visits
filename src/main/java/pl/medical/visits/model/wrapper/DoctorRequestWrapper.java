@@ -8,10 +8,8 @@ import pl.medical.visits.model.entity.user.Speciality;
 import pl.medical.visits.model.entity.user.UserLoginData;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class DoctorRequestWrapper {
-    private Doctor doctor;
-    private UserLoginData loginData;
-    private Speciality speciality;
+    private final Doctor doctor;
+    private final UserLoginData loginData;
+    private final Speciality speciality;
 }
