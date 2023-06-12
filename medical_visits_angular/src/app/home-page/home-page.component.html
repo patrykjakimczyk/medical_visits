@@ -9,29 +9,29 @@
 <div *ngIf="userRole === 'ADMIN'">
   <div class="main_buttons_position">
     <div class="main_buttons_multiple">
-      <button class="main_button_style" routerLink="/patients-list">Patients</button>
+      <button class="main_button_style" routerLink="/admin/patients-list">Patients</button>
     </div>
     <div class="main_buttons_multiple">
-        <button class="main_button_style" routerLink="/doctors-list">Doctors</button>
+        <button class="main_button_style" routerLink="/admin/doctors-list">Doctors</button>
     </div>
     <div class="main_buttons_multiple">
-        <button class="main_button_style">Visits</button>
+        <button class="main_button_style" routerLink="/admin/visits">Visits</button>
     </div>
   </div>
 </div>
 <div *ngIf="userRole === 'DOCTOR'">
   <div class="main_buttons_position">
     <div class="main_buttons_multiple">
-        <button class="main_button_style">Patients</button>
+        <button class="main_button_style" routerLink="/doctor/patients-list">Patients</button>
     </div>
     <div class="main_buttons_multiple">
-        <button class="main_button_style">Visits</button>
+        <button class="main_button_style" routerLink="/doctor/visits">Visits</button>
     </div>
   </div>
 </div>
 <div *ngIf="userRole === 'PATIENT'">
   <div class="main_button">
-    <button class="main_button_style">{{mainButtonText}}</button>
+    <button class="main_button_style" routerLink="/patient/register-visit">{{mainButtonText}}</button>
   </div>
 </div>
 

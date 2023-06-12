@@ -3,32 +3,32 @@
   <div *ngIf="!userLogged">
     <div class="menu-items">
       <div><img src="./assets/home_page.png" class="menu_icons" id="home_page" routerLink=""></div>
-      <div><img src="./assets/contact.png" class="menu_icons" id="contact" routerLink=""></div>
-      <div><img src="./assets/doctor.png" class="menu_icons" id="doctor" routerLink=""></div>
-      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink=""></div>
+      <div><img src="./assets/contact.png" class="menu_icons" id="contact" routerLink="/contact"></div>
+      <div><img src="./assets/doctor.png" class="menu_icons" id="doctor" routerLink="/specialities"></div>
+      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink="/login-form"></div>
     </div>
   </div>
   <div *ngIf="userRole === 'ADMIN'">
     <div class="menu-items">
       <div><img src="./assets/home_page.png" class="menu_icons" id="home_page" routerLink=""></div>
-      <div><img src="./assets/patients.png" class="menu_icons" id="patients" routerLink="/patients-list"></div>
-      <div><img src="./assets/doctor.png" class="menu_icons" id="doctor" routerLink="/doctors-list"></div>
-      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink=""></div>
+      <div><img src="./assets/patients.png" class="menu_icons" id="patients" routerLink="/admin/patients-list"></div>
+      <div><img src="./assets/doctor.png" class="menu_icons" id="doctor" routerLink="/admin/doctors-list"></div>
+      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink="/admin/visits"></div>
     </div>
   </div>
   <div *ngIf="userRole === 'DOCTOR'">
     <div class="menu-items">
       <div><img src="./assets/home_page.png" class="menu_icons" id="home_page" routerLink=""></div>
-      <div><img src="./assets/patients.png" class="menu_icons" id="patients" routerLink=""></div>
-      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink=""></div>
+      <div><img src="./assets/patients.png" class="menu_icons" id="patients" routerLink="/doctor/patients-list"></div>
+      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink="/doctor/visits"></div>
     </div>
   </div>
   <div *ngIf="userRole === 'PATIENT'">
     <div class="menu-items">
       <div><img src="./assets/home_page.png" class="menu_icons" id="home_page" routerLink=""></div>
-      <div><img src="./assets/contact.png" class="menu_icons" id="contact" routerLink=""></div>
-      <div><img src="./assets/doctor.png" class="menu_icons" id="doctor" routerLink=""></div>
-      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink=""></div>
+      <div><img src="./assets/contact.png" class="menu_icons" id="contact" routerLink="/contact"></div>
+      <div><img src="./assets/doctor.png" class="menu_icons" id="doctor" routerLink="/specialities"></div>
+      <div><img src="./assets/calendar.png" class="menu_icons" id="calendar" routerLink="/patient/register-visit"></div>
     </div>
   </div>
 </div>

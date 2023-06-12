@@ -23,7 +23,6 @@ export class HomePageComponent implements OnInit, OnDestroy{
         this.userLogged = false;
         this.mainButtonText = "START HERE";
         this.userRole = undefined;
-        console.log(this.userRole)
       } else {
         this.userRole = user?.role;
         this.userLogged = true;

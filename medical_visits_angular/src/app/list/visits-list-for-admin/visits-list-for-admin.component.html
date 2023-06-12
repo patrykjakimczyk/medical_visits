@@ -1,12 +1,13 @@
 <div class="list-head">Visits</div>
-<div class="list-items">
+<!-- <div class="list-items">
     <div class="list-input-item"><input type="search" placeholder="Type here..." class="list_input" id="search_input">
     </div>
-    <div class="list-input-item"><select class="list_input" id="select_input">
+    <div class="list-input-item">
+        <select class="list_input" id="select_input">
             <option value="">First Name</option>
         </select></div>
     <div class="list-input-item"><button class="list_input" id="search_button">SEARCH</button></div>
-</div>
+</div> -->
 
 <ul>
     <li id="list-header">
@@ -17,59 +18,20 @@
         <div class="list-div list-header-element">Date</div>
         <div class="list-div list-header-element">Action</div>
     </li>
-    <li class="li-element">
-        <div class="li-element-div">Thomas Oetker</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">22113742069</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">10-05-2023</div>
+    <li class="li-element" *ngFor="let visit of visits; let i = index">
+        <div class="li-element-div">{{visit.doctor.firstName}} {{visit.doctor.lastName}}</div>
+        <div class="li-element-div">{{visit.patient.lastName}}</div>
+        <div class="li-element-div">{{visit.patient.pesel}}</div>
+        <div class="li-element-div">{{visit.patient.phoneNr}}</div>
+        <div class="li-element-div">{{getDate(visit.timeStamp)}}</div>
         <div class="li-element-div">
-            <a>Details</a>
-        </div>
-    </li>
-    <li class="li-element">
-        <div class="li-element-div">Thomas Oetker</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">22113742069</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">10-05-2023</div>
-        <div class="li-element-div">
-            <a>Details</a>
-        </div>
-    </li>
-    <li class="li-element">
-        <div class="li-element-div">Thomas Oetker</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">22113742069</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">10-05-2023</div>
-        <div class="li-element-div">
-            <a>Details</a>
-        </div>
-    </li>
-    <li class="li-element">
-        <div class="li-element-div">Thomas Oetker</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">22113742069</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">10-05-2023</div>
-        <div class="li-element-div">
-            <a>Details</a>
-        </div>
-    </li>
-    <li class="li-element">
-        <div class="li-element-div">Thomas Oetker</div>
-        <div class="li-element-div">Zbychowski</div>
-        <div class="li-element-div">22113742069</div>
-        <div class="li-element-div">213769420</div>
-        <div class="li-element-div">10-05-2023</div>
-        <div class="li-element-div">
-            <a>Details</a>
+          <a (click)="goToDetails(i)">Details</a>&nbsp;&nbsp;&nbsp;
+          <a (click)="goToEdit(i)">Edit</a>
         </div>
     </li>
     <li id="list-footer">
         <button class="footer-btn" id="prev-btn">&lt;</button>
-        <div class="list-counter"></div>
+          <div class="list-counter">{{currentPage + 1 + " of " + totalPages}}</div>
         <button class="footer-btn" id="next-btn">&gt;</button>
     </li>
 </ul>

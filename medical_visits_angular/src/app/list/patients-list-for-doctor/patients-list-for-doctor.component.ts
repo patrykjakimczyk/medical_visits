@@ -23,7 +23,7 @@ export class PatientsListForDoctorComponent implements OnInit{
   private _filterKey?: string;
   private _currentSorts: Map<SortProperty, Sort>;
 
-  constructor(private apiService: ApiService, private router: Router , private activatedRoute: ActivatedRoute) {}
+  constructor(private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit(): void {
       this.filterTypes = FILTER_TYPES;

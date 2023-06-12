@@ -4,7 +4,8 @@
   <app-nav-menu></app-nav-menu>
   <div *ngIf="userLogged"><app-top-buttons-logged (logoutButtonClicked)="logout()"></app-top-buttons-logged></div>
   <div *ngIf="!userLogged"><app-top-buttons-unlogged></app-top-buttons-unlogged></div>
-  <!-- <router-outlet></router-outlet> -->
+  <router-outlet></router-outlet>
+
 
 
 
@@ -50,5 +51,5 @@
   <!-- <app-specializations-unlogged></app-specializations-unlogged>
   <app-specializations-logged></app-specializations-logged> -->
   <!-- <app-specializations-list-unlogged></app-specializations-list-unlogged> -->
-  <app-specializations-list-logged></app-specializations-list-logged>
+  <!-- <app-specializations-list-logged></app-specializations-list-logged> -->
 </div>

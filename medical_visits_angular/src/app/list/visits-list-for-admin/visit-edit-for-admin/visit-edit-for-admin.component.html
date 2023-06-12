@@ -1,0 +1,56 @@
+<div id="head">Edit</div>
+
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <div class="inputs">
+        <!-- Doctor -->
+        <label for="">Doctor</label>
+        <input name="" id="" placeholder="" class="large_input" readonly [value]="visit.doctor.firstName + ' ' + visit.doctor.lastName">
+    </div>
+
+    <div class="inputs">
+        <!-- Nazwisko pacjenta -->
+        <label for="">Patient's surname</label>
+        <input name="" id="" placeholder="" class="large_input" readonly [value]="visit.patient.lastName">
+    </div>
+
+    <div class="inputs">
+        <!-- Numer telefonu -->
+        <label for="">Phone number</label>
+        <input name="phoneNr" id="phoneNr" placeholder="phoneNr" class="large_input" readonly [value]="visit.patient.phoneNr">
+    </div>
+
+    <div class="inputs">
+        <!-- PESEL -->
+        <label for="">Pesel</label>
+        <input name="pesel" id="pesel" placeholder="pesel" class="large_input" readonly [value]="visit.patient.pesel">
+    </div>
+
+    <div class="inputs">
+      <input type="date" name="date" id="" class="large_input" required #date="ngModel" [(ngModel)]="visit.date">
+      <div *ngIf="date.invalid && (date.dirty || date.touched)" class="error-message">
+        <span *ngIf="date.errors?.['required']">Date is required</span>
+        <span *ngIf="date.errors?.['invalid']">Invalid Date</span>
+      </div>
+  </div>
+
+  <div class="inputs">
+      <input type="time" name="time" id="" class="large_input" required #time="ngModel" [(ngModel)]="visit.time">
+      <div *ngIf="time.invalid && (time.dirty || time.touched)" class="error-message">
+        <span *ngIf="time.errors?.['required']">Time is required</span>
+        <span *ngIf="time.errors?.['invalid']">Invalid time</span>
+      </div>
+  </div>
+
+  <div class="info_inputs">
+      <textarea name="description" placeholder="info" class="info_input" id="info" cols="30" rows="10" style="resize: none;" #description="ngModel" [(ngModel)]="visit.description"></textarea>
+  </div>
+
+  <button type="submit" class="inputs">SAVE</button>
+  <div *ngIf="form.invalid && form.touched" class="error-message">Please fill the required fields!</div>
+  <div *ngIf="message">
+    <p id="success-message">{{message}}</p>
+  </div>
+  <div *ngIf="errorMessage">
+    <p id="error-message">{{errorMessage}}</p>
+  </div>
+</form>

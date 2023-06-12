@@ -1,27 +1,57 @@
 <div id="head">Your appointment</div>
-
-<form #form="ngForm">
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <div class="inputs">
-        <label for=""></label>
-        <input name="" id="" placeholder="Specalization" class="large_input">
+      <select (change)="getDoctorsBySpeciality($event)">
+        <option value="0">None</option>
+        <option *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.specialityName}}</option>
+      </select>
+    </div>
+
+    <div class="margin-bottom">
+      <nav *ngIf="doctors">
+          <ul id="doctors-list">
+              <li *ngFor="let doctor of doctors">
+                  <button (click)="assignDoctor(doctor)">{{doctor.firstName}} {{doctor.lastName}}</button>
+              </li>
+          </ul>
+      </nav>
     </div>
 
     <div class="inputs">
         <!-- Doctor -->
-        <input name="" id="" placeholder="Doctor" class="large_input">
+        <input name="doctor" id="" placeholder="Doctor" #doctor="ngModel" class="large_input" [(ngModel)]="assignedDoctor" [ngModel]="getDoctorsFullName()" required>
+        <div *ngIf="doctor.invalid && (doctor.dirty || doctor.touched)" class="error-message">
+          <span *ngIf="doctor.errors?.['required']">Doctor is required</span>
+          <span *ngIf="doctor.errors?.['invalid']">Invalid doctor</span>
+        </div>
     </div>
 
     <div class="inputs">
-        <input type="date" name="" id="" class="large_input">
+        <input type="date" name="date" id="" class="large_input" #date="ngModel" ngModel required>
+        <div *ngIf="date.invalid && (date.dirty || date.touched)" class="error-message">
+          <span *ngIf="date.errors?.['required']">Date is required</span>
+          <span *ngIf="date.errors?.['invalid']">Invalid Date</span>
+        </div>
     </div>
 
     <div class="inputs">
-        <input type="time" name="" id="" class="large_input">
+        <input type="time" name="time" id="" class="large_input" #time="ngModel" ngModel required>
+        <div *ngIf="time.invalid && (time.dirty || time.touched)" class="error-message">
+          <span *ngIf="time.errors?.['required']">Time is required</span>
+          <span *ngIf="time.errors?.['invalid']">Invalid time</span>
+        </div>
     </div>
 
     <div class="info_inputs">
-        <input name="info" id="info" placeholder="info" class="info_input">
+        <textarea name="description" placeholder="info" class="info_input" id="info" cols="30" rows="10" style="resize: none;" #description="ngModel" ngModel></textarea>
     </div>
 
     <button type="submit" class="inputs">SAVE</button>
+    <div *ngIf="form.invalid && form.touched" class="error-message">Please fill the required fields!</div>
+    <div *ngIf="message">
+      <p id="success-message">{{message}}</p>
+    </div>
+    <div *ngIf="errorMessage">
+      <p id="error-message">{{errorMessage}}</p>
+    </div>
 </form>

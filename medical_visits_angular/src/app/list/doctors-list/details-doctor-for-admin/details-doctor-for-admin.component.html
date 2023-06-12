@@ -20,6 +20,7 @@
       <!-- Numer telefonu -->
       <label for="phoneNr">Phone number</label>
       <input name="phoneNr" id="phoneNr" placeholder="phoneNr" class="large_input" readonly [value]="doctorsData.phoneNr">
+
   </div>
 
   <div class="li-inputs">
@@ -27,7 +28,7 @@
       <label>Specialities</label>
       <ul>
         <li *ngFor="let speciality of doctorsData.specialities">
-            {{speciality.specialityName}}
+            {{speciality.specialityName|| ''}}
         </li>
       </ul>
   </div>

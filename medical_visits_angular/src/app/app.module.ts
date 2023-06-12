@@ -21,14 +21,14 @@ import { DetailsDoctorForAdminComponent } from './list/doctors-list/details-doct
 import { DetailsPatientForAdminComponent } from './list/patients-list/details-patient-for-admin/details-patient-for-admin.component';
 import { DetailsPatientForDoctorComponent } from './list/doctors-list/details-patient-for-doctor/details-patient-for-doctor.component';
 import { EditDataFormComponent } from './form/edit-data-form/edit-data-form.component';
-import { VisitDetailsForDoctorComponent } from './visits/visit-details-for-doctor/visit-details-for-doctor.component';
-import { VisitDetailsForAdminComponent } from './visits/visit-details-for-admin/visit-details-for-admin.component';
+import { VisitDetailsForDoctorComponent } from './list/visits-list-for-doctor/visit-details-for-doctor/visit-details-for-doctor.component';
+import { VisitDetailsForAdminComponent } from './list/visits-list-for-admin/visit-details-for-admin/visit-details-for-admin.component';
 import { VisitsListForAdminComponent } from './list/visits-list-for-admin/visits-list-for-admin.component';
 import { VisitsListForDoctorComponent } from './list/visits-list-for-doctor/visits-list-for-doctor.component';
 import { PatientsListForDoctorComponent } from './list/patients-list-for-doctor/patients-list-for-doctor.component';
 import { DetailsPatientsListForDoctorComponent } from './list/patients-list-for-doctor/details-patients-list-for-doctor/details-patients-list-for-doctor.component';
 import { EditPatientsListForDoctorComponent } from './list/patients-list-for-doctor/edit-patients-list-for-doctor/edit-patients-list-for-doctor.component';
-import { VisitEditForDoctorComponent } from './visits/visit-edit-for-doctor/visit-edit-for-doctor.component';
+import { VisitEditForDoctorComponent } from './list/visits-list-for-doctor/visit-edit-for-doctor/visit-edit-for-doctor.component';
 import { DataEditForDoctorComponent } from './data-edit-for-doctor/data-edit-for-doctor.component';
 import { AppointmentComponent } from './appointment/appointment.component';
 import { SpecializationsUnloggedComponent } from './specializations/specializations-unlogged/specializations-unlogged.component';
@@ -36,6 +36,7 @@ import { SpecializationsLoggedComponent } from './specializations/specialization
 import { SpecializationsListUnloggedComponent } from './specializations/specializations-list-unlogged/specializations-list-unlogged.component';
 import { SpecializationsListLoggedComponent } from './specializations/specializations-list-logged/specializations-list-logged.component';
 import { ContactPageComponent } from './contact-page/contact-page.component';
+import { VisitEditForAdminComponent } from './list/visits-list-for-admin/visit-edit-for-admin/visit-edit-for-admin.component';
 
 
 
@@ -65,6 +66,7 @@ import { ContactPageComponent } from './contact-page/contact-page.component';
     PatientsListForDoctorComponent,
     VisitsListForDoctorComponent,
     VisitEditForDoctorComponent,
+    VisitEditForAdminComponent,
     DataEditForDoctorComponent,
     AppointmentComponent,
     SpecializationsUnloggedComponent,

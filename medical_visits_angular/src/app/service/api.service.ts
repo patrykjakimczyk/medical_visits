@@ -12,7 +12,7 @@ import { PatientListElem } from '../model/patient-list-elem';
 
 @Injectable({providedIn:"root"})
 export class ApiService {
-  public static url = "http://localhost:8082/";
+  public static url = "http://localhost:8081/";
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {}
 
@@ -181,6 +181,54 @@ export class ApiService {
     );
   }
 
+  getDoctorsBySpeciality(page: number, pageSize: number = 10, specialityId: number, filterType?: FilterTypeParam, filterKey?: string, sorts?: Map<SortProperty, Sort>): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap((user) => {
+        let headers = new HttpHeaders();
+        let queryParams = new HttpParams();
+
+        if (user && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        queryParams = queryParams.append("specialityId", specialityId);
+
+        if (filterType && filterKey)  {
+          queryParams = queryParams
+              .append("filterType", filterType)
+              .append("filterKey", filterKey);
+        }
+
+        if (sorts)  {
+          const firstNameSortOrder = sorts.get(SortProperty.FIRST_NAME);
+          const lastNameSortOrder = sorts.get(SortProperty.LAST_NAME);
+
+          if (firstNameSortOrder)  {
+            queryParams = queryParams
+            .append(SortProperty.FIRST_NAME, firstNameSortOrder);
+          }
+
+          if (lastNameSortOrder) {
+            queryParams = queryParams
+                .append(SortProperty.LAST_NAME, lastNameSortOrder);
+          }
+        }
+
+        queryParams = queryParams.append("offset", page.toString());
+        queryParams = queryParams.append("pageSize", pageSize.toString())
+
+        return this.http.get<any>(`${ApiService.url}doctors`, {
+          headers: headers,
+          params: queryParams
+        })
+      }),
+      catchError((error) => {
+        console.error(error);
+        throw error as HttpErrorResponse;
+      })
+    );
+  }
+
   getPatientsFullData(id: number): Observable<any> {
     return this.authService.loggedUser.pipe(
       switchMap((user) => {
@@ -219,7 +267,7 @@ export class ApiService {
           headers = headers.set("Authorization", `Bearer ${user.token}`);
         }
 
-        return this.http.patch<any>(`${ApiService.url}auth/doctor/updatePatient`, patient, {
+        return this.http.patch<any>(`${ApiService.url}auth/patient/updatePatient`, patient, {
           headers: headers
         })
           .pipe(
@@ -271,6 +319,135 @@ export class ApiService {
         }
 
         return this.http.patch<any>(`${ApiService.url}auth/doctor/updateDoctor`, doctor, {
+          headers: headers
+        })
+          .pipe(
+            map(response => response),
+            catchError(error => {
+                console.error(error);
+                throw error as HttpErrorResponse;
+            }));
+      })
+    )
+  }
+
+  registerVisit(visit: any): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap(user => {
+        let headers = new HttpHeaders({
+          'Content-Type': 'application/json'
+        });
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        return this.http.post<any>(`${ApiService.url}auth/patient/registerVisit`, visit, {
+          headers: headers
+        })
+          .pipe(
+            map(response => response),
+            catchError(error => {
+                console.error(error);
+                throw error as HttpErrorResponse;
+            }));
+      })
+    )
+  }
+
+  getVisitsForAdmin(page: number, pageSize: number = 10): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap((user) => {
+        let headers = new HttpHeaders();
+        let queryParams = new HttpParams();
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        queryParams = queryParams.append("offset", page.toString());
+        queryParams = queryParams.append("pageSize", pageSize.toString())
+
+        return this.http.get<any>(`${ApiService.url}auth/admin/visits`, {
+          headers: headers,
+          params: queryParams
+        }).pipe(
+          map(doctorData => doctorData),
+          catchError(error => {
+            console.error(error);
+            throw error as HttpErrorResponse;
+          })
+        )
+      })
+    );
+  }
+
+  getVisitData(id: number) {
+    return this.authService.loggedUser.pipe(
+      switchMap((user) => {
+        let headers = new HttpHeaders();
+        let queryParams = new HttpParams();
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        queryParams = queryParams
+              .append("visitId", id);
+
+        return this.http.get<any>(`${ApiService.url}auth/doctor/visit`, {
+          headers: headers,
+          params: queryParams
+        }).pipe(
+          map(doctorData => doctorData),
+          catchError(error => {
+            console.error(error);
+            throw error as HttpErrorResponse;
+          })
+        )
+      })
+    );
+  }
+
+  getVisitsForDoctor(page: number, pageSize: number = 10): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap((user) => {
+        let headers = new HttpHeaders();
+        let queryParams = new HttpParams();
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        queryParams = queryParams.append("offset", page.toString());
+        queryParams = queryParams.append("pageSize", pageSize.toString())
+
+        return this.http.get<any>(`${ApiService.url}auth/doctor/visits`, {
+          headers: headers,
+          params: queryParams
+        }).pipe(
+          map(doctorData => doctorData),
+          catchError(error => {
+            console.error(error);
+            throw error as HttpErrorResponse;
+          })
+        )
+      })
+    );
+  }
+
+  updateVisit(visit: any): Observable<any> {
+    return this.authService.loggedUser.pipe(
+      switchMap(user => {
+        let headers = new HttpHeaders({
+          'Content-Type': 'application/json'
+        });
+
+        if (user !== undefined && Object.keys(user).length !== 0) {
+          headers = headers.set("Authorization", `Bearer ${user.token}`);
+        }
+
+        return this.http.patch<any>(`${ApiService.url}auth/doctor/visit`, visit, {
           headers: headers
         })
           .pipe(

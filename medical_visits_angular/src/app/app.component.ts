@@ -21,7 +21,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle('MedicalVisits');
     this.loggedUserSubscription = this.authService.loggedUser.subscribe((user) => {
-      // console.log(user);
       if (user === undefined || Object.keys(user).length === 0) {
         this.userLogged = false;
       } else {

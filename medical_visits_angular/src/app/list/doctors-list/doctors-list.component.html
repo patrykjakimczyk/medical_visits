@@ -43,11 +43,11 @@
         <div class="li-element-div li-select-list">
           <select>
             <option *ngIf="doctorListElem.specialities.length === 0">None</option>
-            <option *ngFor="let speciality of doctorListElem.specialities">{{speciality.specialityName}}</option>
+            <option *ngFor="let speciality of doctorListElem.specialities">{{speciality.specialityName || ""}}</option>
           </select>
         </div>
-        <div class="li-element-div">{{doctorListElem.phoneNr}}</div>
-        <div class="li-element-div">{{doctorListElem.email}}</div>
+        <div class="li-element-div">{{doctorListElem.phoneNr || ""}}</div>
+        <div class="li-element-div">{{doctorListElem.email || ""}}</div>
         <div class="li-element-div">
             <a (click)="goToDetails(i)">Details</a>&nbsp;&nbsp;&nbsp;
             <a (click)="goToEdit(i)">Edit</a>

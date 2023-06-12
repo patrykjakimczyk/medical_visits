@@ -1,10 +1,7 @@
 <div id="specalization-page-head">Doctors</div>
 
 <div class="panes">
-    <input class="specalization-pane" type="button" value="Gynecologists">
-    <input class="specalization-pane" type="button" value="Neurologists">
-    <input class="specalization-pane" type="button" value="Urologists">
-    <input class="specalization-pane" type="button" value="Endocrinologists">
-    <input class="specalization-pane" type="button" value="Cardiologists">
-    <input class="specalization-pane" type="button" value="Dentist">
+  <ng-container *ngFor="let speciality of specialities">
+    <input class="specalization-pane" type="button" [value]="speciality.specialityName">
+  </ng-container>
 </div>
