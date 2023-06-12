@@ -522,11 +522,10 @@ public class WebService {
 //        throw new UserPerformedForbiddenActionException("You are not allowed to register visit for another patient");
     }
 
-    public List<VisitDTO> getAllVisits() {
-        return visitRepository.findAll(Sort.by(Sort.Direction.DESC, "timeStamp"))
-                .stream()
-                .map(visit -> new VisitDTO(visit, null))
-                .collect(Collectors.toList());
+    public Page<VisitDTO> getAllVisits(Map<String, String> reqParams) {
+        final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "timeStamp");
+        return visitRepository.findAll(pageRequest)
+                .map(visit -> new VisitDTO(visit, null));
     }
 
     public VisitDTO getVisitData(Long visitId, String email) {
@@ -555,7 +554,7 @@ public class WebService {
         return new VisitDTO(visit, null);
     }
 
-    public List<VisitDTO> getAllDoctorVisits(Long doctorId, Map<String, String> reqParams, String email) {
+    public Page<VisitDTO> getAllDoctorVisits(Map<String, String> reqParams, String email) {
         UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
         Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
 
@@ -563,20 +562,15 @@ public class WebService {
             throw new UserDoesNotExistException("User from given token does not exist");
         }
 
-        List<Visit> visits;
         User user = authenticatedUser.get();
 
-        if (doctorId != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+        if (!user.getRole().equals(Role.DOCTOR)) {
             throw new UserPerformedForbiddenActionException("You cannot access those visits' data");
         }
 
-
-        final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "timeStamp");
-        visits = visitRepository.findAllDoctorVisits(doctorId, pageRequest);
-        return visits
-                .stream()
-                .map(visit -> new VisitDTO(visit, null))
-                .collect(Collectors.toList());
+        final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "time_stamp");
+        return visitRepository.findAllDoctorVisits(user.getId(), pageRequest)
+                .map(visit -> new VisitDTO(visit, null));
     }
 
     public VisitDTO updateVisit(EditVisitWrapper givenVisit, String email) {

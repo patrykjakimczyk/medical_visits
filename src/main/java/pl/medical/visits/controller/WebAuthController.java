@@ -50,8 +50,8 @@ public class WebAuthController {
     }
 
     @PatchMapping("/patient/updatePatient")
-    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForPatientWrapper patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
-        webService.updatePatientDataForPatient(auth.getName(), patientData);
+    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForAdminWrapper patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
+        webService.updatePatientData(auth.getName(), patientData);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Your data has been updated"));
     }
 
@@ -85,8 +85,8 @@ public class WebAuthController {
     }
 
     @GetMapping("/admin/visits")
-    public ResponseEntity<List<VisitDTO>> getAllVisits() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits());
+    public ResponseEntity<Page<VisitDTO>> getAllVisits(@RequestParam Map<String, String> reqParams) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits(reqParams));
     }
 
     @GetMapping("/doctor/visit")
@@ -95,8 +95,8 @@ public class WebAuthController {
     }
 
     @GetMapping("/doctor/visits")
-    public ResponseEntity<List<VisitDTO>> getAllDoctorsVisits(@RequestParam Long doctorId, @RequestParam Map<String, String> reqParams, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllDoctorVisits(doctorId, reqParams, auth.getName()));
+    public ResponseEntity<Page<VisitDTO>> getAllDoctorsVisits(@RequestParam Map<String, String> reqParams, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllDoctorVisits(reqParams, auth.getName()));
     }
 
     @PatchMapping("/doctor/visit")
