@@ -11,6 +11,8 @@ import { EditPatientForAdminComponent } from './list/patients-list/edit-patient-
 import { DetailsPatientForAdminComponent } from './list/patients-list/details-patient-for-admin/details-patient-for-admin.component';
 import { AuthGuard } from './guard/auth-guard';
 import { PatientsListForDoctorComponent } from './list/patients-list-for-doctor/patients-list-for-doctor.component';
+// import { EditPatientForDoctorComponent } from './list/patients-list-for-doctor/edit-patients-list-for-doctor/edit-patients-list-for-doctor.component';
+// import { DetailsPatientForDoctorComponent } from './list/patients-list-for-doctor/details-patients-list-for-doctor/details-patients-list-for-doctor.component';
 import { EditPatientForDoctorComponent } from './list/doctors-list/edit-patient-for-doctor/edit-patient-for-doctor.component';
 import { DetailsPatientForDoctorComponent } from './list/doctors-list/details-patient-for-doctor/details-patient-for-doctor.component';
 import { AppointmentComponent } from './appointment/appointment.component';
