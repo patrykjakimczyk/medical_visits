@@ -1,0 +1,7 @@
+<div id="specalization-page-head">Doctors</div>
+
+<div class="panes">
+  <ng-container *ngFor="let speciality of specialities; let i = index">
+    <input class="specalization-pane" type="button" [value]="speciality.specialityName" (click)="goToDoctorsBySpeciality(i)">
+  </ng-container>
+</div>

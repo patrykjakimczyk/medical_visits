@@ -24,6 +24,7 @@ export class VisitEditForAdminComponent {
         this.visit.timeStamp = new Date(this.visit.timeStamp);
         this.visit.date = this.getDate(this.visit.timeStamp)
         this.visit.time = this.getTime(this.visit.timeStamp)
+        console.log(new Date(this.visit.timeStamp).getMonth())
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)
@@ -32,7 +33,7 @@ export class VisitEditForAdminComponent {
   }
 
   getDate(date: any) {
-    return `${date.getFullYear()}-${date.getMonth() <= 9 ? "0" + date.getMonth() : date.getMonth()}-${date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()}`
+    return `${date.getFullYear()}-${date.getMonth() <= 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()}`
    }
 
    getTime(date: any) {
@@ -43,6 +44,7 @@ export class VisitEditForAdminComponent {
     const appointment = form.value;
     const datetime = appointment.date + " " + appointment.time;
     const timestamp = new Date(datetime.replace(" ", "T")).getTime();
+
 
     appointment.timeStamp = timestamp
     appointment.id = this.visit.id;

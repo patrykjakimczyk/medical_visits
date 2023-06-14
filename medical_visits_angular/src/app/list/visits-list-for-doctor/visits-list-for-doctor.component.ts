@@ -55,7 +55,7 @@ export class VisitsListForDoctorComponent {
   }
 
   getDate(date: any) {
-   return `${date.getFullYear()}-${date.getMonth() <= 9 ? "0" + date.getMonth() : date.getMonth()}-${date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()}, ` +
+   return `${date.getFullYear()}-${date.getMonth() <= 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() <= 9 ? "0" + date.getDate() : date.getDate()}, ` +
     `${date.getHours() <= 9 ? "0" + date.getHours() : date.getHours()}:${date.getMinutes() <= 9 ? "0" + date.getMinutes() : date.getMinutes()}`;
   }
 

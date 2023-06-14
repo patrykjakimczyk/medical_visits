@@ -1,0 +1,51 @@
+<div class="list-head">Doctors</div>
+
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="list-items">
+    <div class="list-input-item">
+      <input type="search" placeholder="Type here..." class="list_input" id="search_input" name="filterKey" #filterKey="ngModel" ngModel>
+    </div>
+    <div class="list-input-item">
+      <select class="list_input" id="select_input"  name="filterType" ngModel>
+        <option value="" disabled>Choose filter type</option>
+        <option *ngFor="let type of filterTypes" [value]="type.param">{{ type.name }}</option>
+      </select>
+    </div>
+    <div class="list-input-item">
+      <button type="submit" [disabled]="!form.valid" class="list_input" id="search_button">SEARCH</button>
+    </div>
+  </div>
+</form>
+
+<ul>
+    <h1>{{speciality.specialityName}}</h1>
+
+    <li id="list-header">
+      <div class="list-div list-header-element" (click)="firstNameSorting()">First name</div>
+      <div [ngSwitch]="firstNameSortIndex" class="arrow-div">
+        <img src="../../../assets/arrow-up.png" alt="arrow up" *ngSwitchCase="1">
+        <img src="../../../assets/arrow-down.png" alt="arrow down" *ngSwitchCase="2">
+        <div *ngSwitchDefault></div>
+      </div>
+      <div class="list-div list-header-element" (click)="lastNameSorting()">Last name</div>
+      <div [ngSwitch]="lastNameSortIndex" class="arrow-div">
+        <img src="../../../assets/arrow-up.png" alt="arrow up" *ngSwitchCase="1">
+        <img src="../../../assets/arrow-down.png" alt="arrow down" *ngSwitchCase="2">
+        <div *ngSwitchDefault></div>
+      </div>
+        <div class="list-div list-header-element">Phone number</div>
+        <div class="list-div list-header-element">E-mail address</div>
+    </li>
+
+    <li class="li-element" *ngFor="let doctor of doctorsArray">
+        <div class="li-element-div">{{doctor.firstName}}</div>
+        <div class="li-element-div">{{doctor.lastName}}</div>
+        <div class="li-element-div">{{doctor.phoneNr}}</div>
+        <div class="li-element-div">{{doctor.email}}l</div>
+    </li>
+    <li id="list-footer">
+      <button class="footer-btn" id="prev-btn" (click)="previousPage()">&lt;</button>
+      <div class="list-counter">{{currentPage + 1 + " of " + totalPages}}</div>
+      <button class="footer-btn" id="next-btn" (click)="nextPage()">&gt;</button>
+    </li>
+</ul>

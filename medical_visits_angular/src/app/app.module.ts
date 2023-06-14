@@ -31,12 +31,10 @@ import { DetailsPatientForDoctorComponent } from './list/doctors-list/details-pa
 import { VisitEditForDoctorComponent } from './list/visits-list-for-doctor/visit-edit-for-doctor/visit-edit-for-doctor.component';
 import { DataEditForDoctorComponent } from './data-edit-for-doctor/data-edit-for-doctor.component';
 import { AppointmentComponent } from './appointment/appointment.component';
-import { SpecializationsUnloggedComponent } from './specializations/specializations-unlogged/specializations-unlogged.component';
-import { SpecializationsLoggedComponent } from './specializations/specializations-logged/specializations-logged.component';
-import { SpecializationsListUnloggedComponent } from './specializations/specializations-list-unlogged/specializations-list-unlogged.component';
-import { SpecializationsListLoggedComponent } from './specializations/specializations-list-logged/specializations-list-logged.component';
+import { DoctorsListBySpecialityComponent } from './specialities/doctors-list-by-speciality/doctors-list-by-speciality.component';
 import { ContactPageComponent } from './contact-page/contact-page.component';
 import { VisitEditForAdminComponent } from './list/visits-list-for-admin/visit-edit-for-admin/visit-edit-for-admin.component';
+import { SpecialitiesListComponent } from './specialities/specialities-list.component';
 
 
 
@@ -69,11 +67,9 @@ import { VisitEditForAdminComponent } from './list/visits-list-for-admin/visit-e
     VisitEditForAdminComponent,
     DataEditForDoctorComponent,
     AppointmentComponent,
-    SpecializationsUnloggedComponent,
-    SpecializationsLoggedComponent,
-    SpecializationsListUnloggedComponent,
-    SpecializationsListLoggedComponent,
-    ContactPageComponent
+    DoctorsListBySpecialityComponent,
+    ContactPageComponent,
+    SpecialitiesListComponent
   ],
   imports: [
     BrowserModule,

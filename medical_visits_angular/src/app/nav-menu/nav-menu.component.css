@@ -23,6 +23,10 @@
     margin-left: 2px;
 }
 
+#MV_menLogo:hover {
+  cursor: pointer;
+}
+
 .menu-items {
     position: absolute;
     left: 50%;

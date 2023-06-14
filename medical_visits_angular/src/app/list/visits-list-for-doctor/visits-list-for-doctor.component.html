@@ -18,7 +18,7 @@
         <div class="list-div list-header-element">Action</div>
     </li>
     <li class="li-element" *ngFor="let visit of visits; let i = index">
-      <div class="li-element-div">{{visit.doctor.firstName}} {{visit.doctor.lastName}}</div>
+      <div class="li-element-div">{{visit.patient.firstName}}</div>
       <div class="li-element-div">{{visit.patient.lastName}}</div>
       <div class="li-element-div">{{visit.patient.pesel}}</div>
       <div class="li-element-div">{{visit.patient.phoneNr}}</div>

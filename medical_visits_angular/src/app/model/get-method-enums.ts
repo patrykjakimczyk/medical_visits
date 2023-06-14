@@ -44,3 +44,14 @@ export const FILTER_TYPES = [
     name: FilterTypeName.PESEL
   }
 ]
+
+export const FILTER_TYPES_WO_PESEL = [
+  {
+    param: FilterTypeParam.FIRST_NAME,
+    name: FilterTypeName.FIRST_NAME
+  },
+  {
+    param: FilterTypeParam.LAST_NAME,
+    name: FilterTypeName.LAST_NAME
+  }
+]

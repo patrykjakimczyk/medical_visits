@@ -23,7 +23,8 @@ import { VisitsListForDoctorComponent } from './list/visits-list-for-doctor/visi
 import { VisitDetailsForDoctorComponent } from './list/visits-list-for-doctor/visit-details-for-doctor/visit-details-for-doctor.component';
 import { VisitEditForDoctorComponent } from './list/visits-list-for-doctor/visit-edit-for-doctor/visit-edit-for-doctor.component';
 import { VisitEditForAdminComponent } from './list/visits-list-for-admin/visit-edit-for-admin/visit-edit-for-admin.component';
-import { SpecializationsLoggedComponent } from './specializations/specializations-logged/specializations-logged.component';
+import { DoctorsListBySpecialityComponent } from './specialities/doctors-list-by-speciality/doctors-list-by-speciality.component';
+import { SpecialitiesListComponent } from './specialities/specialities-list.component';
 
 
 const routes: Routes = [
@@ -45,7 +46,16 @@ const routes: Routes = [
   },
   {
     path: 'specialities',
-    component: SpecializationsLoggedComponent
+    component: SpecialitiesListComponent
+  },
+  {
+    path: 'specialities',
+    children: [
+      {
+        path: "speciality/:id/doctors",
+        component: DoctorsListBySpecialityComponent
+      }
+    ]
   },
   {
     path: 'admin/doctors-list',
