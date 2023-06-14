@@ -1,38 +1,38 @@
 #specalization-page-head {
   position: absolute;
-  top: 100px;
-  left: 150px;
+  top: 12vh;
+  left: 10vw;
   color: #28587A;
-  font-size: 60px;
+  font-size: 4vw;
   font-weight: bold;
 }
 
 .panes {
   position: relative;
-  top: 100px;
+  top: 14vh;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
-  width: 1000px;
-  height: 600px;
+  width: 60vw;
+  height: 80vh;
   margin: auto;
 }
 
 .specalization-pane {
-  width: 400px;
-  height: 150px;
+  width: 25vw;
+  height: 20vh;
   margin: auto;
 
   background: #FFFFFF;
-  box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   text-align: center;
   border: none;
 
   color: #28587A;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 2vw;
 }
 
 .specalization-pane:active{

@@ -47,4 +47,13 @@
 #patients {
     width: 50px;
     margin-left: 2px;
+    border-radius: 10px;
+}
+
+#home_page:active,
+#contact:active,
+#doctor:active,
+#calendar:active,
+#patients:active{
+    background-color: silver;
 }

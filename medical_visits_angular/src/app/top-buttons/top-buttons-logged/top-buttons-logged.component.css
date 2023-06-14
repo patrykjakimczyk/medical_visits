@@ -20,3 +20,8 @@
     font-weight: bold;
     border: none;
 }
+
+.button_style:active {
+    background: #28587A;
+    color: #FFFFFF;
+}

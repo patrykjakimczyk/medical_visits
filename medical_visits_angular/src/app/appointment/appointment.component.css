@@ -23,3 +23,7 @@ li > button {
   background-color: transparent;
   border: none;
 }
+
+textarea{
+  font-size: 1.5vw;
+}
