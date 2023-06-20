@@ -29,7 +29,6 @@ import { DetailsPatientForDoctorComponent } from './list/doctors-list/details-pa
 // import { EditPatientForDoctorComponent } from './list/patients-list-for-doctor/edit-patients-list-for-doctor/edit-patients-list-for-doctor.component';
 // import { DetailsPatientForDoctorComponent } from './list/patients-list-for-doctor/details-patients-list-for-doctor/details-patients-list-for-doctor.component';
 import { VisitEditForDoctorComponent } from './list/visits-list-for-doctor/visit-edit-for-doctor/visit-edit-for-doctor.component';
-import { DataEditForDoctorComponent } from './data-edit-for-doctor/data-edit-for-doctor.component';
 import { AppointmentComponent } from './appointment/appointment.component';
 import { DoctorsListBySpecialityComponent } from './specialities/doctors-list-by-speciality/doctors-list-by-speciality.component';
 import { ContactPageComponent } from './contact-page/contact-page.component';
@@ -65,7 +64,6 @@ import { SpecialitiesListComponent } from './specialities/specialities-list.comp
     VisitsListForDoctorComponent,
     VisitEditForDoctorComponent,
     VisitEditForAdminComponent,
-    DataEditForDoctorComponent,
     AppointmentComponent,
     DoctorsListBySpecialityComponent,
     ContactPageComponent,
