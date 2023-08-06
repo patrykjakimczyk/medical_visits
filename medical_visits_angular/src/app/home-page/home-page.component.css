@@ -14,11 +14,11 @@
 
 .main_page_photo {
     position:absolute;
-    top: 20vh;
+    top: 10vh;
     left: 47vw;
-    width: 90vh;
-    height: 70vh;
-    background-image: url("src/assets/main_page_image.png");
+    width: 110vh;
+    height: 90vh;
+    background-image: url("src/assets/main_page_image.svg");
     background-size: cover;
     background-position: center;
     float: left;
