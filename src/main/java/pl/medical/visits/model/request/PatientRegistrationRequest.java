@@ -1,4 +1,4 @@
-package pl.medical.visits.model.wrapper;
+package pl.medical.visits.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import pl.medical.visits.model.entity.user.UserLoginData;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientRequestWrapper {
+public final class PatientRegistrationRequest {
     private Patient patient;
     private UserLoginData loginData;
     private UserAddressData addressData;

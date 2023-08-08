@@ -6,9 +6,8 @@ import lombok.NoArgsConstructor;
 import pl.medical.visits.model.enums.Role;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationResponse {
+public final class AuthenticationResponse {
     private String token;
     private Role role;
 }

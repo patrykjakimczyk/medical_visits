@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_address")
-public class UserAddressData {
+public final class UserAddressData {
     @Id
     @SequenceGenerator(
             name = "user_add_seq",

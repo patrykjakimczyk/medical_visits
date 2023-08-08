@@ -30,7 +30,7 @@ public class Application implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 //		Admin admin = Admin.builder()
-//				.role(Role.ADMIN)
+//				.role(Role.ADMIN)//
 //				.firstName("Adam")
 //				.lastName("Nowak")
 //				.pesel("79120349355")

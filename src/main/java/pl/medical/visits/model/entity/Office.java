@@ -13,7 +13,7 @@ import javax.persistence.*;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Office {
+public final class Office {
     @Id
     @SequenceGenerator(
             name = "office_seq",

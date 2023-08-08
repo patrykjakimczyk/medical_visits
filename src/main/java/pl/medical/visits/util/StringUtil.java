@@ -13,7 +13,7 @@ public class StringUtil {
         return string.length() > max;
     }
 
-    public static boolean isStringNotNull(String string) {
+    public static boolean isStringNotBlank(String string) {
         if(string == null) return false;
         return !string.isEmpty();
     }

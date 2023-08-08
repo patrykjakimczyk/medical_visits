@@ -15,12 +15,12 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ExceptionMessage> validation(ValidationException exception, WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ExceptionMessage(exception.getMessage()));
     }
 
     @ExceptionHandler(NotUniqueValueException.class)
     public ResponseEntity<ExceptionMessage> sqlException(NotUniqueValueException exception, WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionMessage(exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ExceptionMessage(exception.getMessage()));
     }
 
     @ExceptionHandler(WrongRequestParametersException.class)

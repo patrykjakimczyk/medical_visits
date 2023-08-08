@@ -12,7 +12,7 @@ import javax.persistence.*;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Speciality {
+public final class Speciality {
     @Id
     @SequenceGenerator(
             name = "speciality_seq",

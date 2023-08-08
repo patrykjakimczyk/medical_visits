@@ -1,11 +1,11 @@
-package pl.medical.visits.model.wrapper;
+package pl.medical.visits.model.request;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class DoctorEditDataForAdminWrapper {
+public final class DoctorEditDataForAdminWrapper {
     private final long id;
     private final String firstName;
     private final String lastName;

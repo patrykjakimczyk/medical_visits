@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "visit")
-public class Visit {
+public final class Visit {
     @Id
     @SequenceGenerator(
             name = "visit_seq",
