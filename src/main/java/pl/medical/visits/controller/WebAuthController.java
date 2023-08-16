@@ -14,92 +14,105 @@ import pl.medical.visits.model.dto.PatientDetailsDTO;
 import pl.medical.visits.model.dto.VisitDTO;
 import pl.medical.visits.model.response.ResponseMessage;
 import pl.medical.visits.model.request.*;
-import pl.medical.visits.service.impl.WebServiceImpl;
+import pl.medical.visits.service.WebService;
 
 import java.util.Map;
 
 @RestController()
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping("/auth")
+@RequestMapping()
 public final class WebAuthController {
-    private WebServiceImpl webServiceImpl;
+    private static final String GET_PATIENTS = "/auth/admin/all-patients";
+    private static final String GET_DOCTORS = "/auth/admin/all-doctors";
+    private static final String GET_DOCTORS_PATIENTS = "/auth/doctor/doctorsPatients";
+    private static final String GET_PATIENT_DATA = "/auth/patient/patientData";
+    private static final String UPDATE_PATIENT_DATA_FOR_PATIENT = "/auth/patient/updatePatient";
+    private static final String UPDATE_PATIENT_DATA = "/auth/doctor/updatePatient";
+    private static final String GET_DOCTOR_DATA = "/auth/doctor/doctorData";
+    private static final String UPDATE_DOCTOR_DATA = "/auth/doctor/updateDoctor";
+    private static final String REGISTER_VISIT = "/auth/patient/registerVisit";
+    private static final String GET_VISITS_FOR_ADMIN = "/auth/admin/visit";
+    private static final String DOCTOR_VISIT = "/auth/doctor/visit";
+    private static final String GET_VISITS_FOR_DOCTOR = "/auth/doctor/visits";
 
-    @GetMapping("/admin/patients")
+    private final WebService webService;
+
+    @GetMapping(GET_PATIENTS)
     public ResponseEntity<Page<PatientDTO>> getPatientsWithPaging(@RequestParam Map<String, String> reqParams) {
-        return ResponseEntity.status(HttpStatus.OK).body(webServiceImpl.getPatients(reqParams));
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getPatients(reqParams));
     }
 
-    @GetMapping("/admin/doctors")
+    @GetMapping(GET_DOCTORS)
     public ResponseEntity<Page<DoctorDTO>> getDoctorsWithPaging(@RequestParam Map<String, String> reqParams) {
-        return ResponseEntity.status(HttpStatus.OK).body(webServiceImpl.getDoctors(reqParams));
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctors(reqParams));
     }
 
-    @GetMapping("/doctor/doctorsPatients")
+    @GetMapping(GET_DOCTORS_PATIENTS)
     public ResponseEntity<Page<PatientDTO>> getAllPatientsForDoctorId(
             @RequestParam Map<String, String> reqParams,
             Authentication auth
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(webServiceImpl.getAllPatientsForDoctor(reqParams, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctor(reqParams, auth.getName()));
     }
 
-    @GetMapping("/patient/patientData")
+    @GetMapping(GET_PATIENT_DATA)
     public ResponseEntity<PatientDetailsDTO> getPatientsDataForEdit(@RequestParam long id, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(webServiceImpl.getPatientsFullData(auth.getName(), id));
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getPatientsFullData(auth.getName(), id));
     }
 
-    @PatchMapping("/patient/updatePatient")
+    @PatchMapping(UPDATE_PATIENT_DATA_FOR_PATIENT)
     public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForAdminWrapper patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
-        webServiceImpl.updatePatientData(auth.getName(), patientData);
+        webService.updatePatientData(auth.getName(), patientData);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Your data has been updated"));
     }
 
-    @PatchMapping("/doctor/updatePatient")
+    @PatchMapping(UPDATE_PATIENT_DATA)
     public ResponseEntity<ResponseMessage> updateDataForPatient(
             @RequestBody PatientEditDataForAdminWrapper patient, Authentication auth
     ) throws NotUniqueValueException, ValidationException {
-        webServiceImpl.updatePatientData(auth.getName(), patient);
+        webService.updatePatientData(auth.getName(), patient);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Patient's data has been updated"));
     }
 
-    @GetMapping("/doctor/doctorData")
+    @GetMapping(GET_DOCTOR_DATA)
     public ResponseEntity<DoctorDTO> getDoctorsDataForEdit(@RequestParam long id, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(webServiceImpl.getDoctorsFullData(auth.getName(), id));
+        return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctorsFullData(auth.getName(), id));
     }
 
-    @PatchMapping("/doctor/updateDoctor")
+    @PatchMapping(UPDATE_DOCTOR_DATA)
     public ResponseEntity<ResponseMessage> updateDataForDoctor(
             @RequestBody DoctorEditDataForAdminWrapper doctor, Authentication auth
     ) throws NotUniqueValueException, ValidationException {
-        webServiceImpl.updateDoctorData(auth.getName(), doctor);
+        webService.updateDoctorData(auth.getName(), doctor);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Doctor's data has been updated"));
     }
 
-    @PostMapping("/patient/registerVisit")
+    @PostMapping(REGISTER_VISIT)
     public ResponseEntity<VisitDTO> registerVisit(
             @RequestBody RegisterVisitWrapper visitWrapper,
             Authentication auth
     ) throws NotUniqueValueException {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webServiceImpl.registerVisit(visitWrapper, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.registerVisit(visitWrapper, auth.getName()));
     }
 
-    @GetMapping("/admin/visits")
+    @GetMapping(GET_VISITS_FOR_ADMIN)
     public ResponseEntity<Page<VisitDTO>> getAllVisits(@RequestParam Map<String, String> reqParams) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webServiceImpl.getAllVisits(reqParams));
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits(reqParams));
     }
 
-    @GetMapping("/doctor/visit")
+    @GetMapping(DOCTOR_VISIT)
     public ResponseEntity<VisitDTO> getVisitData(@RequestParam Long visitId, Authentication auth)  {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webServiceImpl.getVisitData(visitId, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getVisitData(visitId, auth.getName()));
     }
 
-    @GetMapping("/doctor/visits")
+    @GetMapping(GET_VISITS_FOR_DOCTOR)
     public ResponseEntity<Page<VisitDTO>> getAllDoctorsVisits(@RequestParam Map<String, String> reqParams, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webServiceImpl.getAllDoctorVisits(reqParams, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllDoctorVisits(reqParams, auth.getName()));
     }
 
-    @PatchMapping("/doctor/visit")
+    @PatchMapping(DOCTOR_VISIT)
     public ResponseEntity<VisitDTO> updateVisit(@RequestBody EditVisitWrapper editVisit, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webServiceImpl.updateVisit(editVisit, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.updateVisit(editVisit, auth.getName()));
     }
 }

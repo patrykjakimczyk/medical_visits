@@ -7,6 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.medical.visits.config.JwtService;
 import pl.medical.visits.exception.*;
 import pl.medical.visits.model.dto.*;
@@ -25,8 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Service
 public class WebServiceImpl implements WebService {
 
     private final UserRepository userRepository;
@@ -265,8 +269,12 @@ public class WebServiceImpl implements WebService {
                 });
     }
 
-    public List<Speciality> getSpecialities() {
-        return this.specialityRepository.findAll();
+    public List<SpecialityDTO> getSpecialities() {
+        return this.specialityRepository
+                .findAll()
+                .stream()
+                .map(SpecialityDTO::new)
+                .collect(Collectors.toList());
     }
 
     public PatientDetailsDTO getPatientsFullData(String tokenEmail, long id) {

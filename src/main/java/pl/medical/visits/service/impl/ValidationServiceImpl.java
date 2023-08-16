@@ -12,8 +12,8 @@ import pl.medical.visits.util.StringUtil;
 import java.time.LocalDate;
 import java.time.Period;
 
-@Service
 @NoArgsConstructor
+@Service
 public class ValidationServiceImpl implements ValidationService {
 
     public void validateUser(User user) throws ValidationException {

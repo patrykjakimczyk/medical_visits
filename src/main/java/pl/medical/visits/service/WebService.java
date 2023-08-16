@@ -28,7 +28,7 @@ public interface WebService {
 
     Page<PatientDTO> getAllPatientsForDoctor(Map<String, String> reqParams, String tokenEmail);
 
-    List<Speciality> getSpecialities();
+    List<SpecialityDTO> getSpecialities();
 
     PatientDetailsDTO getPatientsFullData(String tokenEmail, long id);
 
