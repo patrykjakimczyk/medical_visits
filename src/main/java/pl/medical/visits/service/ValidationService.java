@@ -18,9 +18,9 @@ public interface ValidationService {
     String MESSAGE_TEMPLATE_NULL = "ValidationException: %s is null";
     String MESSAGE_TEMPLATE_REGEX = "ValidationException: %s doesn't match regex";
 
-    void validateUser(User user) throws ValidationException;
+    void validateUser(User user);
 
-    void validateUserAddress(UserAddressData userAddress) throws ValidationException;
+    void validateUserAddress(UserAddressData userAddress);
 
-    void validateUserEmail(UserLoginData userLogin) throws ValidationException;
+    void validateUserEmail(UserLoginData userLogin);
 }

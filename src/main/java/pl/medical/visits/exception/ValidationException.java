@@ -1,6 +1,6 @@
 package pl.medical.visits.exception;
 
-public class ValidationException extends Exception{
+public class ValidationException extends RuntimeException{
     public ValidationException() {
         super();
     }

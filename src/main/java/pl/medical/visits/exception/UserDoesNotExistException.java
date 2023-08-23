@@ -1,6 +1,6 @@
 package pl.medical.visits.exception;
 
-public class UserDoesNotExistException extends RuntimeException{
+public class UserDoesNotExistException extends RuntimeException {
     public UserDoesNotExistException() {
         super();
     }

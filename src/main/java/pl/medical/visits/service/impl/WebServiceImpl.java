@@ -39,65 +39,7 @@ public class WebServiceImpl implements WebService {
     private final VisitRepository visitRepository;
     private final OfficeRepository officeRepository;
     private final SpecialityRepository specialityRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authManager;
-    private final JwtService jwtService;
     private final ValidationService validationService;
-
-    public AuthenticationResponse registerPatient(PatientRegistrationRequest requestWrapper)
-            throws ValidationException, NotUniqueValueException {
-        Patient givenPatient = requestWrapper.getPatient();
-        validationService.validateUser(givenPatient);
-
-        givenPatient.setFirstName(StringUtil.firstCapital(givenPatient.getFirstName()));
-        givenPatient.setLastName(StringUtil.firstCapital(givenPatient.getLastName()));
-
-        UserLoginData loginData = requestWrapper.getLoginData();
-        String password = loginData.getPassword();
-        validationService.validateUserEmail(loginData);
-        loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
-        loginData.setUser(givenPatient);
-
-        UserAddressData addressData = requestWrapper.getAddressData();
-        validationService.validateUserAddress(addressData);
-        addressData.setUser(givenPatient);
-
-        try {
-            userLoginRepository.save(loginData);
-            userAddressRepository.save(addressData);
-        } catch (RuntimeException e) {
-            throw new NotUniqueValueException(
-                    "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
-            );
-        }
-        UserLoginRequest userLoginRequestWrapper = new UserLoginRequest(loginData.getEmail(), password);
-        return loginUser(userLoginRequestWrapper);
-    }
-
-    public AuthenticationResponse registerDoctor(DoctorRegistrationRequest requestWrapper)
-            throws NotUniqueValueException, ValidationException {
-        Doctor givenDoctor = requestWrapper.getDoctor();
-        validationService.validateUser(givenDoctor);
-
-        givenDoctor.setFirstName(StringUtil.firstCapital(givenDoctor.getFirstName()));
-        givenDoctor.setLastName(StringUtil.firstCapital(givenDoctor.getLastName()));
-
-        UserLoginData loginData = requestWrapper.getLoginData();
-        String password = loginData.getPassword();
-        validationService.validateUserEmail(loginData);
-        loginData.setPassword(passwordEncoder.encode(loginData.getPassword()));
-        loginData.setUser(givenDoctor);
-
-        try {
-            userLoginRepository.save(loginData);
-        } catch (RuntimeException e) {
-            throw new NotUniqueValueException(
-                    "Error has occurred during user's registration. PESEL/e-mail/phone number isn't unique"
-            );
-        }
-        UserLoginRequest userLoginRequestWrapper = new UserLoginRequest(loginData.getEmail(), password);
-        return loginUser(userLoginRequestWrapper);
-    }
 
     public Page<PatientDTO> getPatients(Map<String, String> reqParams) {
         final String filterKey = reqParams.get("filterKey");
@@ -442,21 +384,6 @@ public class WebServiceImpl implements WebService {
             return;
         }
         throw new UserPerformedForbiddenActionException("You are not allowed to access other users' data!");
-    }
-
-    public AuthenticationResponse loginUser(UserLoginRequest userLogin) {
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        userLogin.getEmail(),
-                        userLogin.getPassword()
-                )
-        );
-        UserLoginData userLoginData = userLoginRepository.findByEmail(userLogin.getEmail());
-        Optional<User> user = userRepository.findById(userLoginData.getUser().getId());
-        String token = jwtService.generateToken(userLoginData);
-
-        if (user.isPresent()) return new AuthenticationResponse(token, user.get().getRole());
-        throw new UserDoesNotExistException("User does not exist in database");
     }
 
     public VisitDTO registerVisit(RegisterVisitWrapper visitWrapper, String authUserEmail) throws NotUniqueValueException {

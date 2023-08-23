@@ -1,6 +1,6 @@
 package pl.medical.visits.exception;
 
-public class NotUniqueValueException extends Exception{
+public class NotUniqueValueException extends RuntimeException{
     public NotUniqueValueException() {
         super();
     }

@@ -16,7 +16,7 @@ import java.time.Period;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
-    public void validateUser(User user) throws ValidationException {
+    public void validateUser(User user) {
         this.checkStringWithLength(user.getFirstName(), 20, "First name");
         this.checkStringWithLength(user.getLastName(), 30, "Last name");
         this.checkStringWithRegex(user.getPesel(), PESEL_REGEX, "Pesel");
@@ -30,7 +30,7 @@ public class ValidationServiceImpl implements ValidationService {
             throw new ValidationException("ValidationException: Pesel is invalid");
     }
 
-    public void validateUserAddress(UserAddressData userAddress) throws ValidationException {
+    public void validateUserAddress(UserAddressData userAddress) {
         this.checkStringWithLength(userAddress.getCountry(), 50, "Country");
         this.checkStringWithLength(userAddress.getCity(), 30, "City");
         this.checkStringWithLength(userAddress.getStreet(), 50, "Street");
@@ -45,7 +45,7 @@ public class ValidationServiceImpl implements ValidationService {
         this.checkStringWithRegex(userAddress.getPostalCode(), POSTAL_CODE_REGEX, "Postal code nr");
     }
 
-    public void validateUserEmail(UserLoginData userLogin) throws ValidationException {
+    public void validateUserEmail(UserLoginData userLogin) {
         checkStringWithRegex(userLogin.getEmail(), EMAIL_REGEX, "E-mail");
     }
 
@@ -59,7 +59,7 @@ public class ValidationServiceImpl implements ValidationService {
         }
     }
 
-    private void checkStringWithRegex(String string, String regex, String value) throws ValidationException {
+    private void checkStringWithRegex(String string, String regex, String value) {
         if (StringUtil.isStringNotBlank(string)) {
             if (!string.matches(regex)) {
                 throw new ValidationException(String.format(MESSAGE_TEMPLATE_REGEX, value));

@@ -14,12 +14,6 @@ import java.util.Map;
 
 @Service
 public interface WebService {
-    AuthenticationResponse registerPatient(PatientRegistrationRequest requestWrapper)
-            throws ValidationException, NotUniqueValueException;
-
-    AuthenticationResponse registerDoctor(DoctorRegistrationRequest requestWrapper)
-            throws NotUniqueValueException, ValidationException;
-
     Page<PatientDTO> getPatients(Map<String, String> reqParams);
 
     Page<DoctorDTO> getDoctors(Map<String, String> reqParams);
@@ -42,8 +36,6 @@ public interface WebService {
 
     void updateDoctorData(String tokenEmail, DoctorEditDataForAdminWrapper doctorData)
             throws ValidationException, NotUniqueValueException;
-
-    AuthenticationResponse loginUser(UserLoginRequest userLogin);
 
     VisitDTO registerVisit(RegisterVisitWrapper visitWrapper, String authUserEmail)
             throws NotUniqueValueException;

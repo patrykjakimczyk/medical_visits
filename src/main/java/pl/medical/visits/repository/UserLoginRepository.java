@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface UserLoginRepository extends JpaRepository<UserLoginData, Long> {
     UserLoginData findByEmail(String email);
+
     @Query(value = "select ul.email from user_login ul where ul.user_id = ?1", nativeQuery = true)
     String findEmailForUserId(Long id);
 

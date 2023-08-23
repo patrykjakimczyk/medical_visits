@@ -12,6 +12,7 @@ import pl.medical.visits.model.request.PatientRegistrationRequest;
 import pl.medical.visits.model.request.UserLoginRequest;
 import pl.medical.visits.model.response.GetDoctorsResponse;
 import pl.medical.visits.model.response.GetSpecialitiesResponse;
+import pl.medical.visits.service.RegistrationService;
 import pl.medical.visits.service.WebService;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
 @RestController()
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
-public final class WebController {
+public final class WebNoAuthController {
     private static final String REGISTER_PATIENT = "/patient/register";
     private static final String REGISTER_DOCTOR = "/doctor/register";
     private static final String LOGIN = "/login";
@@ -27,22 +28,23 @@ public final class WebController {
     private static final String GET_DOCTORS = "/doctor/all-doctors";
 
     private final WebService webService;
+    private final RegistrationService registrationService;
 
     @PostMapping(REGISTER_PATIENT)
     public ResponseEntity<AuthenticationResponse> registerPatient(@RequestBody PatientRegistrationRequest requestWrapper)
             throws ValidationException, NotUniqueValueException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.webService.registerPatient(requestWrapper));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.registrationService.registerPatient(requestWrapper));
     }
 
     @PostMapping(REGISTER_DOCTOR)
     public ResponseEntity<AuthenticationResponse> registerDoctor(@RequestBody DoctorRegistrationRequest requestWrapper)
             throws NotUniqueValueException, ValidationException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.webService.registerDoctor(requestWrapper));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.registrationService.registerDoctor(requestWrapper));
     }
 
     @PostMapping(LOGIN)
     public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody UserLoginRequest userLogin) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.loginUser(userLogin));
+        return ResponseEntity.status(HttpStatus.OK).body(this.registrationService.loginUser(userLogin));
     }
 
     @GetMapping(GET_SPECIALITIES)
