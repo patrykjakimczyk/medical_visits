@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import pl.medical.visits.config.JwtService;
 import pl.medical.visits.exception.NotUniqueValueException;
 import pl.medical.visits.exception.UserDoesNotExistException;
@@ -19,6 +20,7 @@ import pl.medical.visits.service.ValidationService;
 import pl.medical.visits.util.StringUtil;
 
 @AllArgsConstructor
+@Service
 public class RegistrationServiceImpl implements RegistrationService {
     private final ValidationService validationService;
     private final UserLoginRepository userLoginRepository;
