@@ -3,7 +3,7 @@ package pl.medical.visits.model.request;
 import lombok.Data;
 
 @Data
-public final class PatientEditDataForPatientWrapper {
+public class PatientEditDataForPatientRequest {
     private final long id;
     private final String firstName;
     private final String lastName;

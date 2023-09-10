@@ -13,11 +13,12 @@ import pl.medical.visits.model.request.UserLoginRequest;
 import pl.medical.visits.model.response.GetDoctorsResponse;
 import pl.medical.visits.model.response.GetSpecialitiesResponse;
 import pl.medical.visits.service.RegistrationService;
+import pl.medical.visits.service.UserService;
 import pl.medical.visits.service.WebService;
 
 import java.util.Map;
 
-@RestController()
+@RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
 public final class WebNoAuthController {
@@ -28,6 +29,7 @@ public final class WebNoAuthController {
     private static final String GET_DOCTORS = "/doctor/all-doctors";
 
     private final WebService webService;
+    private final UserService userService;
     private final RegistrationService registrationService;
 
     @PostMapping(REGISTER_PATIENT)
@@ -61,7 +63,7 @@ public final class WebNoAuthController {
             @RequestParam Map<String, String> reqParams
     ) {
         GetDoctorsResponse response = new GetDoctorsResponse();
-        response.setDoctors(this.webService.getDoctorsBySpeciality(specialityId, reqParams));
+        response.setDoctors(this.userService.getDoctorsBySpeciality(specialityId, reqParams));
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

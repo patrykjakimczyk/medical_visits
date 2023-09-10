@@ -1,7 +1,6 @@
 package pl.medical.visits.service;
 
 import org.springframework.stereotype.Service;
-import pl.medical.visits.exception.ValidationException;
 import pl.medical.visits.model.entity.user.User;
 import pl.medical.visits.model.entity.user.UserAddressData;
 import pl.medical.visits.model.entity.user.UserLoginData;
@@ -19,8 +18,6 @@ public interface ValidationService {
     String MESSAGE_TEMPLATE_REGEX = "ValidationException: %s doesn't match regex";
 
     void validateUser(User user);
-
     void validateUserAddress(UserAddressData userAddress);
-
     void validateUserEmail(UserLoginData userLogin);
 }

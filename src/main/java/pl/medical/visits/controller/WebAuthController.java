@@ -14,14 +14,14 @@ import pl.medical.visits.model.dto.PatientDetailsDTO;
 import pl.medical.visits.model.dto.VisitDTO;
 import pl.medical.visits.model.response.ResponseMessage;
 import pl.medical.visits.model.request.*;
+import pl.medical.visits.service.UserService;
 import pl.medical.visits.service.WebService;
 
 import java.util.Map;
 
-@RestController()
+@RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping()
 public final class WebAuthController {
     private static final String GET_PATIENTS = "/auth/admin/all-patients";
     private static final String GET_DOCTORS = "/auth/admin/all-doctors";
@@ -37,15 +37,16 @@ public final class WebAuthController {
     private static final String GET_VISITS_FOR_DOCTOR = "/auth/doctor/visits";
 
     private final WebService webService;
+    private final UserService userService;
 
     @GetMapping(GET_PATIENTS)
     public ResponseEntity<Page<PatientDTO>> getPatientsWithPaging(@RequestParam Map<String, String> reqParams) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getPatients(reqParams));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getPatients(reqParams));
     }
 
     @GetMapping(GET_DOCTORS)
     public ResponseEntity<Page<DoctorDTO>> getDoctorsWithPaging(@RequestParam Map<String, String> reqParams) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctors(reqParams));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getDoctors(reqParams));
     }
 
     @GetMapping(GET_DOCTORS_PATIENTS)
@@ -53,38 +54,38 @@ public final class WebAuthController {
             @RequestParam Map<String, String> reqParams,
             Authentication auth
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getAllPatientsForDoctor(reqParams, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllPatientsForDoctor(reqParams, auth.getName()));
     }
 
     @GetMapping(GET_PATIENT_DATA)
     public ResponseEntity<PatientDetailsDTO> getPatientsDataForEdit(@RequestParam long id, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getPatientsFullData(auth.getName(), id));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getPatientsFullData(auth.getName(), id));
     }
 
     @PatchMapping(UPDATE_PATIENT_DATA_FOR_PATIENT)
-    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForAdminWrapper patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
-        webService.updatePatientData(auth.getName(), patientData);
+    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForAdminRequest patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
+        userService.updatePatientData(auth.getName(), patientData);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Your data has been updated"));
     }
 
     @PatchMapping(UPDATE_PATIENT_DATA)
     public ResponseEntity<ResponseMessage> updateDataForPatient(
-            @RequestBody PatientEditDataForAdminWrapper patient, Authentication auth
+            @RequestBody PatientEditDataForAdminRequest patient, Authentication auth
     ) throws NotUniqueValueException, ValidationException {
-        webService.updatePatientData(auth.getName(), patient);
+        userService.updatePatientData(auth.getName(), patient);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Patient's data has been updated"));
     }
 
     @GetMapping(GET_DOCTOR_DATA)
     public ResponseEntity<DoctorDTO> getDoctorsDataForEdit(@RequestParam long id, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(webService.getDoctorsFullData(auth.getName(), id));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getDoctorsFullData(auth.getName(), id));
     }
 
     @PatchMapping(UPDATE_DOCTOR_DATA)
     public ResponseEntity<ResponseMessage> updateDataForDoctor(
             @RequestBody DoctorEditDataForAdminWrapper doctor, Authentication auth
     ) throws NotUniqueValueException, ValidationException {
-        webService.updateDoctorData(auth.getName(), doctor);
+        userService.updateDoctorData(auth.getName(), doctor);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Doctor's data has been updated"));
     }
 

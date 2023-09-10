@@ -9,8 +9,6 @@ import pl.medical.visits.model.response.AuthenticationResponse;
 @Service
 public interface RegistrationService {
     AuthenticationResponse registerPatient(PatientRegistrationRequest requestWrapper);
-
     AuthenticationResponse registerDoctor(DoctorRegistrationRequest requestWrapper);
-
     AuthenticationResponse loginUser(UserLoginRequest userLogin);
 }
