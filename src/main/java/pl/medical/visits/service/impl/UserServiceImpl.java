@@ -333,19 +333,20 @@ public class UserServiceImpl implements UserService {
         UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
         Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
 
-        if (authenticatedUser.isPresent()) {
-            User user = authenticatedUser.get();
+        User user = authenticatedUser.orElseThrow(
+                () -> new UserDoesNotExistException("User from given token does not exist")
+        );
 
-            switch (role) {
-                case PATIENT:
-                    return user.getRole().equals(role) ? user.getId() == id : true;
-                case DOCTOR:
-                    return user.getRole().equals(role) ? user.getId() == id : user.getRole().equals(Role.ADMIN);
-                case ADMIN:
-                    return user.getRole().equals(role) ? user.getId() == id : false;
-            }
+        switch (role) {
+            case PATIENT:
+                return user.getRole().equals(role) ? user.getId() == id : true;
+            case DOCTOR:
+                return user.getRole().equals(role) ? user.getId() == id : user.getRole().equals(Role.ADMIN);
+            case ADMIN:
+                return user.getRole().equals(role) ? user.getId() == id : false;
+            default:
+                return false;
         }
-        throw new UserDoesNotExistException("User from given token does not exist");
     }
 
     private PageRequest createPageRequest(Map<String, String> reqParams) {

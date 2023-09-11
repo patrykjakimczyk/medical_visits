@@ -15,7 +15,7 @@ import pl.medical.visits.model.dto.VisitDTO;
 import pl.medical.visits.model.response.ResponseMessage;
 import pl.medical.visits.model.request.*;
 import pl.medical.visits.service.UserService;
-import pl.medical.visits.service.WebService;
+import pl.medical.visits.service.VisitService;
 
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public final class WebAuthController {
     private static final String DOCTOR_VISIT = "/auth/doctor/visit";
     private static final String GET_VISITS_FOR_DOCTOR = "/auth/doctor/visits";
 
-    private final WebService webService;
+    private final VisitService webService;
     private final UserService userService;
 
     @GetMapping(GET_PATIENTS)
@@ -91,15 +91,15 @@ public final class WebAuthController {
 
     @PostMapping(REGISTER_VISIT)
     public ResponseEntity<VisitDTO> registerVisit(
-            @RequestBody RegisterVisitWrapper visitWrapper,
+            @RequestBody RegisterVisitRequest visitWrapper,
             Authentication auth
     ) throws NotUniqueValueException {
         return ResponseEntity.status(HttpStatus.OK).body(this.webService.registerVisit(visitWrapper, auth.getName()));
     }
 
     @GetMapping(GET_VISITS_FOR_ADMIN)
-    public ResponseEntity<Page<VisitDTO>> getAllVisits(@RequestParam Map<String, String> reqParams) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits(reqParams));
+    public ResponseEntity<Page<VisitDTO>> getAllVisits(@RequestParam Map<String, String> reqParams, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits(reqParams, auth.getName()));
     }
 
     @GetMapping(DOCTOR_VISIT)

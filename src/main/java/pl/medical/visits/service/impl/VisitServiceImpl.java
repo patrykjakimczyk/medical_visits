@@ -13,9 +13,7 @@ import pl.medical.visits.model.entity.user.*;
 import pl.medical.visits.model.enums.Role;
 import pl.medical.visits.model.request.*;
 import pl.medical.visits.repository.*;
-import pl.medical.visits.service.ValidationService;
-import pl.medical.visits.service.WebService;
-import pl.medical.visits.util.StringUtil;
+import pl.medical.visits.service.VisitService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class WebServiceImpl implements WebService {
+public class VisitServiceImpl implements VisitService {
 
     private final UserRepository userRepository;
     private final UserLoginRepository userLoginRepository;
@@ -41,11 +39,11 @@ public class WebServiceImpl implements WebService {
                 .collect(Collectors.toList());
     }
 
-    public VisitDTO registerVisit(RegisterVisitWrapper visitWrapper, String authUserEmail) throws NotUniqueValueException {
+    public VisitDTO registerVisit(RegisterVisitRequest visitRequest, String email) throws NotUniqueValueException {
 //        if (this.canAuthUserAccessUserOfId(authUserEmail, visitWrapper.getPatientId(), Role.PATIENT)) {
 
-            UserLoginData loginData = this.userLoginRepository.findByEmail(authUserEmail);
-            Optional<Doctor> doctorOptional = this.userRepository.findDoctorById(visitWrapper.getDoctorId());
+            UserLoginData loginData = this.userLoginRepository.findByEmail(email);
+            Optional<Doctor> doctorOptional = this.userRepository.findDoctorById(visitRequest.getDoctorId());
 
             if (!loginData.getUser().getRole().equals(Role.PATIENT)) {
                 throw new UserPerformedForbiddenActionException("Only patient can register visit!");
@@ -64,8 +62,8 @@ public class WebServiceImpl implements WebService {
             Visit visit = new Visit();
             visit.setPatient(patient);
             visit.setDoctor(doctor);
-            visit.setDescription(visitWrapper.getDescription());
-            visit.setTimeStamp(visitWrapper.getTimestamp());
+            visit.setDescription(visitRequest.getDescription());
+            visit.setTimeStamp(visitRequest.getTimestamp());
 
             Optional<Office> officeOptional = officeRepository.findByDoctor(doctor);
             visit.setOffice(
@@ -79,12 +77,18 @@ public class WebServiceImpl implements WebService {
                 throw new NotUniqueValueException("Cannot register visit for occupied date");
             }
 
-            return new VisitDTO(visit,  authUserEmail);
+            return new VisitDTO(visit, email);
 //        }
 //        throw new UserPerformedForbiddenActionException("You are not allowed to register visit for another patient");
     }
 
-    public Page<VisitDTO> getAllVisits(Map<String, String> reqParams) {
+    public Page<VisitDTO> getAllVisits(Map<String, String> reqParams, String email) {
+        User user = this.getUserByEmail(email);
+
+        if (!user.getRole().equals(Role.ADMIN)) {
+            throw new UserPerformedForbiddenActionException("Only admin can access list of all visits!");
+        }
+
         final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "timeStamp");
         return visitRepository.findAll(pageRequest)
                 .map(visit -> new VisitDTO(visit, null));
@@ -98,14 +102,7 @@ public class WebServiceImpl implements WebService {
         }
 
         Visit visit = visitOptional.get();
-        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
-        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
-
-        if (authenticatedUser.isEmpty()) {
-            throw new UserDoesNotExistException("User from given token does not exist");
-        }
-
-        User user = authenticatedUser.get();
+        User user = this.getUserByEmail(email);
 
         if (visit.getDoctor().getId() != user.getId()) {
             if (user.getRole().equals(Role.ADMIN)) {
@@ -117,14 +114,7 @@ public class WebServiceImpl implements WebService {
     }
 
     public Page<VisitDTO> getAllDoctorVisits(Map<String, String> reqParams, String email) {
-        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
-        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
-
-        if (authenticatedUser.isEmpty()) {
-            throw new UserDoesNotExistException("User from given token does not exist");
-        }
-
-        User user = authenticatedUser.get();
+        User user = this.getUserByEmail(email);
 
         if (!user.getRole().equals(Role.DOCTOR)) {
             throw new UserPerformedForbiddenActionException("You cannot access those visits' data");
@@ -164,6 +154,15 @@ public class WebServiceImpl implements WebService {
 
         visitRepository.save(visit);
         return new VisitDTO(visit, null);
+    }
+
+    private User getUserByEmail(String email) {
+        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
+        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
+
+        return authenticatedUser.orElseThrow(
+                () -> new UserDoesNotExistException("User from given token does not exist")
+        );
     }
 
     private PageRequest createPageRequest(Map<String, String> reqParams) {

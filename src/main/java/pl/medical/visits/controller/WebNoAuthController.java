@@ -14,7 +14,7 @@ import pl.medical.visits.model.response.GetDoctorsResponse;
 import pl.medical.visits.model.response.GetSpecialitiesResponse;
 import pl.medical.visits.service.RegistrationService;
 import pl.medical.visits.service.UserService;
-import pl.medical.visits.service.WebService;
+import pl.medical.visits.service.VisitService;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class WebNoAuthController {
     private static final String GET_SPECIALITIES = "/speciality/all-specialities";
     private static final String GET_DOCTORS = "/doctor/all-doctors";
 
-    private final WebService webService;
+    private final VisitService webService;
     private final UserService userService;
     private final RegistrationService registrationService;
 
