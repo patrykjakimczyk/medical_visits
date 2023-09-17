@@ -15,6 +15,8 @@ import pl.medical.visits.model.request.*;
 import pl.medical.visits.repository.*;
 import pl.medical.visits.service.VisitService;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,54 +42,45 @@ public class VisitServiceImpl implements VisitService {
     }
 
     public VisitDTO registerVisit(RegisterVisitRequest visitRequest, String email) throws NotUniqueValueException {
-//        if (this.canAuthUserAccessUserOfId(authUserEmail, visitWrapper.getPatientId(), Role.PATIENT)) {
+        Optional<Doctor> doctorOptional = this.userRepository.findDoctorById(visitRequest.getDoctorId());
+        User user = this.getUserByEmail(email);
 
-            UserLoginData loginData = this.userLoginRepository.findByEmail(email);
-            Optional<Doctor> doctorOptional = this.userRepository.findDoctorById(visitRequest.getDoctorId());
+        if (!user.getRole().equals(Role.PATIENT)) {
+            throw new UserPerformedForbiddenActionException("Only patient can register visit!");
+        }
 
-            if (!loginData.getUser().getRole().equals(Role.PATIENT)) {
-                throw new UserPerformedForbiddenActionException("Only patient can register visit!");
-            }
+        Doctor doctor = doctorOptional.orElseThrow(() -> new UserDoesNotExistException(
+                "Cannot register visit because patient or doctor with given id does not exist!"
+        ));
 
-            Patient patient = (Patient) loginData.getUser();
+        List<Timestamp> doctorVisitsTimestamps = this.getFutureDoctorVisitsTimestamps(doctor.getId());
+        if (doctorVisitsTimestamps.contains(visitRequest.getTimestamp())) {
+            throw new NotUniqueValueException("Cannot register visit for registered date!");
+        }
 
-            if (doctorOptional.isEmpty()) {
-                throw new UserDoesNotExistException(
-                        "Cannot register visit because patient or doctor with given id does not exist!"
-                );
-            }
+        Visit visit = new Visit();
+        visit.setPatient((Patient) user);
+        visit.setDoctor(doctor);
+        visit.setDescription(visitRequest.getDescription());
+        visit.setTimeStamp(visitRequest.getTimestamp());
 
-            Doctor doctor = doctorOptional.get();
-
-            Visit visit = new Visit();
-            visit.setPatient(patient);
-            visit.setDoctor(doctor);
-            visit.setDescription(visitRequest.getDescription());
-            visit.setTimeStamp(visitRequest.getTimestamp());
-
-            Optional<Office> officeOptional = officeRepository.findByDoctor(doctor);
-            visit.setOffice(
+        Optional<Office> officeOptional = officeRepository.findByDoctor(doctor);
+        visit.setOffice(
                     officeOptional.orElseThrow(() ->
                             new DoctorDoesNotHaveAssignedOfficeException("Doctor does not have assigned office!"))
-            );
+        );
 
-            try {
-                visitRepository.save(visit);
-            } catch (RuntimeException e) {
-                throw new NotUniqueValueException("Cannot register visit for occupied date");
-            }
+        try {
+            visitRepository.save(visit);
+        } catch (RuntimeException e) {
+            throw new NotUniqueValueException("Cannot register visit for occupied date");
+        }
 
-            return new VisitDTO(visit, email);
-//        }
-//        throw new UserPerformedForbiddenActionException("You are not allowed to register visit for another patient");
+        return new VisitDTO(visit, email);
     }
 
     public Page<VisitDTO> getAllVisits(Map<String, String> reqParams, String email) {
         User user = this.getUserByEmail(email);
-
-        if (!user.getRole().equals(Role.ADMIN)) {
-            throw new UserPerformedForbiddenActionException("Only admin can access list of all visits!");
-        }
 
         final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "timeStamp");
         return visitRepository.findAll(pageRequest)
@@ -125,15 +118,15 @@ public class VisitServiceImpl implements VisitService {
                 .map(visit -> new VisitDTO(visit, null));
     }
 
+    public List<Timestamp> getFutureDoctorVisitsTimestamps(Long doctorId) {
+        PageRequest pageRequest = PageRequest.of(0, 10000, Sort.by( Sort.Order.asc("time_stamp")));
+        Page<Visit> visits = visitRepository.findAllDoctorVisitsIn3Months(doctorId, pageRequest);
+
+        return visits.getContent().stream().map(Visit::getTimeStamp).collect(Collectors.toList());
+    }
+
     public VisitDTO updateVisit(EditVisitWrapper givenVisit, String email) {
-        UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
-        Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
-
-        if (authenticatedUser.isEmpty()) {
-            throw new UserDoesNotExistException("User from given token does not exist");
-        }
-
-        User user = authenticatedUser.get();
+        User user = this.getUserByEmail(email);
 
         Optional<Visit> visitOptional = visitRepository.findById(givenVisit.getId());
 

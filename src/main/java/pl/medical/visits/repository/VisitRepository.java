@@ -15,4 +15,7 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     @Query(value = "select * from visit v where v.doctor_id = ?1", nativeQuery = true)
     Page<Visit> findAllDoctorVisits(Long doctorId, PageRequest pageRequest);
+
+    @Query(value = "select * from visit v where v.doctor_id = ?1 and v.time_stamp between LOCALTIMESTAMP and LOCALTIMESTAMP + interval '3 months'", nativeQuery = true)
+    Page<Visit> findAllDoctorVisitsIn3Months(Long doctorId, PageRequest pageRequest);
 }

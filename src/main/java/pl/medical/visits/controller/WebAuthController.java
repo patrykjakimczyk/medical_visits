@@ -12,6 +12,7 @@ import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.model.dto.PatientDetailsDTO;
 import pl.medical.visits.model.dto.VisitDTO;
+import pl.medical.visits.model.response.GetDoctorVisitsInFutureResponse;
 import pl.medical.visits.model.response.ResponseMessage;
 import pl.medical.visits.model.request.*;
 import pl.medical.visits.service.UserService;
@@ -35,8 +36,9 @@ public final class WebAuthController {
     private static final String GET_VISITS_FOR_ADMIN = "/auth/admin/visit";
     private static final String DOCTOR_VISIT = "/auth/doctor/visit";
     private static final String GET_VISITS_FOR_DOCTOR = "/auth/doctor/visits";
+    private static final String GET_FUTURE_VISITS_TIMESTAMP_FOR_DOCTOR = "/auth/doctor/visits/timestamps";
 
-    private final VisitService webService;
+    private final VisitService visitService;
     private final UserService userService;
 
     @GetMapping(GET_PATIENTS)
@@ -94,26 +96,34 @@ public final class WebAuthController {
             @RequestBody RegisterVisitRequest visitWrapper,
             Authentication auth
     ) throws NotUniqueValueException {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.registerVisit(visitWrapper, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.visitService.registerVisit(visitWrapper, auth.getName()));
     }
 
     @GetMapping(GET_VISITS_FOR_ADMIN)
     public ResponseEntity<Page<VisitDTO>> getAllVisits(@RequestParam Map<String, String> reqParams, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllVisits(reqParams, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.visitService.getAllVisits(reqParams, auth.getName()));
     }
 
     @GetMapping(DOCTOR_VISIT)
     public ResponseEntity<VisitDTO> getVisitData(@RequestParam Long visitId, Authentication auth)  {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getVisitData(visitId, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.visitService.getVisitData(visitId, auth.getName()));
     }
 
     @GetMapping(GET_VISITS_FOR_DOCTOR)
     public ResponseEntity<Page<VisitDTO>> getAllDoctorsVisits(@RequestParam Map<String, String> reqParams, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.getAllDoctorVisits(reqParams, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.visitService.getAllDoctorVisits(reqParams, auth.getName()));
+    }
+
+    @GetMapping(GET_FUTURE_VISITS_TIMESTAMP_FOR_DOCTOR)
+    public ResponseEntity<GetDoctorVisitsInFutureResponse> getFutureDoctorVisitsTimestamps(@RequestParam Long doctorId) {
+        GetDoctorVisitsInFutureResponse response = new GetDoctorVisitsInFutureResponse();
+        response.setTimestamps(this.visitService.getFutureDoctorVisitsTimestamps(doctorId));
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PatchMapping(DOCTOR_VISIT)
     public ResponseEntity<VisitDTO> updateVisit(@RequestBody EditVisitWrapper editVisit, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.webService.updateVisit(editVisit, auth.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(this.visitService.updateVisit(editVisit, auth.getName()));
     }
 }
