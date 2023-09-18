@@ -25,4 +25,13 @@ public class VisitDTO {
         this.timeStamp = visit.getTimeStamp();
         this.description = visit.getDescription();
     }
+
+    public VisitDTO() {
+        this.id = null;
+        this.office = null;
+        this.patient = null;
+        this.doctor = null;
+        this.timeStamp = null;
+        this.description = null;
+    }
 }

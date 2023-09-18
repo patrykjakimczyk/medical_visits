@@ -5,7 +5,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public final class EditVisitWrapper {
+public final class EditVisitRequest {
     private final Long id;
     private final Long officeId;
     private final Long patientId;

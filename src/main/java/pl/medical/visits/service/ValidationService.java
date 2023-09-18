@@ -5,6 +5,8 @@ import pl.medical.visits.model.entity.user.User;
 import pl.medical.visits.model.entity.user.UserAddressData;
 import pl.medical.visits.model.entity.user.UserLoginData;
 
+import java.sql.Timestamp;
+
 @Service
 public interface ValidationService {
     String BIRTHDAY_REGEX = "^(\\d{4})(-)([0-1]\\d)(-)([0-3]\\d)$";
@@ -17,6 +19,7 @@ public interface ValidationService {
     String MESSAGE_TEMPLATE_NULL = "ValidationException: %s is null";
     String MESSAGE_TEMPLATE_REGEX = "ValidationException: %s doesn't match regex";
 
+    boolean isTimestampCorrect(Timestamp timestamp);
     void validateUser(User user);
     void validateUserAddress(UserAddressData userAddress);
     void validateUserEmail(UserLoginData userLogin);

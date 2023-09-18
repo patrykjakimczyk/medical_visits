@@ -13,9 +13,9 @@ import java.util.Map;
 public interface VisitService {
     List<SpecialityDTO> getSpecialities();
     VisitDTO registerVisit(RegisterVisitRequest visitWrapper, String email);
+    VisitDTO updateVisit(EditVisitRequest givenVisit, String email);
     Page<VisitDTO> getAllVisits(Map<String, String> reqParams, String email);
     VisitDTO getVisitData(Long visitId, String email);
     Page<VisitDTO> getAllDoctorVisits(Map<String, String> reqParams, String email);
     List<Timestamp> getFutureDoctorVisitsTimestamps(Long doctorId);
-    VisitDTO updateVisit(EditVisitWrapper givenVisit, String email);
 }

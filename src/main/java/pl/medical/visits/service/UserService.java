@@ -6,7 +6,7 @@ import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.DoctorWithoutPeselDTO;
 import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.model.dto.PatientDetailsDTO;
-import pl.medical.visits.model.request.DoctorEditDataForAdminWrapper;
+import pl.medical.visits.model.request.DoctorEditDataForAdminRequest;
 import pl.medical.visits.model.request.PatientEditDataForAdminRequest;
 import pl.medical.visits.model.request.PatientEditDataForPatientRequest;
 
@@ -22,5 +22,5 @@ public interface UserService {
     DoctorDTO getDoctorsFullData(String tokenEmail, long doctorId);
     void updatePatientData(String tokenEmail, PatientEditDataForAdminRequest patientData);
     void updatePatientDataForPatient(String tokenEmail, PatientEditDataForPatientRequest patientData);
-    void updateDoctorData(String tokenEmail, DoctorEditDataForAdminWrapper doctorData);
+    void updateDoctorData(String tokenEmail, DoctorEditDataForAdminRequest doctorData);
 }

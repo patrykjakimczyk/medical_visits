@@ -9,12 +9,22 @@ import pl.medical.visits.model.entity.user.UserLoginData;
 import pl.medical.visits.service.ValidationService;
 import pl.medical.visits.util.StringUtil;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 
 @NoArgsConstructor
 @Service
 public class ValidationServiceImpl implements ValidationService {
+
+    public boolean isTimestampCorrect(Timestamp timestamp) {
+        int givenNanos = timestamp.getNanos();
+        int currentNanos = Timestamp.from(Instant.now()).getNanos();
+
+        // givenNanos % 900 == 0 because we only want register visits at a time interval of 15 minutes e.g 19:00:00 19:15:00
+        return givenNanos > currentNanos && givenNanos % 900 == 0;
+    }
 
     public void validateUser(User user) {
         this.checkStringWithLength(user.getFirstName(), 20, "First name");

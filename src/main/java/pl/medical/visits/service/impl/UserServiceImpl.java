@@ -12,7 +12,7 @@ import pl.medical.visits.exception.WrongRequestParametersException;
 import pl.medical.visits.model.dto.*;
 import pl.medical.visits.model.entity.user.*;
 import pl.medical.visits.model.enums.Role;
-import pl.medical.visits.model.request.DoctorEditDataForAdminWrapper;
+import pl.medical.visits.model.request.DoctorEditDataForAdminRequest;
 import pl.medical.visits.model.request.PatientEditDataForAdminRequest;
 import pl.medical.visits.model.request.PatientEditDataForPatientRequest;
 import pl.medical.visits.repository.SpecialityRepository;
@@ -230,13 +230,9 @@ public class UserServiceImpl implements UserService {
         if (this.canAuthUserAccessUserOfId(tokenEmail, patientData.getId(), Role.PATIENT)
                 && userRepository.existsById(patientData.getId())) {
             Optional<UserLoginData> loginDataOptional = userLoginRepository.findByUser(patientData.getId());
-
-            if (loginDataOptional.isEmpty()) {
-                throw new UserDoesNotExistException(
-                        "Patient has not got a login data. His account was created incorrectly"
-                );
-            }
-            UserLoginData loginData = loginDataOptional.get();
+            UserLoginData loginData = loginDataOptional.orElseThrow(() -> new UserDoesNotExistException(
+                    "Patient has not got a login data. His account was created incorrectly"
+            ));
             Patient patient = (Patient) loginData.getUser();
 
             Optional<Doctor> doctorOptional = userRepository.findDoctorById(patientData.getAssignedDoctorId());
@@ -254,19 +250,14 @@ public class UserServiceImpl implements UserService {
         this.updatePatient(patient, loginData, patientData);
     }
 
-    public void updateDoctorData(String tokenEmail, DoctorEditDataForAdminWrapper doctorData) {
+    public void updateDoctorData(String tokenEmail, DoctorEditDataForAdminRequest doctorData) {
         if (this.canAuthUserAccessUserOfId(tokenEmail, doctorData.getId(), Role.DOCTOR)
                 && userRepository.existsById(doctorData.getId())) {
             Optional<UserLoginData> loginDataOptional = userLoginRepository.findByUser(doctorData.getId());
-
-            if (loginDataOptional.isEmpty()) {
-                throw new UserDoesNotExistException(
-                        "Doctor has not got a login data. His account was created incorrectly"
-                );
-            }
-
-            UserLoginData loginData = loginDataOptional.get();
-            Doctor doctor = (Doctor)loginData.getUser();
+            UserLoginData loginData = loginDataOptional.orElseThrow(() -> new UserDoesNotExistException(
+                    "Doctor has not got a login data. His account was created incorrectly"
+            ));
+            Doctor doctor = (Doctor) loginData.getUser();
 
             doctor.setFirstName(StringUtil.firstCapital(doctorData.getFirstName()));
             doctor.setLastName(StringUtil.firstCapital(doctorData.getLastName()));
@@ -329,13 +320,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private boolean canAuthUserAccessUserOfId(String email, long id, Role role) {
+    private User getUserByEmail(String email) {
         UserLoginData authenticatedUsersLoginData = userLoginRepository.findByEmail(email);
         Optional<User> authenticatedUser = userRepository.findById(authenticatedUsersLoginData.getUser().getId());
 
-        User user = authenticatedUser.orElseThrow(
+        return authenticatedUser.orElseThrow(
                 () -> new UserDoesNotExistException("User from given token does not exist")
         );
+    }
+
+    private boolean canAuthUserAccessUserOfId(String email, long id, Role role) {
+        User user = this.getUserByEmail(email);
 
         switch (role) {
             case PATIENT:

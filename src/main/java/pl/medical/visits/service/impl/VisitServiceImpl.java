@@ -13,9 +13,9 @@ import pl.medical.visits.model.entity.user.*;
 import pl.medical.visits.model.enums.Role;
 import pl.medical.visits.model.request.*;
 import pl.medical.visits.repository.*;
+import pl.medical.visits.service.ValidationService;
 import pl.medical.visits.service.VisitService;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,7 @@ public class VisitServiceImpl implements VisitService {
     private final VisitRepository visitRepository;
     private final OfficeRepository officeRepository;
     private final SpecialityRepository specialityRepository;
+    private final ValidationService validationService;
 
     public List<SpecialityDTO> getSpecialities() {
         return this.specialityRepository
@@ -43,15 +44,18 @@ public class VisitServiceImpl implements VisitService {
 
     public VisitDTO registerVisit(RegisterVisitRequest visitRequest, String email) throws NotUniqueValueException {
         Optional<Doctor> doctorOptional = this.userRepository.findDoctorById(visitRequest.getDoctorId());
-        User user = this.getUserByEmail(email);
+        Doctor doctor = doctorOptional.orElseThrow(() -> new UserDoesNotExistException(
+                "Cannot register visit because patient or doctor with given id does not exist!"
+        ));
 
+        User user = this.getUserByEmail(email);
         if (!user.getRole().equals(Role.PATIENT)) {
             throw new UserPerformedForbiddenActionException("Only patient can register visit!");
         }
 
-        Doctor doctor = doctorOptional.orElseThrow(() -> new UserDoesNotExistException(
-                "Cannot register visit because patient or doctor with given id does not exist!"
-        ));
+        if (!this.validationService.isTimestampCorrect(visitRequest.getTimestamp())) {
+            return new VisitDTO();
+        }
 
         List<Timestamp> doctorVisitsTimestamps = this.getFutureDoctorVisitsTimestamps(doctor.getId());
         if (doctorVisitsTimestamps.contains(visitRequest.getTimestamp())) {
@@ -79,8 +83,35 @@ public class VisitServiceImpl implements VisitService {
         return new VisitDTO(visit, email);
     }
 
+    public VisitDTO updateVisit(EditVisitRequest givenVisit, String email) {
+            User loggedUser = this.getUserByEmail(email);
+            Optional<Visit> visitOptional = visitRepository.findById(givenVisit.getId());
+
+            if (visitOptional.isEmpty()) {
+                throw new UserPerformedForbiddenActionException("Cannot update visit which does not exist");
+            }
+            Visit visit = visitOptional.get();
+
+            if (loggedUser.getId() != givenVisit.getDoctorId() &&
+                    !loggedUser.getRole().equals(Role.ADMIN) &&
+                    loggedUser.getId() != visit.getDoctor().getId()
+            ) {
+                throw new UserPerformedForbiddenActionException("You cannot update this visit's data");
+            }
+
+            visit.setDescription(givenVisit.getDescription());
+            visit.setTimeStamp(givenVisit.getTimeStamp());
+
+            visitRepository.save(visit);
+            return new VisitDTO(visit, null);
+    }
+
     public Page<VisitDTO> getAllVisits(Map<String, String> reqParams, String email) {
         User user = this.getUserByEmail(email);
+
+        if (!user.getRole().equals(Role.ADMIN)) {
+            throw new UserPerformedForbiddenActionException("Only Admin can access all visits!");
+        }
 
         final PageRequest pageRequest = this.createPageRequest(reqParams).withSort(Sort.Direction.DESC, "timeStamp");
         return visitRepository.findAll(pageRequest)
@@ -123,30 +154,6 @@ public class VisitServiceImpl implements VisitService {
         Page<Visit> visits = visitRepository.findAllDoctorVisitsIn3Months(doctorId, pageRequest);
 
         return visits.getContent().stream().map(Visit::getTimeStamp).collect(Collectors.toList());
-    }
-
-    public VisitDTO updateVisit(EditVisitWrapper givenVisit, String email) {
-        User user = this.getUserByEmail(email);
-
-        Optional<Visit> visitOptional = visitRepository.findById(givenVisit.getId());
-
-        if(visitOptional.isEmpty()) {
-            throw new UserPerformedForbiddenActionException("Cannot update visit which does not exist");
-        }
-        Visit visit = visitOptional.get();
-
-        if (givenVisit.getDoctorId() != user.getId()
-                && !user.getRole().equals(Role.ADMIN)
-                && visit.getDoctor().getId() == givenVisit.getDoctorId()
-        ) {
-            throw new UserPerformedForbiddenActionException("You cannot access those visits' data");
-        }
-
-        visit.setDescription(givenVisit.getDescription());
-        visit.setTimeStamp(givenVisit.getTimeStamp());
-
-        visitRepository.save(visit);
-        return new VisitDTO(visit, null);
     }
 
     private User getUserByEmail(String email) {
