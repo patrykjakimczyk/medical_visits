@@ -33,14 +33,12 @@ public final class WebNoAuthController {
     private final RegistrationService registrationService;
 
     @PostMapping(REGISTER_PATIENT)
-    public ResponseEntity<AuthenticationResponse> registerPatient(@RequestBody PatientRegistrationRequest requestWrapper)
-            throws ValidationException, NotUniqueValueException {
+    public ResponseEntity<AuthenticationResponse> registerPatient(@RequestBody PatientRegistrationRequest requestWrapper) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.registrationService.registerPatient(requestWrapper));
     }
 
     @PostMapping(REGISTER_DOCTOR)
-    public ResponseEntity<AuthenticationResponse> registerDoctor(@RequestBody DoctorRegistrationRequest requestWrapper)
-            throws NotUniqueValueException, ValidationException {
+    public ResponseEntity<AuthenticationResponse> registerDoctor(@RequestBody DoctorRegistrationRequest requestWrapper) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.registrationService.registerDoctor(requestWrapper));
     }
 

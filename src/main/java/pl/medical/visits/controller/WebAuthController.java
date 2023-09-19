@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.medical.visits.exception.NotUniqueValueException;
-import pl.medical.visits.exception.ValidationException;
 import pl.medical.visits.model.dto.DoctorDTO;
 import pl.medical.visits.model.dto.PatientDTO;
 import pl.medical.visits.model.dto.PatientDetailsDTO;
@@ -30,11 +28,11 @@ public final class WebAuthController {
     private static final String GET_DOCTORS = "/auth/admin/all-doctors";
     private static final String GET_DOCTORS_PATIENTS = "/auth/doctor/doctors-patients";
     private static final String GET_PATIENT_DATA = "/auth/patient/patient-data";
-    private static final String UPDATE_PATIENT_DATA_FOR_PATIENT = "/auth/patient/updatePatient";
-    private static final String UPDATE_PATIENT_DATA = "/auth/doctor/updatePatient";
-    private static final String GET_DOCTOR_DATA = "/auth/doctor/doctorData";
-    private static final String UPDATE_DOCTOR_DATA = "/auth/doctor/updateDoctor";
-    private static final String REGISTER_VISIT = "/auth/patient/registerVisit";
+    private static final String UPDATE_PATIENT_DATA_FOR_PATIENT = "/auth/patient/update-patient";
+    private static final String UPDATE_PATIENT_DATA = "/auth/doctor/update-patient";
+    private static final String GET_DOCTOR_DATA = "/auth/doctor/doctor-data";
+    private static final String UPDATE_DOCTOR_DATA = "/auth/doctor/update-doctor";
+    private static final String REGISTER_VISIT = "/auth/patient/register-visit";
     private static final String GET_VISITS_FOR_ADMIN = "/auth/admin/visit";
     private static final String DOCTOR_VISIT = "/auth/doctor/visit";
     private static final String GET_VISITS_FOR_DOCTOR = "/auth/doctor/visits";
@@ -67,15 +65,19 @@ public final class WebAuthController {
     }
 
     @PatchMapping(UPDATE_PATIENT_DATA_FOR_PATIENT)
-    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(@RequestBody PatientEditDataForAdminRequest patientData, Authentication auth) throws NotUniqueValueException, ValidationException {
+    public ResponseEntity<ResponseMessage> updatePatientDataForPatient(
+            @RequestBody PatientEditDataForAdminRequest patientData,
+            Authentication auth
+    ) {
         userService.updatePatientDataForPatient(auth.getName(), patientData);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Your data has been updated"));
     }
 
     @PatchMapping(UPDATE_PATIENT_DATA)
-    public ResponseEntity<ResponseMessage> updateDataForPatient(
-            @RequestBody PatientEditDataForAdminRequest patient, Authentication auth
-    ) throws NotUniqueValueException, ValidationException {
+    public ResponseEntity<ResponseMessage> updatePatientData(
+            @RequestBody PatientEditDataForAdminRequest patient,
+            Authentication auth
+    )  {
         userService.updatePatientData(auth.getName(), patient);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Patient's data has been updated"));
     }
@@ -88,7 +90,7 @@ public final class WebAuthController {
     @PatchMapping(UPDATE_DOCTOR_DATA)
     public ResponseEntity<ResponseMessage> updateDataForDoctor(
             @RequestBody DoctorEditDataForAdminRequest doctor, Authentication auth
-    ) throws NotUniqueValueException, ValidationException {
+    ) {
         userService.updateDoctorData(auth.getName(), doctor);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Doctor's data has been updated"));
     }
@@ -97,7 +99,7 @@ public final class WebAuthController {
     public ResponseEntity<VisitDTO> registerVisit(
             @RequestBody RegisterVisitRequest visitWrapper,
             Authentication auth
-    ) throws NotUniqueValueException {
+    ) {
         return ResponseEntity.status(HttpStatus.OK).body(this.visitService.registerVisit(visitWrapper, auth.getName()));
     }
 
