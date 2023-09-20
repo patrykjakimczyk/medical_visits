@@ -27,7 +27,6 @@ export class HomePageComponent implements OnInit, OnDestroy{
         this.userRole = user?.role;
         this.userLogged = true;
         this.mainButtonText = "BOOK YOUR APPOINTMENT";
-        console.log(this.userRole)
       }
     });
   }

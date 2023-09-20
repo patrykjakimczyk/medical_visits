@@ -11,7 +11,7 @@ import { ApiService } from 'src/app/service/api.service';
   styleUrls: ['./specialities-list.component.css']
 })
 
-export class SpecialitiesListComponent implements OnInit{
+export class SpecialitiesListComponent implements OnInit {
   protected specialities: Speciality[];
 
   constructor(private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {}
@@ -19,13 +19,11 @@ export class SpecialitiesListComponent implements OnInit{
   ngOnInit(): void {
     this.apiService.getSpecialities().subscribe({
       next: (specialities: Speciality[]) => {
-        this.specialities = specialities;
-      }
+        this.specialities = specialities;      }
     })
   }
 
   goToDoctorsBySpeciality(index: number) {
-    console.log(this.specialities[index])
     this.router.navigate([`speciality/${this.specialities[index].id}/doctors`, {specialityName: this.specialities[index].specialityName}], {relativeTo: this.activatedRoute});
   }
 }

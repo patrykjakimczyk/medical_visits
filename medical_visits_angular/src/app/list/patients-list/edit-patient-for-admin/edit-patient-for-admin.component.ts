@@ -23,8 +23,8 @@ export class EditPatientForAdminComponent {
 
   ngOnInit(): void {
     this.filterTypes = FILTER_TYPES;
-    const doctorsId = this.activatedRoute.snapshot.params["id"];
-    this.apiService.getPatientsFullData(doctorsId).subscribe({
+    const patientId = this.activatedRoute.snapshot.params["id"];
+    this.apiService.getPatientsFullData(patientId).subscribe({
       next: (response: any) => {
         this.patientData = response;
       },
@@ -69,7 +69,6 @@ export class EditPatientForAdminComponent {
     delete patient.assignedDoctor;
     patient.assignedDoctorId = this.patientData.assignedDoctor.id;
     patient.id = this.patientData.id;
-    console.log(patient);
 
     this.apiService.editPatientsData(patient).subscribe({
       next: (response: any) => {

@@ -16,7 +16,6 @@ export class AdminGuard {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-      console.log("guard")
       return this.authService.loggedUser.pipe(
         map((user: User | undefined) => {
           if (user !== undefined ) {

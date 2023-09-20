@@ -41,7 +41,6 @@ protected errorMessage: string;
   }
 
   onSubmit(form: NgForm){
-      console.log(form.value);
       this.apiService.registerPatient(form)
         .subscribe({
           next: (response: User) => {

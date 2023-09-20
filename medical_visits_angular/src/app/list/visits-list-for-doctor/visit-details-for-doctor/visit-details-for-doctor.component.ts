@@ -18,7 +18,6 @@ export class VisitDetailsForDoctorComponent {
       next: visit => {
         this.visit = visit;
         this.visit.timeStamp = new Date(this.visit.timeStamp);
-        console.log(this.visit)
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)

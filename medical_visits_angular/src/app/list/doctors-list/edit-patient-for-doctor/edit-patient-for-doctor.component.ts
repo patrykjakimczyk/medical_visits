@@ -46,7 +46,6 @@ export class EditPatientForDoctorComponent {
     delete patient.assignedDoctor;
     patient.assignedDoctorId = this.patientData.assignedDoctor.id;
     patient.id = this.patientData.id;
-    console.log(patient);
 
     this.apiService.editPatientsData(patient).subscribe({
       next: (response: any) => {

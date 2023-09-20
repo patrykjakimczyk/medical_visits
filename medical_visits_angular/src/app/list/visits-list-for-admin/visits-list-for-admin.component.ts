@@ -30,9 +30,7 @@ export class VisitsListForAdminComponent implements OnInit{
           let timestamp: string = element.timeStamp.toString();
           timestamp = timestamp.substring(0, timestamp.length - 10);
           element.timeStamp = new Date(timestamp);
-          console.log(this.visits)
         });
-        console.log(this.visits)
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)

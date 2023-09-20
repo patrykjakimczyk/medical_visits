@@ -77,7 +77,6 @@ export class PatientsListComponent implements OnInit {
 
     firstNameSorting() {
       this.currentPage = 0;
-      console.log(this.firstNameSortIndex, this._SortOrders.length);
 
       if (this.firstNameSortIndex === 2) {
         this.firstNameSortIndex = 0;
@@ -93,7 +92,6 @@ export class PatientsListComponent implements OnInit {
 
     lastNameSorting() {
       this.currentPage = 0;
-      console.log(this.lastNameSortIndex, this._SortOrders.length);
 
       if (this.lastNameSortIndex === 2) {
         this.lastNameSortIndex = 0;

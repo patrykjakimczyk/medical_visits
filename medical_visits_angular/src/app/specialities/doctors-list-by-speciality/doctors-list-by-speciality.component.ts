@@ -49,8 +49,8 @@ export class DoctorsListBySpecialityComponent implements OnInit{
     if (this._filterType == undefined && this._filterKey == undefined) {
       this.apiService.getDoctorsBySpeciality(this.currentPage, 10, this.speciality.id, undefined, undefined, this._currentSorts).subscribe({
         next: (response: any) => {
-            this.doctorsArray = response.content;
-            this.totalPages = response.totalPages;
+          this.doctorsArray = [...response.doctors.content];
+          this.totalPages = response.doctors.totalPages;
         },
         error: (error: HttpErrorResponse) => {
           console.log(error)
@@ -59,8 +59,8 @@ export class DoctorsListBySpecialityComponent implements OnInit{
     } else {
       this.apiService.getDoctorsBySpeciality(this.currentPage, 10,  this.speciality.id, this._filterType, this._filterKey, this._currentSorts).subscribe({
         next: (response: any) => {
-          this.doctorsArray = [...response.content];
-          this.totalPages = response.totalPages;
+          this.doctorsArray = [...response.doctors.content];
+          this.totalPages = response.doctors.totalPages;
         },
         error: (error: HttpErrorResponse) => {
           console.log(error)
@@ -85,7 +85,6 @@ export class DoctorsListBySpecialityComponent implements OnInit{
 
   firstNameSorting() {
     this.currentPage = 0;
-    console.log(this.firstNameSortIndex, this._SortOrders.length);
 
     if (this.firstNameSortIndex === 2) {
       this.firstNameSortIndex = 0;
@@ -101,7 +100,6 @@ export class DoctorsListBySpecialityComponent implements OnInit{
 
   lastNameSorting() {
     this.currentPage = 0;
-    console.log(this.lastNameSortIndex, this._SortOrders.length);
 
     if (this.lastNameSortIndex === 2) {
       this.lastNameSortIndex = 0;
@@ -119,7 +117,6 @@ export class DoctorsListBySpecialityComponent implements OnInit{
     this.currentPage = 0;
     this._filterType = form.form.controls["filterType"].value;
     this._filterKey = form.form.controls["filterKey"].value;
-    console.log(form.value)
     this.insertDoctors();
   }
 }

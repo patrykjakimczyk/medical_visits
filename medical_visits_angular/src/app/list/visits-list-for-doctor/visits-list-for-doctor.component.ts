@@ -29,10 +29,8 @@ export class VisitsListForDoctorComponent {
         this.visits.forEach((element: any) => {
           let timestamp: string = element.timeStamp.toString();
           timestamp = timestamp.substring(0, timestamp.length - 10);
-          console.log(new Date(timestamp).getDate())
           element.timeStamp = new Date(timestamp);
         });
-        console.log(this.visits)
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)

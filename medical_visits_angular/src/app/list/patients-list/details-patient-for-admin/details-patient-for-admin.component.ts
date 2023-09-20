@@ -18,7 +18,6 @@ export class DetailsPatientForAdminComponent {
     this.apiService.getPatientsFullData(patientsId).subscribe({
       next: (response: any) => {
         this.patientData = response;
-        console.log(response);
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)

@@ -24,7 +24,6 @@ export class VisitEditForAdminComponent {
         this.visit.timeStamp = new Date(this.visit.timeStamp);
         this.visit.date = this.getDate(this.visit.timeStamp)
         this.visit.time = this.getTime(this.visit.timeStamp)
-        console.log(new Date(this.visit.timeStamp).getMonth())
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)

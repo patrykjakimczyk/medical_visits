@@ -26,12 +26,10 @@ export class EditDoctorForAdminComponent implements OnInit{
     this.doctorsSpecialities = new Set();
     this.apiService.getDoctorsFullData(this.doctorsId).subscribe({
       next: (response: any) => {
-        console.log(response);
         this.doctorsData = response;
 
         this.apiService.getSpecialities().subscribe({
           next: (response: Speciality[]) => {
-            console.log(response);
             this.allSpecialities = response;
             for (let speciality of response) {
               for(let doctorsSpeciality of this.doctorsData.specialities) {
@@ -58,7 +56,6 @@ export class EditDoctorForAdminComponent implements OnInit{
     Object.assign(doctor, { id: this.doctorsId});
     Object.assign(doctor, {specialities: [...this.doctorsSpecialities].map(speciality => speciality.id)})
     delete doctor.filterType;
-    console.log(doctor);
     this.apiService.editDoctorsData(doctor).subscribe({
       next: (response: any) => {
         this.message = response.message;

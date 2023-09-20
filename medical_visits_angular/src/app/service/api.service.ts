@@ -39,9 +39,9 @@ export class ApiService {
   }
 
   getSpecialities(): Observable<Speciality[]> {
-    return this.http.get<Speciality[]>(`${ApiService.url}speciality/all-specialities`)
+    return this.http.get<any>(`${ApiService.url}speciality/all-specialities`)
     .pipe(
-      map(specialities => specialities),
+      map((specialities) => specialities.specialities),
       catchError((error) => {
         console.error(error);
         throw error as HttpErrorResponse;
@@ -217,7 +217,7 @@ export class ApiService {
         queryParams = queryParams.append("offset", page.toString());
         queryParams = queryParams.append("pageSize", pageSize.toString())
 
-        return this.http.get<any>(`${ApiService.url}doctors`, {
+        return this.http.get<any>(`${ApiService.url}doctor/all-doctors`, {
           headers: headers,
           params: queryParams
         })
