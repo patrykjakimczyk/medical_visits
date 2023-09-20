@@ -17,7 +17,7 @@ export class ApiService {
   constructor(private http: HttpClient, private authService: AuthenticationService) {}
 
   registerPatient(form: NgForm): Observable<User> {
-    return this.http.post<User>(`${ApiService.url}registerPatient`, form.value)
+    return this.http.post<User>(`${ApiService.url}/patient/register`, form.value)
       .pipe(
         map((user) => user),
         catchError((error) => {
@@ -39,7 +39,7 @@ export class ApiService {
   }
 
   getSpecialities(): Observable<Speciality[]> {
-    return this.http.get<Speciality[]>(`${ApiService.url}getSpecialities`)
+    return this.http.get<Speciality[]>(`${ApiService.url}speciality/all-specialities`)
     .pipe(
       map(specialities => specialities),
       catchError((error) => {
@@ -80,7 +80,7 @@ export class ApiService {
         queryParams = queryParams.append("offset", page.toString());
         queryParams = queryParams.append("pageSize", "10")
 
-        return this.http.get<any>(`${ApiService.url}auth/admin/patients`, {
+        return this.http.get<any>(`${ApiService.url}auth/admin/all-patients`, {
           headers: headers,
           params: queryParams
         })
@@ -123,7 +123,7 @@ export class ApiService {
         queryParams = queryParams.append("offset", page.toString());
         queryParams = queryParams.append("pageSize", "10")
 
-        return this.http.get<any>(`${ApiService.url}auth/doctor/doctorsPatients`, {
+        return this.http.get<any>(`${ApiService.url}auth/doctor/doctors-patients`, {
           headers: headers,
           params: queryParams
         })
@@ -169,7 +169,7 @@ export class ApiService {
         queryParams = queryParams.append("offset", page.toString());
         queryParams = queryParams.append("pageSize", pageSize.toString())
 
-        return this.http.get<any>(`${ApiService.url}auth/admin/doctors`, {
+        return this.http.get<any>(`${ApiService.url}auth/admin/all-doctors`, {
           headers: headers,
           params: queryParams
         })
@@ -242,7 +242,7 @@ export class ApiService {
         queryParams = queryParams
               .append("id", id);
 
-        return this.http.get<any>(`${ApiService.url}auth/patient/patientData`, {
+        return this.http.get<any>(`${ApiService.url}auth/patient/patient-data`, {
           headers: headers,
           params: queryParams
         }).pipe(
@@ -267,7 +267,7 @@ export class ApiService {
           headers = headers.set("Authorization", `Bearer ${user.token}`);
         }
 
-        return this.http.patch<any>(`${ApiService.url}auth/patient/updatePatient`, patient, {
+        return this.http.patch<any>(`${ApiService.url}auth/doctor/update-patient`, patient, {
           headers: headers
         })
           .pipe(
@@ -293,7 +293,7 @@ export class ApiService {
         queryParams = queryParams
               .append("id", id);
 
-        return this.http.get<any>(`${ApiService.url}auth/doctor/doctorData`, {
+        return this.http.get<any>(`${ApiService.url}auth/doctor/doctor-data`, {
           headers: headers,
           params: queryParams
         }).pipe(
@@ -318,7 +318,7 @@ export class ApiService {
           headers = headers.set("Authorization", `Bearer ${user.token}`);
         }
 
-        return this.http.patch<any>(`${ApiService.url}auth/doctor/updateDoctor`, doctor, {
+        return this.http.patch<any>(`${ApiService.url}auth/doctor/update-doctor`, doctor, {
           headers: headers
         })
           .pipe(
@@ -342,7 +342,7 @@ export class ApiService {
           headers = headers.set("Authorization", `Bearer ${user.token}`);
         }
 
-        return this.http.post<any>(`${ApiService.url}auth/patient/registerVisit`, visit, {
+        return this.http.post<any>(`${ApiService.url}auth/patient/register-visit`, visit, {
           headers: headers
         })
           .pipe(
