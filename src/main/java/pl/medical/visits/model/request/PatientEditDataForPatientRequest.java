@@ -1,18 +1,20 @@
 package pl.medical.visits.model.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PatientEditDataForPatientRequest {
-    private final long id;
-    private final String firstName;
-    private final String lastName;
-    private final String phoneNr;
-    private final String email;
-    private final String country;
-    private final String city;
-    private final String street;
-    private final String houseNr;
-    private final String apartmentNr;
-    private final String postalCode;
+    public long id;
+    public String firstName;
+    public String lastName;
+    public String phoneNr;
+    public String email;
+    public String country;
+    public String city;
+    public String street;
+    public String houseNr;
+    public String apartmentNr;
+    public String postalCode;
 }

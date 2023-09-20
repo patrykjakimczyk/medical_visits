@@ -239,6 +239,7 @@ public class UserServiceImpl implements UserService {
             doctorOptional.ifPresent(patient::setAssignedDoctor);
 
             this.updatePatient(patient, loginData, patientData);
+            return;
         }
         throw new UserPerformedForbiddenActionException("Patient cannot access other users' data!");
     }
@@ -280,6 +281,7 @@ public class UserServiceImpl implements UserService {
             try {
                 userRepository.save(doctor);
                 userLoginRepository.save(loginData);
+                return;
             } catch (RuntimeException e) {
                 throw new NotUniqueValueException(
                         "Error has occurred during user's data update. e-mail/phone number isn't unique"
